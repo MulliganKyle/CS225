@@ -44,9 +44,9 @@ class mediaItem
       
       //accessors
       //
-      std::string getName(){ return name;}
-      std::string getAuthor(){ return author;}
-      int getNumberOfPages(){ return numberOfPages;}
+      std::string getName() const { return name;}
+      std::string getAuthor() const { return author;}
+      int getNumberOfPages() const { return numberOfPages;}
 
 
       //mutators
@@ -62,3 +62,5 @@ class mediaItem
       
 
 };
+
+std::ostream& operator<<(std::ostream&, const mediaItem&);
