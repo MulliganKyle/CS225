@@ -13,12 +13,17 @@ extern mediaItem book1;
 
 void printMenu()
 {
+   std::cout << "* - Displa data for all Media Items" <<std::endl;
+   std::cout << "+/- Increment / decrement the selected Item w/ in the Array" <<std::endl;
+   std::cout << "# - Set the selected media Item" <<std::endl;
    std::cout << "0 - Clear MediaItem data" <<std::endl;
    std::cout << "D - Display Media Item data" <<std::endl;
-   std::cout << "R - Print this menu again" <<std::endl;
    std::cout << "N - Set Media Item name" <<std::endl;
    std::cout << "A - Set Media Item author" <<std::endl;
    std::cout << "P - Set Media Item pages" <<std::endl;
+   std::cout << "I - Set Media Item in print status (0/1)" <<std::endl;
+   std::cout << "V - Set Media Item value" <<std::endl;
+   std::cout << "M - Print this menu again" <<std::endl;
    std::cout << "Q - Quit this program" <<std::endl;
 }
 
