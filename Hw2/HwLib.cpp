@@ -13,7 +13,7 @@ extern mediaItem book1;
 
 void printMenu()
 {
-   std::cout << "C - Clear MediaItem data" <<std::endl;
+   std::cout << "0 - Clear MediaItem data" <<std::endl;
    std::cout << "D - Display Media Item data" <<std::endl;
    std::cout << "R - Print this menu again" <<std::endl;
    std::cout << "N - Set Media Item name" <<std::endl;
@@ -26,7 +26,7 @@ void processMenuIn(char menuIn)
 {
    switch(toupper(menuIn))  //handles all menu options and works for upper or lower case inputs
    {
-      case 'C': //clears the media item
+      case '0': //clears the media item
 	 book1.setName("");
 	 book1.setAuthor("");
 	 book1.setNumberOfPages(0);
