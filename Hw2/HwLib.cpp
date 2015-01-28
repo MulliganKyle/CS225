@@ -31,22 +31,33 @@ void processMenuIn(char menuIn)
 {
    switch(toupper(menuIn))  //handles all menu options and works for upper or lower case inputs
    {
+
+      case '*':
+      break;
+
+
+      case '+':
+      break;
+
+
+      case '-':
+      break;
+
+
+      case '#':
+      break;
+
+
       case '0': //clears the media item
-	 book1.setName("");
-	 book1.setAuthor("");
-	 book1.setNumberOfPages(0);
-	 break;
+      book1.setName("");
+      book1.setAuthor("");
+      book1.setNumberOfPages(0);
+      break;
 
 
       case 'D': //prints the media item
-	 std::cout<<book1;
-	 
-	 break;
-
-
-      case 'R': //prints the menu again
-	 printMenu();
-	 break;
+      std::cout<<book1;
+      break;
 
 
       case 'N': // enters the name of media item
@@ -76,8 +87,21 @@ void processMenuIn(char menuIn)
       }
       break;
 
+
+      case 'I':
+      break;
+
+
+      case 'V':
+      break;
+
+
+      case 'M': //prints the menu again
+      printMenu();
+      break;
+
       case 'Q': // exits the menu
-	 done= true;
-	 break;
+      done= true;
+      break;
    }
 }
