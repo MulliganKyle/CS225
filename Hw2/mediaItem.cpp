@@ -73,6 +73,9 @@ bool mediaItem::isEmpty()
 
 std::ostream& operator <<(std::ostream& outStream, const mediaItem& miOut)
 {
-   outStream <<
+   outStream << "MediaItem : " << miOut.getName() << std::endl;
+   outStream << "   Author : " << miOut.getAuthor() << std::endl;
+   outStream << "    Pages : " << miOut.getNumberOfPages() << std::endl;
+   //outStream << "MediaItem : " << name << std::endl;
 
 }

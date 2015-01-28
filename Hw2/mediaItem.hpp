@@ -8,9 +8,9 @@
 
 #include <iostream>
 
-#define DEF_NAME=""
-#define DEF_AUTHOR=""
-#define DEF_NUMBER_OF_PAGES=0
+#define DEF_NAME ""
+#define DEF_AUTHOR ""
+#define DEF_NUMBER_OF_PAGES 0
 
 
 

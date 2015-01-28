@@ -34,9 +34,8 @@ void processMenuIn(char menuIn)
 
 
       case 'D': //prints the media item
-	 std::cout << "Media Item : " << book1.getName() << std::endl;
-	 std::cout << "    Author : " << book1.getAuthor() << std::endl;
-	 std::cout << "     Pages : " << book1.getNumberOfPages() << std::endl;
+	 std::cout<<book1;
+	 
 	 break;
 
 
