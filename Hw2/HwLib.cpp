@@ -9,7 +9,10 @@
 #include <iostream>
 
 extern bool done;
-extern mediaItem book1;
+extern int currentItemNumber;
+extern mediaItem *firstItem;
+extern mediaItem *currentItem;
+
 
 void printMenu()
 {
@@ -37,26 +40,55 @@ void processMenuIn(char menuIn)
 
 
       case '+':
+      {
+	 if(currentItemNumber==19)
+	    std::cout << "At the last item already." << std::endl;
+	 else
+	 {
+	    currentItemNumber++;
+	    currentItem++;
+	 }
+      }
       break;
 
 
       case '-':
+       {
+	 if(currentItemNumber==0)
+	    std::cout << "At the first item already." << std::endl;
+	 else
+	 {
+	    currentItemNumber--;
+	    currentItem--;
+	 }
+      }     
       break;
 
 
       case '#':
+      {
+	 int number;
+	 std::cout << "Enter the number of the Item: ";
+	 std::cin >> number;
+
+	 if( (number < 0) || (number >19) )
+	    std::cout << "That is out of range." << std::endl;
+	 else
+	 {
+	    currentItemNumber=number;
+	    currentItem=firstItem+number;
+	 }
+      }
       break;
 
 
       case '0': //clears the media item
-      book1.setName("");
-      book1.setAuthor("");
-      book1.setNumberOfPages(0);
+      currentItem->clearObject();
       break;
 
 
       case 'D': //prints the media item
-      std::cout<<book1;
+      std::cout<<(*curentItem);
       break;
 
 
@@ -65,7 +97,7 @@ void processMenuIn(char menuIn)
 	 std::string name;
 	 std::cout << "Enter the book's Name: ";
 	 std::getline(std::cin,name);
-	 book1.setName(name);
+	 currentItem->setName(name);
       }
       break;
 
@@ -74,7 +106,7 @@ void processMenuIn(char menuIn)
 	 std::string author;
 	 std::cout << "Enter the author's Name: ";
 	 std::getline(std::cin,author);
-	 book1.setAuthor(author);
+	 currentItem->setAuthor(author);
       }
       break;
 
@@ -83,16 +115,28 @@ void processMenuIn(char menuIn)
 	 int pages;
 	 std::cout << "Enter the number of Pages: ";
 	 std::cin >> pages;
-	 book1.setNumberOfPages(pages);
+	 currentItem->setNumberOfPages(pages);
       }
       break;
 
 
       case 'I':
+      {
+	 bool isInPrint;
+	 std::cout << "Enter wether or not the item is in print (0/1) ";
+	 std::cin >> isInPrint;
+	 currentItem->setInPrint(isInPrint);
+      }
       break;
 
 
       case 'V':
+      {
+	 float value;
+	 std::cout << "Enter the value: ";
+	 std::cin >> value;
+	 currentItem->setValue(value);
+      }
       break;
 
 

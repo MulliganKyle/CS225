@@ -18,11 +18,15 @@ int mediaItem::numberOfObjects=0;
 //
 mediaItem::mediaItem(std::string newName,
 		     std::string newAuthor,
-		     int newNumberOfPages)
+		     int newNumberOfPages,
+		     float newValue,
+		     bool newInPrint)
 {
    name=newName;
    author=newAuthor;
    numberOfPages=newNumberOfPages;
+   value=newValue;
+   inPrint=newInPrint;
    numberOfObjects++;
 }
 
@@ -52,11 +56,23 @@ void mediaItem::setNumberOfPages(int newNumberOfPages)
    numberOfPages=newNumberOfPages;
 }
 
+void mediaItem::setValue(float newValue)
+{
+   value=newValue;
+}
+
+void mediaItem::setInPrint(bool newInPrint)
+{
+   inPrint=newInPrint;
+}
+
 void mediaItem::clearObject()
 {
    name=DEF_NAME;
    author=DEF_AUTHOR;
    numberOfPages=DEF_NUMBER_OF_PAGES;
+   value=DEF_VALUE;
+   inPrint=DEF_IN_PRINT;
 }
 
 
@@ -64,13 +80,18 @@ void mediaItem::clearObject()
 //
 bool mediaItem::isEmpty()
 {
-   if( (name==DEF_NAME) && (author==DEF_AUTHOR) && (numberOfPages==DEF_NUMBER_OF_PAGES) )
+   if( (name==DEF_NAME) && 
+       (author==DEF_AUTHOR) && 
+       (numberOfPages==DEF_NUMBER_OF_PAGES) &&
+       (value==DEF_VALUE) &&
+       (inPrint==DEF_IN_PRINT) )
       return true;
    else
       return false;
 }
 
-
+//helper functions not within the class
+//
 std::ostream& operator<<(std::ostream& outStream, const mediaItem& miOut)
 {
    outStream << "MediaItem : " << miOut.getName() << std::endl;

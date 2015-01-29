@@ -11,6 +11,8 @@
 #define DEF_NAME ""
 #define DEF_AUTHOR ""
 #define DEF_NUMBER_OF_PAGES 0
+#define DEF_VALUE 0.0
+#define DEF_IN_PRINT false
 
 
 
@@ -23,6 +25,11 @@ class mediaItem
       std::string name;
       std::string author;
       int numberOfPages;
+      float value;
+      bool inPrint;
+
+
+
 
    //class attributes
       static int numberOfObjects;
@@ -35,7 +42,9 @@ class mediaItem
       //
       mediaItem(std::string=DEF_NAME,
 	        std::string=DEF_AUTHOR,
-	        int=DEF_NUMBER_OF_PAGES);
+	        int=DEF_NUMBER_OF_PAGES,
+		float=DEF_VALUE,
+		bool=DEF_IN_PRINT);
 
       //destructors
       //
@@ -47,13 +56,16 @@ class mediaItem
       std::string getName() const { return name;}
       std::string getAuthor() const { return author;}
       int getNumberOfPages() const { return numberOfPages;}
-
+      float getValue() const {return value;}
+      bool getInPrint() const {return inPrint;}
 
       //mutators
       //
       void setName(std::string);
       void setAuthor(std::string);
       void setNumberOfPages(int);
+      void setValue(float);
+      void setInPrint(bool);
       void clearObject();
 
       //helpers

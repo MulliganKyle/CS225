@@ -10,13 +10,17 @@
 #include "HwLib.hpp"
 #include "mediaItem.hpp"
 
+#define MAX_ITEMS 20
 
-mediaItem book1;
+
+mediaItem *firstItem;
+mediaItem *currentItem;
 bool done=false;
 
 int main()
 {
    std::string userInput;
+   mediaItem mediaItems[MAX_ITEMS];
 
 
    printMenu();
