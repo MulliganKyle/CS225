@@ -36,6 +36,22 @@ void processMenuIn(char menuIn)
    {
 
       case '*':
+      {
+	 int count;
+	 for(count=0;count<20;count++)
+	 {
+	    if ( (firstItem[count]).isEmpty() )
+	    {
+	       std::cout << "mediaItem[" << count << "]: is Empty" << std::endl;
+	    }
+	    else
+	    {
+	    std::cout << "mediaItem[" << count << "]:" << std::endl;
+	    std::cout << (firstItem[count]);
+	    }
+
+	 }
+      }
       break;
 
 
@@ -88,7 +104,7 @@ void processMenuIn(char menuIn)
 
 
       case 'D': //prints the media item
-      std::cout<<(*curentItem);
+      std::cout<<(*currentItem);
       break;
 
 

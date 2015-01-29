@@ -16,12 +16,15 @@
 mediaItem *firstItem;
 mediaItem *currentItem;
 bool done=false;
+int currentItemNumber;
 
 int main()
 {
    std::string userInput;
    mediaItem mediaItems[MAX_ITEMS];
-
+   
+   firstItem=mediaItems;
+   currentItem=firstItem;
 
    printMenu();
    while(!done) // loops until the user is done using the menu
