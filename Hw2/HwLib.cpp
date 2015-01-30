@@ -38,6 +38,8 @@ void processMenuIn(char menuIn)
       case '*':
       {
 	 int count;
+
+	 std::cout << "=== All Items ===" << std::endl;
 	 for(count=0;count<20;count++)
 	 {
 	    if ( (firstItem[count]).isEmpty() )
@@ -46,7 +48,7 @@ void processMenuIn(char menuIn)
 	    }
 	    else
 	    {
-	    std::cout << "mediaItem[" << count << "]--" << std::endl;
+	    std::cout << "mediaItem[" << count << "]" << std::endl;
 	    std::cout << (firstItem[count]);
 	    }
 
@@ -63,6 +65,7 @@ void processMenuIn(char menuIn)
 	 {
 	    currentItemNumber++;
 	    currentItem++;
+	    std::cout << "Index set to " << currentItemNumber << std::endl;
 	 }
       }
       break;
@@ -76,6 +79,7 @@ void processMenuIn(char menuIn)
 	 {
 	    currentItemNumber--;
 	    currentItem--;
+	    std::cout << "Index set to " << currentItemNumber << std::endl;
 	 }
       }     
       break;
@@ -93,6 +97,7 @@ void processMenuIn(char menuIn)
 	 {
 	    currentItemNumber=number;
 	    currentItem=firstItem+number;
+	    std::cout << "Index set to " << currentItemNumber << std::endl;
 	 }
       }
       break;
