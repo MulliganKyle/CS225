@@ -29,7 +29,7 @@ int main()
    printMenu();
    while(!done) // loops until the user is done using the menu
    {
-      std::cout << std::endl << "Menu : ";
+      std::cout << std::endl << "Menu[" << currentItemNumber << "] : ";
       std::cin >> userInput;
       std::cin.ignore(256,'\n');
       processMenuIn(userInput[0]);

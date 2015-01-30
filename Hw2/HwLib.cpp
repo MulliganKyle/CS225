@@ -46,7 +46,7 @@ void processMenuIn(char menuIn)
 	    }
 	    else
 	    {
-	    std::cout << "mediaItem[" << count << "]:" << std::endl;
+	    std::cout << "mediaItem[" << count << "]--" << std::endl;
 	    std::cout << (firstItem[count]);
 	    }
 
