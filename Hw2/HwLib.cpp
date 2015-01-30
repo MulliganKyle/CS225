@@ -39,7 +39,7 @@ void processMenuIn(char menuIn)
       {
 	 int count;
 
-	 std::cout << "=== All Items ===" << std::endl;
+	 std::cout << std::endl << "=== All Items ===" << std::endl;
 	 for(count=0;count<20;count++)
 	 {
 	    if ( (firstItem[count]).isEmpty() )

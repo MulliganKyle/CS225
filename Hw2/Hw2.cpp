@@ -31,7 +31,7 @@ int main()
    {
       std::cout << std::endl << "Menu[" << currentItemNumber << "] : ";
       std::cin >> userInput;
-      std::cin.ignore(256,'\n');
+      std::cin.ignore();
       processMenuIn(userInput[0]);
    }
    std::cout << "Goodbye" << std::endl;
