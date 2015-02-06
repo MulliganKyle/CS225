@@ -1,7 +1,7 @@
 //////////////////////
 // CS225
 // HW1
-// 1/22/15
+// 2/5/15
 // Kyle Mulligan
 // menu based program which utilizes class mediaItem 
 //////////////////////
@@ -12,7 +12,8 @@
 
 #define MAX_ITEMS 20
 
-
+//globals
+//
 mediaItem *firstItem;
 mediaItem *currentItem;
 bool done=false;

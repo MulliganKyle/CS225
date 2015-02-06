@@ -1,9 +1,9 @@
 //////////////////////
 // CS225
 // HW1
-// 1/22/15
+// 2/5/15
 // Kyle Mulligan
-// Functions for Hw1 
+// Functions for Hw2 
 //////////////////////
 #include "mediaItem.hpp"
 #include <iostream>

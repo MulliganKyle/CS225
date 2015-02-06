@@ -1,12 +1,13 @@
 ///////////////////////////////////
 // CS225
 // HW1
-// 1/15/15
+// 2/5/15
 // Kyle Mulligan
 //Implementation of mediaItem Class
 ///////////////////////////////////
 
 #include <iostream>
+#include <iomanip>
 #include "mediaItem.hpp"
 
 
@@ -97,7 +98,7 @@ std::ostream& operator<<(std::ostream& outStream, const mediaItem& miOut)
    outStream << "MediaItem : " << miOut.getName() << std::endl;
    outStream << "   Author : " << miOut.getAuthor() << std::endl;
    outStream << "    Pages : " << miOut.getNumberOfPages() << std::endl;
-   outStream << "    Value : " << miOut.getValue() << std::endl;
+   outStream << "    Value : $" << std::fixed << std::setprecision(2) << miOut.getValue() << std::endl;
    outStream << " In Print : " << miOut.getInPrint() << std::endl;
    return outStream;
 }

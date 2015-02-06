@@ -1,9 +1,9 @@
 //////////////////////
 // CS225
 // HW1
-// 1/22/15
+// 2/5/15
 // Kyle Mulligan
-// Prototypes for Hw1 
+// Prototypes for Hw2 
 //////////////////////
 
 
