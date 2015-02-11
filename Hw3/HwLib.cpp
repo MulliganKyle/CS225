@@ -1,17 +1,17 @@
 //////////////////////
 // CS225
-// HW2
+// HW3
 // 2/5/15
 // Kyle Mulligan
 // Functions for Hw2 
 //////////////////////
-#include "mediaItem.hpp"
+#include "MediaItem.hpp"
 #include <iostream>
 
 extern bool done;
 extern int currentItemNumber;
-extern mediaItem *firstItem;
-extern mediaItem *currentItem;
+extern MediaItem *firstItem;
+extern MediaItem *currentItem;
 
 
 void printMenu()

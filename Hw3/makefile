@@ -1,16 +1,16 @@
 # CS225
-# Project 2
+# Project 3
 # Media Item & Simple GUI Menu
 #
 
 # Here is a simple Make Macro.
-LINK_TARGET = mediaItem2Project
+LINK_TARGET = mediaItem3Project
 
 # Here is a Make Macro that uses the backslash to extend to multiple lines.
 OBJS =  \
- Hw2.o \
+ Hw3.o \
 	HwLib.o \
-	mediaItem.o
+	MediaItem.o
 
 # Here is a Make Macro defined by two Macro Expansions.
 # A Macro Expansion may be treated as a textual replacement of the Make Macro.
@@ -62,6 +62,6 @@ $(LINK_TARGET) : $(OBJS)
 # The commands for making an out-of-date target up-to-date may be found elsewhere
 # (in this case, by the Pattern Rule above).
 # Dependency Rules are often used to capture header file dependencies.
-Hw1.cpp : HwLib.hpp mediaItem.hpp
-mediaItem.cpp : mediaItem.hpp
+Hw1.cpp : HwLib.hpp MediaItem.hpp
+mediaItem.cpp : MediaItem.hpp
 Hw1Lib.cpp : HwLib.hpp

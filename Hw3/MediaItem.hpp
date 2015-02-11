@@ -1,6 +1,6 @@
 //////////////////////
 // CS225
-// HW1
+// HW3
 // 2/5/15
 // Kyle Mulligan
 // Declaration of mediaItem Class
@@ -16,7 +16,7 @@
 
 
 
-class mediaItem 
+class MediaItem 
 {
 
    private:
@@ -40,7 +40,7 @@ class mediaItem
 
       //constructors
       //
-      mediaItem(std::string=DEF_NAME,
+      MediaItem(std::string=DEF_NAME,
 	        std::string=DEF_AUTHOR,
 	        int=DEF_NUMBER_OF_PAGES,
 		float=DEF_VALUE,
@@ -48,7 +48,7 @@ class mediaItem
 
       //destructors
       //
-      ~mediaItem();
+      ~MediaItem();
 
       
       //accessors
@@ -76,4 +76,4 @@ class mediaItem
 
 };
 
-std::ostream& operator<<(std::ostream&, const mediaItem&);
+std::ostream& operator<<(std::ostream&, const MediaItem&);
