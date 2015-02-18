@@ -7,6 +7,10 @@
 //////////////////////
 
 #include <iostream>
+#include "HwLib.hpp"
+#include "Element.hpp"
+#include "Author.hpp"
+
 
 #define DEF_NAME ""
 #define DEF_AUTHOR ""
@@ -27,7 +31,8 @@ class MediaItem
       int numberOfPages;
       float value;
       bool inPrint;
-
+      //Author *author;
+      Element chapters[MAX_ELEMENTS];
 
 
 

@@ -7,7 +7,7 @@
 //////////////////////
 #include "MediaItem.hpp"
 #include "HwLib.hpp"
-#include "Element.hpp"
+//#include "Element.hpp"
 #include <iostream>
 
 
@@ -24,12 +24,17 @@ void printMenu()
    std::cout << "+/- Increment / decrement the selected Item w/ in the Array" <<std::endl;
    std::cout << "# - Set the selected media Item" <<std::endl;
    std::cout << "0 - Clear MediaItem data" <<std::endl;
+   std::cout << "C - Create author" <<std::endl;
    std::cout << "D - Display Media Item data" <<std::endl;
    std::cout << "N - Set Media Item name" <<std::endl;
-   std::cout << "A - Set Media Item author" <<std::endl;
+   std::cout << "T - Set Media Item Author Index" <<std::endl;
+   std::cout << "E - Add Media Item Element" <<std::endl;
    std::cout << "P - Set Media Item pages" <<std::endl;
    std::cout << "I - Set Media Item in print status (0/1)" <<std::endl;
    std::cout << "V - Set Media Item value" <<std::endl;
+   std::cout << "Y - Set Media Item Year Produced" << std::endl;
+   std::cout << "S - Set Media Item Sequel from Index" << std::endl;
+   std::cout << "R - Display the Memory used" << std::endl;
    std::cout << "M - Print this menu again" <<std::endl;
    std::cout << "Q - Quit this program" <<std::endl;
 }
