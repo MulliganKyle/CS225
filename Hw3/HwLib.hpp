@@ -7,5 +7,8 @@
 //////////////////////
 
 
+#define MAX_ITEMS 30
+#define MAX_AUTHORS 8
+
 void printMenu();
 void processMenuIn(char);

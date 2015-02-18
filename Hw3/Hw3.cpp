@@ -9,8 +9,8 @@
 #include <iostream>
 #include "HwLib.hpp"
 #include "MediaItem.hpp"
+#include "Element.hpp"
 
-#define MAX_ITEMS 20
 
 //globals
 //

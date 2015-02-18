@@ -6,7 +6,11 @@
 // Functions for Hw2 
 //////////////////////
 #include "MediaItem.hpp"
+#include "HwLib.hpp"
+#include "Element.hpp"
 #include <iostream>
+
+
 
 extern bool done;
 extern int currentItemNumber;
@@ -40,7 +44,7 @@ void processMenuIn(char menuIn)
 	 int count;
 
 	 std::cout << std::endl << "=== All Items ===" << std::endl;
-	 for(count=0;count<20;count++)
+	 for(count=0;count<MAX_ITEMS;count++)
 	 {
 	    if ( (firstItem[count]).isEmpty() )
 	    {
@@ -60,7 +64,7 @@ void processMenuIn(char menuIn)
 
       case '+':
       {
-	 if(currentItemNumber==19)
+	 if(currentItemNumber==(MAX_ITEMS-1))
 	    std::cout << "At the last item already." << std::endl;
 	 else
 	 {

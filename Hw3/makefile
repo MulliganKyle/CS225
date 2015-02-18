@@ -10,7 +10,8 @@ LINK_TARGET = mediaItem3Project
 OBJS =  \
  Hw3.o \
 	HwLib.o \
-	MediaItem.o
+	MediaItem.o \
+	Element.o
 
 # Here is a Make Macro defined by two Macro Expansions.
 # A Macro Expansion may be treated as a textual replacement of the Make Macro.
@@ -62,6 +63,7 @@ $(LINK_TARGET) : $(OBJS)
 # The commands for making an out-of-date target up-to-date may be found elsewhere
 # (in this case, by the Pattern Rule above).
 # Dependency Rules are often used to capture header file dependencies.
-Hw1.cpp : HwLib.hpp MediaItem.hpp
-mediaItem.cpp : MediaItem.hpp
-Hw1Lib.cpp : HwLib.hpp
+Hw3.cpp : HwLib.hpp MediaItem.hpp Element.hpp
+MediaItem.cpp : MediaItem.hpp
+Element.cpp : Element.hpp
+HwLib.cpp : HwLib.hpp
