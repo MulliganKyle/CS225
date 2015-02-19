@@ -22,14 +22,14 @@ Element::Element(int newStart,
    start=newStart;
    end=newEnd;
    name=newName;
-   numberOfObjects++;
+   numberOfElements++;
 }
 
 //destructors
 //
 Element::~Element()
 {
-   numberOfObjects--;
+   numberOfElements--;
 }
 
 

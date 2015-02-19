@@ -24,7 +24,7 @@ class Element
 
    //class attributes
    //
-      int numberOfObjects;
+      static int numberOfElements;
 
    public:
    //methods of Element
@@ -47,6 +47,7 @@ class Element
       int getStart() const { return start;}
       int getEnd() const {return end;}
       std::string getName() const { return name;}
+      int getNumberOfElements() const { return numberOfElements;}
 
 
       //mutators

@@ -16,7 +16,8 @@ extern bool done;
 extern int currentItemNumber;
 extern MediaItem *firstItem;
 extern MediaItem *currentItem;
-
+extern Author *authPtr;
+extern Author *firstAuthor;
 
 void printMenu()
 {
@@ -117,6 +118,26 @@ void processMenuIn(char menuIn)
       currentItem->clearObject();
       break;
 
+      case 'C':// creates new author
+      {
+      int date;
+      std::string author;
+      std::cout << "Enter date Born";
+      std::cin >> date;
+      authPtr->setBorn(date);
+
+      std::cout << "Enter date Died (0 if still alive)";
+      std::cin >> date;
+      authPtr->setDied(date);
+
+      std::cout<< "Enter the author's name: ";
+      std::cin >> author;
+      authPtr->setName(author);
+
+      authPtr++;
+      }
+      break;
+
 
       case 'D': //prints the media item
       std::cout<<(*currentItem);
@@ -132,12 +153,14 @@ void processMenuIn(char menuIn)
       }
       break;
 
-      case 'A': // enters the author of media item
+      case 'T': // enters the author index of media item
       {
-	 std::string author;
-	 std::cout << "Enter the author's Name: ";
-	 std::getline(std::cin,author);
-	 currentItem->setAuthor(author);
+      int index;
+      std::cout << "Enter the index of the Author: ";
+      std::cin >> index;
+      currentItem->setAuthor(firstAuthor+index);
+
+
       }
       break;
 

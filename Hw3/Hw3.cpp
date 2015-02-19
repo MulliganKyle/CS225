@@ -9,8 +9,6 @@
 #include <iostream>
 #include "HwLib.hpp"
 #include "MediaItem.hpp"
-//#include "Element.hpp"
-//#include "Author.hpp"
 
 
 
@@ -18,6 +16,7 @@
 //
 MediaItem *firstItem;
 MediaItem *currentItem;
+Author *authPtr;
 bool done=false;
 int currentItemNumber;
 
@@ -25,9 +24,12 @@ int main()
 {
    std::string userInput;
    MediaItem mediaItems[MAX_ITEMS];
-   
+   Author authors[MAX_AUTHORS];
+
    firstItem=mediaItems;
    currentItem=firstItem;
+   authPtr=authors;
+
 
    printMenu();
    while(!done) // loops until the user is done using the menu

@@ -24,7 +24,7 @@ class Author
 
       //class attributes
       //
-      
+      static int numberOfAuthors;
 
    public:
    //methods of Author class
@@ -45,6 +45,7 @@ class Author
       int getBorn() const {return born;}
       int getDied() const {return died;}
       std::string getName() const {return name;}
+      int getnumberOfAuthors() const {return numberOfAuthors;}
 
       //mutators
       //
