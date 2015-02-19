@@ -8,6 +8,12 @@
 
 #include <iostream>
 
+
+#ifndef ELEMENT_H
+#define ELEMENT_H
+
+
+
 #define DEF_START 0
 #define DEF_END 0
 #define DEF_NAME ""
@@ -58,11 +64,9 @@ class Element
 
       //helpers
       //
-
-
-      
-
-
+      bool isElementEmpty();
 
 };
 
+
+#endif

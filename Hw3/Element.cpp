@@ -12,6 +12,10 @@
 #include <iomanip>
 
 
+//class wide attributes
+//
+int Element::numberOfElements=0;
+
 
 //constructors
 //
@@ -49,5 +53,20 @@ void Element::setName(std::string newName)
 {
    name=newName;
 }
+
+//helpers
+//
+
+bool Element::isElementEmpty()
+{
+   if( start==DEF_START &&
+       end==DEF_END &&
+       name==DEF_NAME)
+      return true;
+   else
+      return false;
+}
+
+
 
 

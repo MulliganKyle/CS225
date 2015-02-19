@@ -7,7 +7,8 @@
 //////////////////////
 #include "MediaItem.hpp"
 #include "HwLib.hpp"
-//#include "Element.hpp"
+#include "Element.hpp"
+#include "Author.hpp"
 #include <iostream>
 
 
@@ -122,19 +123,27 @@ void processMenuIn(char menuIn)
       {
       int date;
       std::string author;
-      std::cout << "Enter date Born";
-      std::cin >> date;
-      authPtr->setBorn(date);
+      int authorIndex;
 
-      std::cout << "Enter date Died (0 if still alive)";
-      std::cin >> date;
-      authPtr->setDied(date);
+	 for(authorIndex=0; (authorIndex<MAX_AUTHORS); authorIndex++)
+	 {
+	    if( (firstAuthor+authorIndex)->isAuthorEmpty() )
+	    {
+	       std::cout << "Enter date Born";
+	       std::cin >> date;
+	       (firstAuthor+authorIndex)->setBorn(date);
 
-      std::cout<< "Enter the author's name: ";
-      std::cin >> author;
-      authPtr->setName(author);
+	       std::cout << "Enter date Died (0 if still alive)";
+	       std::cin >> date;
+	       (firstAuthor+authorIndex)->setDied(date);
 
-      authPtr++;
+	       std::cout<< "Enter the author's name: ";
+	       std::getline(std::cin,author);
+	       (firstAuthor+authorIndex)->setName(author);
+
+	       break;
+	    }
+	 }
       }
       break;
 
@@ -159,10 +168,28 @@ void processMenuIn(char menuIn)
       std::cout << "Enter the index of the Author: ";
       std::cin >> index;
       currentItem->setAuthor(firstAuthor+index);
+      }
+      break;
 
+      case 'E':
+      {
+      int startElement, endElement;
+      std::string nameElement;
+
+      std::cout << "Enter the start of the Element: ";
+      std::cin >> startElement;
+
+      std::cout << "Enter the end of the Element: ";
+      std::cin >> endElement;
+
+      std::cout << "Enter the name of the Element: ";
+      std::getline(std::cin, nameElement);
+
+      currentItem->addNewElement(startElement, endElement, nameElement);
 
       }
       break;
+
 
       case 'P': // enters the number of pages for the media item
       {
@@ -190,6 +217,21 @@ void processMenuIn(char menuIn)
 	 std::cout << "Enter the value: ";
 	 std::cin >> value;
 	 currentItem->setValue(value);
+      }
+      break;
+
+
+      case 'Y':
+      {
+
+
+      }
+      break;
+
+      case 'S':
+      {
+
+
       }
       break;
 

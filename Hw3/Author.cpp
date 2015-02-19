@@ -11,7 +11,9 @@
 #include <iostream>
 #include <iomanip>
 
-
+//class wide attributes
+//
+int Author::numberOfAuthors=0;
 
 //constructors
 //
@@ -50,4 +52,16 @@ void Author::setName(std::string newName)
    name=newName;
 }
 
+
+//helpers
+//
+bool Author::isAuthorEmpty()
+{
+   if( born==DEF_BORN &&
+       died==DEF_DIED &&
+       name==DEF_NAME)
+      return true;
+   else
+      return false;
+}
 

@@ -9,7 +9,8 @@
 #include <iostream>
 #include "HwLib.hpp"
 #include "MediaItem.hpp"
-
+#include "Author.hpp"
+#include "Element.hpp"
 
 
 //globals
@@ -17,6 +18,7 @@
 MediaItem *firstItem;
 MediaItem *currentItem;
 Author *authPtr;
+Author *firstAuthor;
 bool done=false;
 int currentItemNumber;
 
@@ -28,7 +30,8 @@ int main()
 
    firstItem=mediaItems;
    currentItem=firstItem;
-   authPtr=authors;
+   firstAuthor=authors;
+   //authPtr=firstAuthor;
 
 
    printMenu();

@@ -8,6 +8,12 @@
 
 #include <iostream>
 
+
+#ifndef AUTHOR_H
+#define AUTHOR_H
+
+
+
 #define DEF_BORN 0
 #define DEF_DIED 0
 #define DEF_NAME ""
@@ -55,10 +61,12 @@ class Author
 
       //helpers
       //
-
+      bool isAuthorEmpty();
 
 
 
 
 
 };
+
+#endif
