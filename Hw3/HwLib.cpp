@@ -1,9 +1,9 @@
 //////////////////////
 // CS225
 // HW3
-// 2/5/15
+// 2/20/15
 // Kyle Mulligan
-// Functions for Hw2 
+// Functions for Hw3 
 //////////////////////
 #include "MediaItem.hpp"
 #include "HwLib.hpp"
@@ -46,25 +46,31 @@ void processMenuIn(char menuIn)
    switch(toupper(menuIn))  //handles all menu options and works for upper or lower case inputs
    {
 
-      case '*':
+      case '*': //prints everything
       {
 	 int count;
 
-	 std::cout << std::endl << "=== All Items ===" << std::endl;
+	 std::cout << std::endl << "=== All Authors==="<< std::endl; // prints all authors
+	 for( count=0; count< MAX_AUTHORS; count++)
+	 {
+	    if( !(firstAuthor[count].isAuthorEmpty() ) )
+	    {
+	       std::cout<< "Author[" << count << "]" << std::endl;
+	       std::cout<< (firstAuthor[count]);
+	    }
+	 }
+
+
+	 std::cout << std::endl << "=== All Items ===" << std::endl; // prints all items and their elements
 	 for(count=0;count<MAX_ITEMS;count++)
 	 {
-	    if ( (firstItem[count]).isEmpty() )
+	    if ( !(firstItem[count]).isEmpty() )
 	    {
-	       std::cout << "mediaItem[" << count << "]: is Empty" << std::endl;
-	    }
-	    else
-	    {
-	    std::cout << "mediaItem[" << count << "]" << std::endl;
-	    std::cout << (firstItem[count]);
+	       std::cout << "mediaItem[" << count << "]" << std::endl;
+	       std::cout << (firstItem[count]);
 	    }
 
 	 }
-	 std::cout << "The number of Items in Memory is: " << currentItem->getNumberOfObjects() << std::endl;
       }
       break;
 
@@ -121,7 +127,7 @@ void processMenuIn(char menuIn)
 
       case 'C':// creates new author
       {
-      int date;
+      int dateBorn, dateDied;
       std::string author;
       int authorIndex;
 
@@ -129,17 +135,24 @@ void processMenuIn(char menuIn)
 	 {
 	    if( (firstAuthor+authorIndex)->isAuthorEmpty() )
 	    {
-	       std::cout << "Enter date Born";
-	       std::cin >> date;
-	       (firstAuthor+authorIndex)->setBorn(date);
+	       std::cout << "Enter date Born ";
+	       std::cin >> dateBorn;
 
-	       std::cout << "Enter date Died (0 if still alive)";
-	       std::cin >> date;
-	       (firstAuthor+authorIndex)->setDied(date);
+	       std::cout << "Enter date Died (0 if still alive) ";
+	       std::cin >> dateDied;
+	       std::cin.ignore();
 
 	       std::cout<< "Enter the author's name: ";
 	       std::getline(std::cin,author);
-	       (firstAuthor+authorIndex)->setName(author);
+
+	       if( dateDied!=0 && dateDied<dateBorn)
+		  std::cout << "invalid birth and death dates " <<std::endl;
+	       else
+	       {
+		  (firstAuthor+authorIndex)->setBorn(dateBorn);
+		  (firstAuthor+authorIndex)->setDied(dateDied);
+		  (firstAuthor+authorIndex)->setName(author);
+	       }
 
 	       break;
 	    }
@@ -164,26 +177,27 @@ void processMenuIn(char menuIn)
 
       case 'T': // enters the author index of media item
       {
-      int index;
-      std::cout << "Enter the index of the Author: ";
-      std::cin >> index;
-      currentItem->setAuthor(firstAuthor+index);
+	 int index;
+	 std::cout << "Enter the index of the Author: ";
+	 std::cin >> index;
+	 currentItem->setAuthor(firstAuthor+index);
       }
       break;
 
-      case 'E':
+      case 'E': // creates a new element
       {
-      int startElement, endElement;
-      std::string nameElement;
+	 int startElement, endElement;
+	 std::string nameElement;
 
-      std::cout << "Enter the start of the Element: ";
-      std::cin >> startElement;
+	 std::cout << "Enter the start of the Element: ";
+	 std::cin >> startElement;
 
-      std::cout << "Enter the end of the Element: ";
-      std::cin >> endElement;
+	 std::cout << "Enter the end of the Element: ";
+	 std::cin >> endElement;
+	 std::cin.ignore();
 
-      std::cout << "Enter the name of the Element: ";
-      std::getline(std::cin, nameElement);
+	 std::cout << "Enter the name of the Element: ";
+	 std::getline(std::cin, nameElement);
 
       currentItem->addNewElement(startElement, endElement, nameElement);
 
@@ -201,7 +215,7 @@ void processMenuIn(char menuIn)
       break;
 
 
-      case 'I':
+      case 'I': // sets wether the item is in print
       {
 	 bool isInPrint;
 	 std::cout << "Enter wether or not the item is in print (0/1) ";
@@ -211,7 +225,7 @@ void processMenuIn(char menuIn)
       break;
 
 
-      case 'V':
+      case 'V': // sets the value of the item
       {
 	 float value;
 	 std::cout << "Enter the value: ";
@@ -221,16 +235,41 @@ void processMenuIn(char menuIn)
       break;
 
 
-      case 'Y':
+      case 'Y': // sets the year of publication
       {
+	 int year;
+	 std::cout << "Enter the year of publication: ";
+	 std::cin >> year;
 
+	 if( year<0 || year>2016)
+	    std::cout << "Not a valid year" << std::endl;
+	 else
+	    currentItem->setYearOfPublication(year);
 
       }
       break;
 
-      case 'S':
+      case 'S': // sets the sequel of the item
       {
+	 int index;
+	 std::cout << "Enter the index of the Sequel: ";
+	 std::cin >> index;
 
+	 if(index>=MAX_ITEMS || index < 0)
+	    std::cout << "Index out of bounds" << std::endl;
+	 else
+	    currentItem->setSequel(firstItem+index);
+      }
+      break;
+
+      case 'R': //displays the memory usage
+      {
+	 std::cout << std::endl;
+	 std::cout << "The number of Items in Memory is: " << currentItem->getNumberOfObjects() << std::endl;
+	 std::cout << "The number of Authors in Memory is: " << firstAuthor->getNumberOfAuthors()<< std::endl;
+	 std::cout << "The number of Elements in Memory is : " << (currentItem->indexElements(0))->getNumberOfElements() << std:: endl;
+
+	 std::cout << "The number of Bytes used is : " << ( (currentItem->getNumberOfObjects()*sizeof(MediaItem))+(firstAuthor->getNumberOfAuthors()*sizeof(Author))+((currentItem->indexElements(0))->getNumberOfElements()*sizeof(Element))) << std::endl;
 
       }
       break;

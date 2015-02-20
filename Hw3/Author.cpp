@@ -1,7 +1,7 @@
 //////////////////////
 // CS225
 // HW3
-// 2/18/15
+// 2/20/15
 // Kyle Mulligan
 // Implementation of Author Class
 //////////////////////
@@ -65,3 +65,13 @@ bool Author::isAuthorEmpty()
       return false;
 }
 
+
+//helper functions not within the class
+//
+std::ostream& operator<<(std::ostream& outStream, const Author& authOut)
+{
+   outStream << "   Author : " << authOut.getName() << std::endl;
+   outStream << "     Born : " << authOut.getBorn() << std::endl;
+   outStream << "     Died : " << authOut.getDied() << std::endl;
+   return outStream;
+}

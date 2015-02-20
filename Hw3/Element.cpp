@@ -1,7 +1,7 @@
 //////////////////////
 // CS225
 // HW3
-// 2/18/15
+// 2/20/15
 // Kyle Mulligan
 // Implementation of Element Class
 //////////////////////
@@ -57,7 +57,7 @@ void Element::setName(std::string newName)
 //helpers
 //
 
-bool Element::isElementEmpty()
+bool Element::isElementEmpty() const
 {
    if( start==DEF_START &&
        end==DEF_END &&
@@ -68,5 +68,13 @@ bool Element::isElementEmpty()
 }
 
 
-
+//helper functions not within the class
+//
+std::ostream& operator<<(std::ostream& outStream, const Element& elOut)
+{
+   outStream << "  Chapter : " << elOut.getName() << std::endl;
+   outStream << "    Start : " << elOut.getStart() << std::endl;
+   outStream << "      End : " << elOut.getEnd() << std::endl;
+   return outStream;
+}
 

@@ -1,7 +1,7 @@
 //////////////////////
 // CS225
 // HW3
-// 2/5/15
+// 2/20/15
 // Kyle Mulligan
 // Declaration of mediaItem Class
 //////////////////////
@@ -19,6 +19,9 @@
 #define DEF_NUMBER_OF_PAGES 0
 #define DEF_VALUE 0.0
 #define DEF_IN_PRINT false
+#define DEF_AUTHOR NULL
+#define DEF_SEQUEL NULL
+#define DEF_YEAR 0
 
 
 
@@ -29,12 +32,12 @@ class MediaItem
    //attributes of mediaItem
    //
       std::string name;
-      //std::string author;
       int numberOfPages;
       int yearOfPublication;
       float value;
       bool inPrint;
       Author *author;
+      MediaItem *sequel;
       Element chapters[MAX_ELEMENTS];
 
 
@@ -49,10 +52,12 @@ class MediaItem
       //constructors
       //
       MediaItem(std::string=DEF_NAME,
-	        //std::string=DEF_AUTHOR,
 	        int=DEF_NUMBER_OF_PAGES,
 		float=DEF_VALUE,
-		bool=DEF_IN_PRINT);
+		bool=DEF_IN_PRINT,
+		Author* =DEF_AUTHOR,
+		MediaItem* =DEF_SEQUEL,
+		int=DEF_YEAR);
 
       //destructors
       //
@@ -67,12 +72,17 @@ class MediaItem
       int getNumberOfObjects() const { return numberOfObjects;}
       float getValue() const {return value;}
       bool getInPrint() const {return inPrint;}
+      Author* getAuthor() const {return author;}
+      MediaItem* getSequel() const {return sequel;}
+      const Element* indexElements(int index) const {return &chapters[index];}
+
 
 
       //mutators
       //
       void setName(std::string);
       void setAuthor(Author*);
+      void setSequel(MediaItem*);
       void setNumberOfPages(int);
       void setYearOfPublication(int);
       void setValue(float);

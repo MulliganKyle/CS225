@@ -1,7 +1,7 @@
 //////////////////////
 // CS225
 // HW3
-// 2/5/15
+// 2/20/15
 // Kyle Mulligan
 // menu based program which utilizes class mediaItem 
 //////////////////////
@@ -39,8 +39,13 @@ int main()
    {
       std::cout << std::endl << "Menu[" << currentItemNumber << "] : ";
       std::cin >> userInput;
-      std::cin.ignore();
-      processMenuIn(userInput[0]);
+      if(userInput[0]=='/')
+	 std::cin.ignore(256,'\n');
+      else
+      {
+	 std::cin.ignore();
+	 processMenuIn(userInput[0]);
+      }
    }
    std::cout << "Goodbye" << std::endl;
 }

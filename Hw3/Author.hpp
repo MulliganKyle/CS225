@@ -1,7 +1,7 @@
 //////////////////////
 // CS225
 // HW3
-// 2/18/15
+// 2/20/15
 // Kyle Mulligan
 // Declaration of Author Class
 //////////////////////
@@ -51,7 +51,7 @@ class Author
       int getBorn() const {return born;}
       int getDied() const {return died;}
       std::string getName() const {return name;}
-      int getnumberOfAuthors() const {return numberOfAuthors;}
+      int getNumberOfAuthors() const {return numberOfAuthors;}
 
       //mutators
       //
@@ -68,5 +68,8 @@ class Author
 
 
 };
+
+std::ostream& operator<<(std::ostream&, const Author&);
+
 
 #endif

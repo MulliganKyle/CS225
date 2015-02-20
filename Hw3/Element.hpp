@@ -1,7 +1,7 @@
 //////////////////////
 // CS225
 // HW3
-// 2/18/15
+// 2/20/15
 // Kyle Mulligan
 // Declaration of Element Class
 //////////////////////
@@ -24,9 +24,11 @@ class Element
    private:
    //attributes of Element
    //
+      friend std::ostream& operator<<(std::ostream&, const Element&);
       int start;
       int end;
       std::string name;
+
 
    //class attributes
    //
@@ -64,9 +66,9 @@ class Element
 
       //helpers
       //
-      bool isElementEmpty();
+      bool isElementEmpty() const ;
 
 };
 
-
+std::ostream& operator<<(std::ostream&, const Element&);
 #endif
