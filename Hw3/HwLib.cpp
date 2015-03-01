@@ -17,7 +17,6 @@ extern bool done;
 extern int currentItemNumber;
 extern MediaItem *firstItem;
 extern MediaItem *currentItem;
-extern Author *authPtr;
 extern Author *firstAuthor;
 
 void printMenu()
@@ -282,5 +281,9 @@ void processMenuIn(char menuIn)
       case 'Q': // exits the menu
       done= true;
       break;
+
+
+      default:
+	 std::cout << std::endl << "NOT A VALID INPUT" << std::endl;
    }
 }
