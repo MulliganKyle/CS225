@@ -1,0 +1,218 @@
+
+Menu [0] : 
+Authors in Memory     = 8
+               Bytes  = 128
+Media Items in Memory = 30
+               Bytes  = 20640
+         Total Bytes  = 20768
+
+Menu [0] : 
+=== Authors ===
+
+=== Media Items ===
+
+Menu [0] : Author [0] :  JRR Tolkien created
+Menu [0] : Author [1] :  Bjarne Stroustrup created
+Menu [0] : Author [2] :  F. Scott Fitzgerald created
+Menu [0] : Author [3] :  Jacqueline Susann created
+Menu [0] : Change selected Item to (#) : 
+Menu [0] : Enter Media Item name : 
+Menu [0] : 
+Menu [0] : Enter Media Item pages : 
+Menu [0] : Enter Media Item Year of Creation : 
+Menu [0] : Enter Author Index : Author set to JRR Tolkien
+Menu [0] : Element An Unexpected Party added to The Hobbit
+Menu [0] : Element Roast Mutton added to The Hobbit
+Menu [0] : Element Over Hill and Under Hill added to The Hobbit
+Menu [0] : Element Riddles in the Dark added to The Hobbit
+Menu [0] : Element Inside Information added to The Hobbit
+Menu [0] : Index set to 1
+
+Menu [1] : Enter Media Item name : 
+Menu [1] : 
+Menu [1] : Enter Media Item Year of Creation : 
+Menu [1] : Enter Author Index : Author set to JRR Tolkien
+Menu [1] : Index set to 2
+
+Menu [2] : Enter Media Item name : 
+Menu [2] : 
+Menu [2] : Enter Media Item Year of Creation : 
+Menu [2] : Enter Author Index : Author set to JRR Tolkien
+Menu [2] : Index set to 3
+
+Menu [3] : Enter Media Item name : 
+Menu [3] : 
+Menu [3] : Enter Media Item Year of Creation : 
+Menu [3] : Enter Author Index : Author set to JRR Tolkien
+Menu [3] : Index set to 4
+
+Menu [4] : Enter Media Item name : 
+Menu [4] : 
+Menu [4] : Enter Media Item Year of Creation : 
+Menu [4] : Enter Author Index : Author set to JRR Tolkien
+Menu [4] : Change selected Item to (#) : 
+Menu [1] : 
+Menu [1] : Change selected Item to (#) : 
+Menu [2] : 
+Menu [2] : Change selected Item to (#) : 
+Menu [10] : Enter Media Item name : 
+Menu [10] : 
+Menu [10] : Enter Media Item pages : 
+Menu [10] : Enter New Value : 
+Menu [10] : Enter In Print (0/1)
+
+Menu [10] : Enter Media Item Year of Creation : 
+Menu [10] : Element Hello World! added to Programming: Principles and Practice Using C++
+Menu [10] : Element Functions added to Programming: Principles and Practice Using C++
+Menu [10] : Element Classes added to Programming: Principles and Practice Using C++
+Menu [10] : Element Vectors and Free Store added to Programming: Principles and Practice Using C++
+Menu [10] : Element Vectors and Arrays added to Programming: Principles and Practice Using C++
+Menu [10] : Enter Author Index : Author set to Bjarne Stroustrup
+Menu [10] : Index set to 11
+
+Menu [11] : Enter Media Item name : 
+Menu [11] : Enter Media Item pages : 
+Menu [11] : Enter New Value : 
+Menu [11] : Enter Media Item Year of Creation : 
+Menu [11] : Enter Author Index : Author set to Jacqueline Susann
+Menu [11] : Index set to 12
+
+Menu [12] : Enter Media Item name : 
+Menu [12] : 
+Menu [12] : Enter In Print (0/1)
+
+Menu [12] : Enter Media Item Year of Creation : 
+Menu [12] : Enter Author Index : Author set to F. Scott Fitzgerald
+Menu [12] : Index set to 13
+
+Menu [13] : Enter Media Item name : 
+Menu [13] : 
+Menu [13] : Enter New Value : 
+Menu [13] : Enter In Print (0/1)
+
+Menu [13] : Enter Media Item Year of Creation : 
+Menu [13] : Author [4] :  Frederick P. Brooks Jr. created
+Menu [13] : Enter Author Index : Author set to Frederick P. Brooks Jr.
+Menu [13] : Element The Tar Pit added to The Mythical Man-Month
+Menu [13] : Element The Mythical Man Month added to The Mythical Man-Month
+Menu [13] : Element Ten Pounds in a Five-Pound Sack added to The Mythical Man-Month
+Menu [13] : Element Plan to Throw One Away added to The Mythical Man-Month
+Menu [13] : Element Hatching a Catastrophe added to The Mythical Man-Month
+Menu [13] : Index set to 14
+
+Menu [14] : 
+=== Authors ===
+Author[0]
+ Author    : JRR Tolkien
+  Born     : 1892
+  Died     : 1973
+Author[1]
+ Author    : Bjarne Stroustrup
+  Born     : 1950
+Author[2]
+ Author    : F. Scott Fitzgerald
+  Born     : 1896
+  Died     : 1940
+Author[3]
+ Author    : Jacqueline Susann
+  Born     : 1918
+  Died     : 1974
+Author[4]
+ Author    : Frederick P. Brooks Jr.
+  Born     : 1931
+
+=== Media Items ===
+MediaItem[0]
+Media Item : The Hobbit
+  Author   : JRR Tolkien
+  Year     : 1937
+  Pages    : 310
+ Element   : An Unexpected Party
+  Start    : 1
+ Element   : Roast Mutton
+ Element   : Over Hill and Under Hill
+ Element   : Riddles in the Dark
+ Element   : Inside Information
+MediaItem[1]
+Media Item : The Fellowship of the Ring
+  Author   : JRR Tolkien
+  Year     : 1954
+  Sequel   : Index [2] The Two Towers
+MediaItem[2]
+Media Item : The Two Towers
+  Author   : JRR Tolkien
+  Year     : 1954
+  Sequel   : Index [3] The Return of the King
+MediaItem[3]
+Media Item : The Return of the King
+  Author   : JRR Tolkien
+  Year     : 1955
+MediaItem[4]
+Media Item : The Silmarillion
+  Author   : JRR Tolkien
+  Year     : 1977
+MediaItem[10]
+Media Item : Programming: Principles and Practice Using C++
+  Author   : Bjarne Stroustrup
+  Year     : 2014
+  Pages    : 1305
+  Value    : $47.39
+  In Print : True
+ Element   : Hello World!
+  Start    : 43
+  End      : 58
+ Element   : Functions
+  Start    : 255
+  End      : 302
+ Element   : Classes
+  Start    : 303
+  End      : 342
+ Element   : Vectors and Free Store
+  Start    : 583
+  End      : 626
+ Element   : Vectors and Arrays
+  Start    : 627
+  End      : 666
+MediaItem[11]
+Media Item : Valley of the Dolls
+  Author   : Jacqueline Susann
+  Year     : 1966
+  Pages    : 442
+  Value    : $8.68
+MediaItem[12]
+Media Item : The Great Gatsby
+  Author   : F. Scott Fitzgerald
+  Year     : 1925
+  In Print : False
+MediaItem[13]
+Media Item : The Mythical Man-Month
+  Author   : Frederick P. Brooks Jr.
+  Year     : 1975
+  Value    : $28.80
+  In Print : True
+ Element   : The Tar Pit
+  Start    : 3
+  End      : 12
+ Element   : The Mythical Man Month
+  Start    : 13
+  End      : 28
+ Element   : Ten Pounds in a Five-Pound Sack
+  Start    : 97
+  End      : 106
+ Element   : Plan to Throw One Away
+  Start    : 115
+  End      : 126
+ Element   : Hatching a Catastrophe
+  Start    : 153
+  End      : 162
+
+Menu [14] : 
+Authors in Memory     = 8
+               Bytes  = 128
+Media Items in Memory = 30
+               Bytes  = 20640
+         Total Bytes  = 20768
+
+Menu [14] : 
+Goodbye...
+

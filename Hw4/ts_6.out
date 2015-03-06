@@ -1,0 +1,147 @@
+
+Menu [0] : 
+Authors in Memory     = 8 @ 16 Bytes Ea. 
+               Bytes  = 128
+Books in Memory       = 20 @ 720 Bytes Ea. 
+               Bytes  = 14400
+Music in Memory       = 20 @ 712 Bytes Ea. 
+               Bytes  = 14240
+Video in Memory       = 20 @ 704 Bytes Ea. 
+               Bytes  = 14080
+Media Items in Memory = 80 @ 688 Bytes Ea. 
+               Bytes  = 55040
+         Total Bytes  = 56608
+
+Menu [0] : 
+=== Authors ===
+
+=== Media Items ===
+
+Menu [0] : 
+Menu [0] : Enter author year born : Enter author year died : Enter author name : Author [0] :  George Walton Lucas, Jr. created
+Menu [0] : 
+Menu [0] : Change selected Item to (#) : Item # 40 :  now selected.
+
+Menu [40] : Enter Media Item name : 
+Menu [40] : Enter Media Item Year of Creation : 
+Menu [40] : Enter Author Index : Author set to George Walton Lucas, Jr.
+Menu [40] : Enter name of Director : 
+Menu [40] : Enter index of sequel media item
+Menu [40] : Index set to 41
+
+Menu [41] : Enter Media Item name : 
+Menu [41] : Enter Media Item Year of Creation : 
+Menu [41] : Enter name of Director : 
+Menu [41] : Enter index of sequel media item
+Menu [41] : Index set to 42
+
+Menu [42] : Enter Media Item name : 
+Menu [42] : Enter Media Item Year of Creation : 
+Menu [42] : Enter name of Director : 
+Menu [42] : Enter Author Index : Author set to George Walton Lucas, Jr.
+Menu [42] : Index set to 43
+
+Menu [43] : Enter Media Item name : 
+Menu [43] : Enter Media Item Year of Creation : 
+Menu [43] : Enter name of Director : 
+Menu [43] : Enter Author Index : Author set to George Walton Lucas, Jr.
+Menu [43] : Enter index of sequel media item
+Menu [43] : Index set to 44
+
+Menu [44] : Enter Media Item name : 
+Menu [44] : Enter Media Item Year of Creation : 
+Menu [44] : Enter name of Director : 
+Menu [44] : Enter index of sequel media item
+Menu [44] : Index set to 45
+
+Menu [45] : Enter Media Item name : 
+Menu [45] : Enter Media Item Year of Creation : 
+Menu [45] : Enter name of Director : 
+Menu [45] : Enter Author Index : Author set to George Walton Lucas, Jr.
+Menu [45] : Enter index of sequel media item
+Menu [45] : Index set to 46
+
+Menu [46] : Change selected Item to (#) : Item # 20 :  now selected.
+
+Menu [20] : Enter Media Item name : 
+Menu [20] : Enter Media Item Year of Creation : 
+Menu [20] : Enter Producer name : 
+Menu [20] : Enter New Value : 
+Menu [20] : Index set to 21
+
+Menu [21] : Change selected Item to (#) : Item # 0 :  now selected.
+
+Menu [0] : Enter Media Item name : 
+Menu [0] : Enter New Value : 
+Menu [0] : Enter Media Item Year of Creation : 
+Menu [0] : Enter Media Item pages : 
+Menu [0] : Index set to 1
+
+Menu [1] : 
+Menu [1] : 
+Authors in Memory     = 8 @ 16 Bytes Ea. 
+               Bytes  = 128
+Books in Memory       = 20 @ 720 Bytes Ea. 
+               Bytes  = 14400
+Music in Memory       = 20 @ 712 Bytes Ea. 
+               Bytes  = 14240
+Video in Memory       = 20 @ 704 Bytes Ea. 
+               Bytes  = 14080
+Media Items in Memory = 80 @ 688 Bytes Ea. 
+               Bytes  = 55040
+         Total Bytes  = 56608
+
+Menu [1] : 
+=== Authors ===
+Author[0]
+ Author    : George Walton Lucas, Jr.
+  Born     : 1944
+
+=== Media Items ===
+MediaItem[0]
+Book       : Heir to the Jedi: Star Wars
+  Year     : 2015
+  Value    : $20.52
+  Pages    : 304
+MediaItem[20]
+Music      : The Music of John Williams: The Definitive Collection
+  Year     : 2012
+  Value    : $50.98
+  Producer : Prague Philharmonic Orchestra
+MediaItem[40]
+Video      : Star Wars: A New Hope
+  Author   : George Walton Lucas, Jr.
+  Year     : 1977
+  Sequel   : The Empire Strikes Back
+  Director : George Lucas
+MediaItem[41]
+Video      : The Empire Strikes Back
+  Year     : 1980
+  Sequel   : Return of the Jedi
+  Director : Irvin Kershner
+MediaItem[42]
+Video      : Return of the Jedi
+  Author   : George Walton Lucas, Jr.
+  Year     : 1983
+  Director : Richard Marquand
+MediaItem[43]
+Video      : The Phantom Menace
+  Author   : George Walton Lucas, Jr.
+  Year     : 1999
+  Sequel   : Attack of the Clones
+  Director : George Lucas
+MediaItem[44]
+Video      : Attack of the Clones
+  Year     : 2002
+  Sequel   : Revenge of the Sith
+  Director : George Lucas
+MediaItem[45]
+Video      : Revenge of the Sith
+  Author   : George Walton Lucas, Jr.
+  Year     : 2005
+  Sequel   : Star Wars: A New Hope
+  Director : George Lucas
+
+Menu [1] : 
+Goodbye...
+

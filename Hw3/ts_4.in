@@ -1,0 +1,91 @@
+r
+*
+c 1892 1973 JRR Tolkien
+c 1950 0 Bjarne Stroustrup
+c 1896 1940 F. Scott Fitzgerald
+c 1918 1974 Jacqueline Susann
+# 0
+n The Hobbit
+// a JRR Tolkien
+p 310
+y 1937
+t 0
+e 1 0 An Unexpected Party
+e 0 0 Roast Mutton
+e 0 0 Over Hill and Under Hill
+e 0 0 Riddles in the Dark
+e 0 0 Inside Information
++
+n The Fellowship of the Ring
+// a JRR Tolkien
+y 1954
+t 0
++
+n The Two Towers
+// a JRR Tolkien
+y 1954
+t 0
++
+n The Return of the King
+// a JRR Tolkien
+y 1955
+t 0
++
+n The Silmarillion
+// a JRR Tolkien
+y 1977
+t 0
+# 1
+s 2
+# 2
+s 3
+# 10
+n Programming: Principles and Practice Using C++
+// a Bjarne Stroustrup
+p 1305
+v 47.39
+i 1
+y 2014
+e 43 58 Hello World!
+e 255 302 Functions
+e 303 342 Classes
+e 583 626 Vectors and Free Store
+e 627 666 Vectors and Arrays
+t 1 
++
+n Valley of the Dolls
+p 442
+v 8.68
+y 1966
+t 3
++
+n The Great Gatsby
+// a F. Scott Fitzgerald
+i 0
+y 1925
+t 2
++
+n The Mythical Man-Month
+// a Frederick P. Brooks Jr.
+v 28.80
+i 1
+y 1975
+c 1931 0 Frederick P. Brooks Jr.
+t 4
+e 3 12 The Tar Pit
+e 13 28 The Mythical Man Month
+e 97 106 Ten Pounds in a Five-Pound Sack
+e 115 126 Plan to Throw One Away
+e 153 162 Hatching a Catastrophe
++ 
+*
+r
+q
+0
+0
+0
+
+
+
+
+

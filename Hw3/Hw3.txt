@@ -1,0 +1,1659 @@
+Script started on Fri Feb 20 14:07:44 2015
+%cat makefile
+# CS225
+# Project 3
+# Media Item & Simple GUI Menu
+#
+
+# Here is a simple Make Macro.
+LINK_TARGET = mediaItem3Project
+
+# Here is a Make Macro that uses the backslash to extend to multiple lines.
+OBJS =  \
+ Hw3.o \
+	HwLib.o \
+	MediaItem.o \
+	Element.o \
+	Author.o
+
+# Here is a Make Macro defined by two Macro Expansions.
+# A Macro Expansion may be treated as a textual replacement of the Make Macro.
+# Macro Expansions are introduced with $ and enclosed in (parentheses).
+REBUILDABLES = $(OBJS) $(LINK_TARGET)
+
+# The rule for "all" is used to incrementally build your system.
+# It does this by expressing a dependency on the results of that system,
+# which in turn have their own rules and dependencies.
+all : $(LINK_TARGET)
+	echo All done
+
+# Here is a simple Rule (used for "cleaning" your build environment).
+# It has a Target named "clean" (left of the colon ":" on the first line),
+# no Dependencies (right of the colon),
+# and two Commands (indented by tabs on the lines that follow).
+# The space before the colon is not required but added here for clarity.
+clean : 
+	rm -f $(REBUILDABLES)
+	echo Clean done
+
+# There are two standard Targets your Makefile should probably have:
+# "all" and "clean", because they are often command-line Goals.
+# Also, these are both typically Artificial Targets, because they don't typically
+# correspond to real files named "all" or "clean".  
+
+# There is no required order to the list of rules as they appear in the Makefile.
+# Make will build its own dependency tree and only execute each rule only once
+# its dependencies' rules have been executed successfully.
+
+# Here is a Rule that uses some built-in Make Macros in its command:
+# $@ expands to the rule's target, in this case "test_me.exe".
+# $^ expands to the rule's dependencies, in this case the three files
+# main.o, test1.o, and  test2.o.
+$(LINK_TARGET) : $(OBJS)
+	g++ -g -Wall -o $@ $^
+
+# Here is a Pattern Rule, often used for compile-line.
+# It says how to create a file with a .o suffix, given a file with a .cpp suffix.
+# The rule's command uses some built-in Make Macros:
+# $@ for the pattern-matched target
+# $< for the pattern-matched dependency
+%.o : %.cpp
+	g++ -g -Wall -o $@ -c $<
+
+# These are Dependency Rules, which are rules without any command.
+# Dependency Rules indicate that if any file to the right of the colon changes,
+# the target to the left of the colon should be considered out-of-date.
+# The commands for making an out-of-date target up-to-date may be found elsewhere
+# (in this case, by the Pattern Rule above).
+# Dependency Rules are often used to capture header file dependencies.
+Hw3.cpp : HwLib.hpp MediaItem.hpp Element.hpp Author.hpp
+MediaItem.cpp : MediaItem.hpp
+Element.cpp : Element.hpp
+Author.cpp : Author.hpp
+HwLib.cpp : HwLib.hpp
+%
+%
+%
+%
+%cat MediaItem.hpp
+//////////////////////
+// CS225
+// HW3
+// 2/20/15
+// Kyle Mulligan
+// Declaration of mediaItem Class
+//////////////////////
+
+#include <iostream>
+#include "HwLib.hpp"
+#include "Element.hpp"
+#include "Author.hpp"
+
+#ifndef MEDIAITEM_H
+#define MEDIAITEM_H
+
+
+#define DEF_NAME ""
+#define DEF_NUMBER_OF_PAGES 0
+#define DEF_VALUE 0.0
+#define DEF_IN_PRINT false
+#define DEF_AUTHOR NULL
+#define DEF_SEQUEL NULL
+#define DEF_YEAR 0
+
+
+
+class MediaItem 
+{
+
+   private:
+   //attributes of mediaItem
+   //
+      std::string name;
+      int numberOfPages;
+      int yearOfPublication;
+      float value;
+      bool inPrint;
+      Author *author;
+      MediaItem *sequel;
+      Element chapters[MAX_ELEMENTS];
+
+
+
+   //class attributes
+      static int numberOfObjects;
+
+   public:
+   //methods of mediaItem
+   //
+
+      //constructors
+      //
+      MediaItem(std::string=DEF_NAME,
+	        int=DEF_NUMBER_OF_PAGES,
+		float=DEF_VALUE,
+		bool=DEF_IN_PRINT,
+		Author* =DEF_AUTHOR,
+		MediaItem* =DEF_SEQUEL,
+		int=DEF_YEAR);
+
+      //destructors
+      //
+      ~MediaItem();
+
+      
+      //accessors
+      //
+      std::string getName() const { return name;}
+      int getYearOfPublication() const {return yearOfPublication;}
+      int getNumberOfPages() const { return numberOfPages;}
+      int getNumberOfObjects() const { return numberOfObjects;}
+      float getValue() const {return value;}
+      bool getInPrint() const {return inPrint;}
+      Author* getAuthor() const {return author;}
+      MediaItem* getSequel() const {return sequel;}
+      const Element* indexElements(int index) const {return &chapters[index];}
+
+
+
+      //mutators
+      //
+      void setName(std::string);
+      void setAuthor(Author*);
+      void setSequel(MediaItem*);
+      void setNumberOfPages(int);
+      void setYearOfPublication(int);
+      void setValue(float);
+      void setInPrint(bool);
+      void clearObject();
+      void addNewElement(int, int, std::string);
+
+      //helpers
+      //
+      bool isEmpty();
+      
+
+};
+
+std::ostream& operator<<(std::ostream&, const MediaItem&);
+
+
+#endif
+%
+%
+%
+%cat MediaItem.cpp
+///////////////////////////////////
+// CS225
+// HW3
+// 2/20/15
+// Kyle Mulligan
+// Implementation of mediaItem Class
+///////////////////////////////////
+
+#include <iostream>
+#include <iomanip>
+#include "MediaItem.hpp"
+
+
+//class static attribute
+//
+int MediaItem::numberOfObjects=0;
+
+//constructors
+//
+MediaItem::MediaItem(std::string newName,
+		     int newNumberOfPages,
+		     float newValue,
+		     bool newInPrint,
+		     Author* newAuthor,
+		     MediaItem* newSequel,
+		     int newYear)
+{
+   name=newName;
+   numberOfPages=newNumberOfPages;
+   value=newValue;
+   inPrint=newInPrint;
+   author=newAuthor;
+   sequel=newSequel;
+   yearOfPublication=newYear;
+   numberOfObjects++;
+}
+
+//destructors
+//
+MediaItem::~MediaItem()
+{
+   numberOfObjects--;
+
+}
+
+
+//mutators
+//
+void MediaItem::setName(std::string newName)
+{
+   name=newName;
+}
+
+void MediaItem::setAuthor(Author *newAuthor)
+{
+   author=newAuthor;
+}
+
+void MediaItem::setNumberOfPages(int newNumberOfPages)
+{
+   numberOfPages=newNumberOfPages;
+}
+
+void MediaItem::setYearOfPublication(int newYearOfPublication)
+{
+   yearOfPublication=newYearOfPublication;
+}
+
+void MediaItem::setValue(float newValue)
+{
+   value=newValue;
+}
+
+void MediaItem::setInPrint(bool newInPrint)
+{
+   inPrint=newInPrint;
+}
+
+void MediaItem::clearObject()
+{
+   name=DEF_NAME;
+   numberOfPages=DEF_NUMBER_OF_PAGES;
+   value=DEF_VALUE;
+   inPrint=DEF_IN_PRINT;
+   author=DEF_AUTHOR;
+   sequel=DEF_SEQUEL;
+   yearOfPublication=DEF_YEAR;
+}
+
+void MediaItem::addNewElement(int newStart, int newEnd, std::string newName)
+{
+   Element *toBeAdded=NULL;
+   int count;
+   
+   for(count=0; (count<MAX_ELEMENTS) && (toBeAdded==NULL);count++)
+   {
+      if( (chapters[count]).isElementEmpty() )
+	 toBeAdded=&(chapters[count]);
+   }
+
+   if(toBeAdded==NULL)
+      std::cout << "Array is full" << std::endl;
+   else
+   {
+      toBeAdded->setStart(newStart);
+      toBeAdded->setEnd(newEnd);
+      toBeAdded->setName(newName);
+   }
+}
+
+void MediaItem::setSequel(MediaItem *newSequel)
+{
+   sequel=newSequel;
+}
+
+
+//helpers
+//
+bool MediaItem::isEmpty()
+{
+   if( (name==DEF_NAME) && 
+       (numberOfPages==DEF_NUMBER_OF_PAGES) &&
+       (value==DEF_VALUE) &&
+       (inPrint==DEF_IN_PRINT) &&
+       (author==DEF_AUTHOR) &&
+       (sequel==DEF_SEQUEL) &&
+       (yearOfPublication==DEF_YEAR) )
+      return true;
+   else
+      return false;
+}
+
+//helper functions not within the class
+//
+std::ostream& operator<<(std::ostream& outStream, const MediaItem& miOut)
+{
+   int count;
+   const Element *elementIndex;
+
+   outStream << "MediaItem : " << miOut.getName() << std::endl;
+   if( miOut.getAuthor()!=NULL)
+   {
+      outStream << "   Author : " << (miOut.getAuthor())->getName() << std::endl;
+   }
+   if(miOut.getSequel()!=NULL)
+   {
+      outStream << "   Sequel : " << (miOut.getSequel())->getName() << std::endl;
+   }
+   outStream << "     Year : " << miOut.getYearOfPublication() << std::endl;
+   outStream << "    Pages : " << miOut.getNumberOfPages() << std::endl;
+   outStream << "    Value : $" << std::fixed << std::setprecision(2) << miOut.getValue() << std::endl;
+   outStream << " In Print : " << miOut.getInPrint() << std::endl;
+
+   for(count=0; count<MAX_ELEMENTS; count++)
+   {
+      elementIndex=(miOut.indexElements(count));
+      if( !(elementIndex->isElementEmpty()) )
+      {
+	 outStream << "Element[" << count << "]" << std::endl;
+	 outStream << *elementIndex;
+      }
+   }
+
+   outStream << std::endl << std::endl;
+
+
+   return outStream;
+}
+%
+%
+%
+%cat Author.hpp
+//////////////////////
+// CS225
+// HW3
+// 2/20/15
+// Kyle Mulligan
+// Declaration of Author Class
+//////////////////////
+
+#include <iostream>
+
+
+#ifndef AUTHOR_H
+#define AUTHOR_H
+
+
+
+#define DEF_BORN 0
+#define DEF_DIED 0
+#define DEF_NAME ""
+
+
+class Author
+{
+   private:
+   //attributes of Author class
+   //
+      int born;
+      int died;
+      std::string name;
+
+      //class attributes
+      //
+      static int numberOfAuthors;
+
+   public:
+   //methods of Author class
+   //
+
+      //constructors
+      //
+      Author(int=DEF_BORN,
+	     int=DEF_DIED,
+	     std::string=DEF_NAME);
+
+      //destructors
+      //
+      ~Author();
+
+      //accessors
+      //
+      int getBorn() const {return born;}
+      int getDied() const {return died;}
+      std::string getName() const {return name;}
+      int getNumberOfAuthors() const {return numberOfAuthors;}
+
+      //mutators
+      //
+      void setBorn(int);
+      void setDied(int);
+      void setName(std::string);
+
+      //helpers
+      //
+      bool isAuthorEmpty();
+
+
+
+
+
+};
+
+std::ostream& operator<<(std::ostream&, const Author&);
+
+
+#endif
+%
+%
+%
+%cat Author.cpp
+//////////////////////
+// CS225
+// HW3
+// 2/20/15
+// Kyle Mulligan
+// Implementation of Author Class
+//////////////////////
+
+
+#include "Author.hpp"
+#include <iostream>
+#include <iomanip>
+
+//class wide attributes
+//
+int Author::numberOfAuthors=0;
+
+//constructors
+//
+Author::Author(int newBorn,
+	       int newDied,
+	       std::string newName)
+{
+   born=newBorn;
+   died=newDied;
+   name=newName;
+   numberOfAuthors++;
+}
+
+
+//destructors
+//
+Author::~Author()
+{
+   numberOfAuthors--;
+}
+
+//mutators
+//
+void Author::setBorn(int newBorn)
+{
+   born=newBorn;
+}
+
+void Author::setDied(int newDied)
+{
+   died=newDied;
+}
+
+void Author::setName(std::string newName)
+{
+   name=newName;
+}
+
+
+//helpers
+//
+bool Author::isAuthorEmpty()
+{
+   if( born==DEF_BORN &&
+       died==DEF_DIED &&
+       name==DEF_NAME)
+      return true;
+   else
+      return false;
+}
+
+
+//helper functions not within the class
+//
+std::ostream& operator<<(std::ostream& outStream, const Author& authOut)
+{
+   outStream << "   Author : " << authOut.getName() << std::endl;
+   outStream << "     Born : " << authOut.getBorn() << std::endl;
+   outStream << "     Died : " << authOut.getDied() << std::endl;
+   return outStream;
+}
+%
+%
+%
+%cat Element.hpp
+//////////////////////
+// CS225
+// HW3
+// 2/20/15
+// Kyle Mulligan
+// Declaration of Element Class
+//////////////////////
+
+#include <iostream>
+
+
+#ifndef ELEMENT_H
+#define ELEMENT_H
+
+
+
+#define DEF_START 0
+#define DEF_END 0
+#define DEF_NAME ""
+
+
+class Element
+{
+   private:
+   //attributes of Element
+   //
+      friend std::ostream& operator<<(std::ostream&, const Element&);
+      int start;
+      int end;
+      std::string name;
+
+
+   //class attributes
+   //
+      static int numberOfElements;
+
+   public:
+   //methods of Element
+   //
+
+      //constructors
+      //
+      Element(int=DEF_START,
+	      int=DEF_END,
+	      std::string=DEF_NAME);
+
+
+      //destructors
+      //
+      ~Element();
+
+
+      //accessors
+      //
+      int getStart() const { return start;}
+      int getEnd() const {return end;}
+      std::string getName() const { return name;}
+      int getNumberOfElements() const { return numberOfElements;}
+
+
+      //mutators
+      //
+      void setStart(int);
+      void setEnd(int);
+      void setName(std::string);
+
+      //helpers
+      //
+      bool isElementEmpty() const ;
+
+};
+
+std::ostream& operator<<(std::ostream&, const Element&);
+#endif
+%
+%
+%
+%cat Eleme nt[K[Knt.cpp
+//////////////////////
+// CS225
+// HW3
+// 2/20/15
+// Kyle Mulligan
+// Implementation of Element Class
+//////////////////////
+
+
+#include "Element.hpp"
+#include <iostream>
+#include <iomanip>
+
+
+//class wide attributes
+//
+int Element::numberOfElements=0;
+
+
+//constructors
+//
+Element::Element(int newStart,
+	         int newEnd,
+		 std::string newName)
+{
+   start=newStart;
+   end=newEnd;
+   name=newName;
+   numberOfElements++;
+}
+
+//destructors
+//
+Element::~Element()
+{
+   numberOfElements--;
+}
+
+
+//mutators
+//
+void Element::setStart(int newStart)
+{
+   start=newStart;
+}
+
+void Element::setEnd(int newEnd)
+{
+   end=newEnd;
+}
+
+void Element::setName(std::string newName)
+{
+   name=newName;
+}
+
+//helpers
+//
+
+bool Element::isElementEmpty() const
+{
+   if( start==DEF_START &&
+       end==DEF_END &&
+       name==DEF_NAME)
+      return true;
+   else
+      return false;
+}
+
+
+//helper functions not within the class
+//
+std::ostream& operator<<(std::ostream& outStream, const Element& elOut)
+{
+   outStream << "  Chapter : " << elOut.getName() << std::endl;
+   outStream << "    Start : " << elOut.getStart() << std::endl;
+   outStream << "      End : " << elOut.getEnd() << std::endl;
+   return outStream;
+}
+
+%
+%
+%
+%cat HwLib.hpp
+//////////////////////
+// CS225
+// HW3
+// 2/20/15
+// Kyle Mulligan
+// Prototypes for Hw3 
+//////////////////////
+
+
+#define MAX_ITEMS 30
+#define MAX_AUTHORS 8
+#define MAX_ELEMENTS 15
+
+void printMenu();
+void processMenuIn(char);
+%
+%
+%cat HwLib.cpp
+//////////////////////
+// CS225
+// HW3
+// 2/20/15
+// Kyle Mulligan
+// Functions for Hw3 
+//////////////////////
+#include "MediaItem.hpp"
+#include "HwLib.hpp"
+#include "Element.hpp"
+#include "Author.hpp"
+#include <iostream>
+
+
+
+extern bool done;
+extern int currentItemNumber;
+extern MediaItem *firstItem;
+extern MediaItem *currentItem;
+extern Author *authPtr;
+extern Author *firstAuthor;
+
+void printMenu()
+{
+   std::cout << "* - Display data for all Media Items" <<std::endl;
+   std::cout << "+/- Increment / decrement the selected Item w/ in the Array" <<std::endl;
+   std::cout << "# - Set the selected media Item" <<std::endl;
+   std::cout << "0 - Clear MediaItem data" <<std::endl;
+   std::cout << "C - Create author" <<std::endl;
+   std::cout << "D - Display Media Item data" <<std::endl;
+   std::cout << "N - Set Media Item name" <<std::endl;
+   std::cout << "T - Set Media Item Author Index" <<std::endl;
+   std::cout << "E - Add Media Item Element" <<std::endl;
+   std::cout << "P - Set Media Item pages" <<std::endl;
+   std::cout << "I - Set Media Item in print status (0/1)" <<std::endl;
+   std::cout << "V - Set Media Item value" <<std::endl;
+   std::cout << "Y - Set Media Item Year Produced" << std::endl;
+   std::cout << "S - Set Media Item Sequel from Index" << std::endl;
+   std::cout << "R - Display the Memory used" << std::endl;
+   std::cout << "M - Print this menu again" <<std::endl;
+   std::cout << "Q - Quit this program" <<std::endl;
+}
+
+void processMenuIn(char menuIn)
+{
+   switch(toupper(menuIn))  //handles all menu options and works for upper or lower case inputs
+   {
+
+      case '*': //prints everything
+      {
+	 int count;
+
+	 std::cout << std::endl << "=== All Authors==="<< std::endl; // prints all authors
+	 for( count=0; count< MAX_AUTHORS; count++)
+	 {
+	    if( !(firstAuthor[count].isAuthorEmpty() ) )
+	    {
+	       std::cout<< "Author[" << count << "]" << std::endl;
+	       std::cout<< (firstAuthor[count]);
+	    }
+	 }
+
+
+	 std::cout << std::endl << "=== All Items ===" << std::endl; // prints all items and their elements
+	 for(count=0;count<MAX_ITEMS;count++)
+	 {
+	    if ( !(firstItem[count]).isEmpty() )
+	    {
+	       std::cout << "mediaItem[" << count << "]" << std::endl;
+	       std::cout << (firstItem[count]);
+	    }
+
+	 }
+      }
+      break;
+
+
+      case '+':
+      {
+	 if(currentItemNumber==(MAX_ITEMS-1))
+	    std::cout << "At the last item already." << std::endl;
+	 else
+	 {
+	    currentItemNumber++;
+	    currentItem++;
+	    std::cout << "Index set to " << currentItemNumber << std::endl;
+	 }
+      }
+      break;
+
+
+      case '-':
+       {
+	 if(currentItemNumber==0)
+	    std::cout << "At the first item already." << std::endl;
+	 else
+	 {
+	    currentItemNumber--;
+	    currentItem--;
+	    std::cout << "Index set to " << currentItemNumber << std::endl;
+	 }
+      }     
+      break;
+
+
+      case '#':
+      {
+	 int number;
+	 std::cout << "Enter the number of the Item: ";
+	 std::cin >> number;
+
+	 if( (number < 0) || (number >19) )
+	    std::cout << "That is out of range." << std::endl;
+	 else
+	 {
+	    currentItemNumber=number;
+	    currentItem=firstItem+number;
+	    std::cout << "Index set to " << currentItemNumber << std::endl;
+	 }
+      }
+      break;
+
+
+      case '0': //clears the media item
+      currentItem->clearObject();
+      break;
+
+      case 'C':// creates new author
+      {
+      int dateBorn, dateDied;
+      std::string author;
+      int authorIndex;
+
+	 for(authorIndex=0; (authorIndex<MAX_AUTHORS); authorIndex++)
+	 {
+	    if( (firstAuthor+authorIndex)->isAuthorEmpty() )
+	    {
+	       std::cout << "Enter date Born ";
+	       std::cin >> dateBorn;
+
+	       std::cout << "Enter date Died (0 if still alive) ";
+	       std::cin >> dateDied;
+	       std::cin.ignore();
+
+	       std::cout<< "Enter the author's name: ";
+	       std::getline(std::cin,author);
+
+	       if( dateDied!=0 && dateDied<dateBorn)
+		  std::cout << "invalid birth and death dates " <<std::endl;
+	       else
+	       {
+		  (firstAuthor+authorIndex)->setBorn(dateBorn);
+		  (firstAuthor+authorIndex)->setDied(dateDied);
+		  (firstAuthor+authorIndex)->setName(author);
+	       }
+
+	       break;
+	    }
+	 }
+      }
+      break;
+
+
+      case 'D': //prints the media item
+      std::cout<<(*currentItem);
+      break;
+
+
+      case 'N': // enters the name of media item
+      {
+	 std::string name;
+	 std::cout << "Enter the book's Name: ";
+	 std::getline(std::cin,name);
+	 currentItem->setName(name);
+      }
+      break;
+
+      case 'T': // enters the author index of media item
+      {
+	 int index;
+	 std::cout << "Enter the index of the Author: ";
+	 std::cin >> index;
+	 currentItem->setAuthor(firstAuthor+index);
+      }
+      break;
+
+      case 'E': // creates a new element
+      {
+	 int startElement, endElement;
+	 std::string nameElement;
+
+	 std::cout << "Enter the start of the Element: ";
+	 std::cin >> startElement;
+
+	 std::cout << "Enter the end of the Element: ";
+	 std::cin >> endElement;
+	 std::cin.ignore();
+
+	 std::cout << "Enter the name of the Element: ";
+	 std::getline(std::cin, nameElement);
+
+      currentItem->addNewElement(startElement, endElement, nameElement);
+
+      }
+      break;
+
+
+      case 'P': // enters the number of pages for the media item
+      {
+	 int pages;
+	 std::cout << "Enter the number of Pages: ";
+	 std::cin >> pages;
+	 currentItem->setNumberOfPages(pages);
+      }
+      break;
+
+
+      case 'I': // sets wether the item is in print
+      {
+	 bool isInPrint;
+	 std::cout << "Enter wether or not the item is in print (0/1) ";
+	 std::cin >> isInPrint;
+	 currentItem->setInPrint(isInPrint);
+      }
+      break;
+
+
+      case 'V': // sets the value of the item
+      {
+	 float value;
+	 std::cout << "Enter the value: ";
+	 std::cin >> value;
+	 currentItem->setValue(value);
+      }
+      break;
+
+
+      case 'Y': // sets the year of publication
+      {
+	 int year;
+	 std::cout << "Enter the year of publication: ";
+	 std::cin >> year;
+
+	 if( year<0 || year>2016)
+	    std::cout << "Not a valid year" << std::endl;
+	 else
+	    currentItem->setYearOfPublication(year);
+
+      }
+      break;
+
+      case 'S': // sets the sequel of the item
+      {
+	 int index;
+	 std::cout << "Enter the index of the Sequel: ";
+	 std::cin >> index;
+
+	 if(index>=MAX_ITEMS || index < 0)
+	    std::cout << "Index out of bounds" << std::endl;
+	 else
+	    currentItem->setSequel(firstItem+index);
+      }
+      break;
+
+      case 'R': //displays the memory usage
+      {
+	 std::cout << std::endl;
+	 std::cout << "The number of Items in Memory is: " << currentItem->getNumberOfObjects() << std::endl;
+	 std::cout << "The number of Authors in Memory is: " << firstAuthor->getNumberOfAuthors()<< std::endl;
+	 std::cout << "The number of Elements in Memory is : " << (currentItem->indexElements(0))->getNumberOfElements() << std:: endl;
+
+	 std::cout << "The number of Bytes used is : " << ( (currentItem->getNumberOfObjects()*sizeof(MediaItem))+(firstAuthor->getNumberOfAuthors()*sizeof(Author))+((currentItem->indexElements(0))->getNumberOfElements()*sizeof(Element))) << std::endl;
+
+      }
+      break;
+
+
+      case 'M': //prints the menu again
+      printMenu();
+      break;
+
+      case 'Q': // exits the menu
+      done= true;
+      break;
+   }
+}
+%
+%
+%
+%
+%cat Hw3.cpp
+//////////////////////
+// CS225
+// HW3
+// 2/20/15
+// Kyle Mulligan
+// menu based program which utilizes class mediaItem 
+//////////////////////
+
+#include <iostream>
+#include "HwLib.hpp"
+#include "MediaItem.hpp"
+#include "Author.hpp"
+#include "Element.hpp"
+
+
+//globals
+//
+MediaItem *firstItem;
+MediaItem *currentItem;
+Author *authPtr;
+Author *firstAuthor;
+bool done=false;
+int currentItemNumber;
+
+int main()
+{
+   std::string userInput;
+   MediaItem mediaItems[MAX_ITEMS];
+   Author authors[MAX_AUTHORS];
+
+   firstItem=mediaItems;
+   currentItem=firstItem;
+   firstAuthor=authors;
+   //authPtr=firstAuthor;
+
+
+   printMenu();
+   while(!done) // loops until the user is done using the menu
+   {
+      std::cout << std::endl << "Menu[" << currentItemNumber << "] : ";
+      std::cin >> userInput;
+      if(userInput[0]=='/')
+	 std::cin.ignore(256,'\n');
+      else
+      {
+	 std::cin.ignore();
+	 processMenuIn(userInput[0]);
+      }
+   }
+   std::cout << "Goodbye" << std::endl;
+}
+%
+%
+%
+%ls
+Author.cpp  Element.cpp  Hw3.cpp  HwLib.cpp  MediaItem.cpp  makefile  ts_4.out
+Author.hpp  Element.hpp  Hw3.txt  HwLib.hpp  MediaItem.hpp  ts_4.in   ts_5.in
+%
+%
+%make
+g++ -g -Wall -o Hw3.o -c Hw3.cpp
+g++ -g -Wall -o HwLib.o -c HwLib.cpp
+g++ -g -Wall -o MediaItem.o -c MediaItem.cpp
+g++ -g -Wall -o Element.o -c Element.cpp
+g++ -g -Wall -o Author.o -c Author.cpp
+g++ -g -Wall -o mediaItem3Project Hw3.o HwLib.o MediaItem.o Element.o Author.o
+echo All done
+All done
+%
+%
+%
+%./mediaItem3Project < ts_4.in
+* - Display data for all Media Items
++/- Increment / decrement the selected Item w/ in the Array
+# - Set the selected media Item
+0 - Clear MediaItem data
+C - Create author
+D - Display Media Item data
+N - Set Media Item name
+T - Set Media Item Author Index
+E - Add Media Item Element
+P - Set Media Item pages
+I - Set Media Item in print status (0/1)
+V - Set Media Item value
+Y - Set Media Item Year Produced
+S - Set Media Item Sequel from Index
+R - Display the Memory used
+M - Print this menu again
+Q - Quit this program
+
+Menu[0] : 
+The number of Items in Memory is: 30
+The number of Authors in Memory is: 8
+The number of Elements in Memory is : 450
+The number of Bytes used is : 15728
+
+Menu[0] : 
+=== All Authors===
+
+=== All Items ===
+
+Menu[0] : Enter date Born Enter date Died (0 if still alive) Enter the author's name: 
+Menu[0] : Enter date Born Enter date Died (0 if still alive) Enter the author's name: 
+Menu[0] : Enter date Born Enter date Died (0 if still alive) Enter the author's name: 
+Menu[0] : Enter date Born Enter date Died (0 if still alive) Enter the author's name: 
+Menu[0] : Enter the number of the Item: Index set to 0
+
+Menu[0] : Enter the book's Name: 
+Menu[0] : 
+Menu[0] : Enter the number of Pages: 
+Menu[0] : Enter the year of publication: 
+Menu[0] : Enter the index of the Author: 
+Menu[0] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[0] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[0] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[0] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[0] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[0] : Index set to 1
+
+Menu[1] : Enter the book's Name: 
+Menu[1] : 
+Menu[1] : Enter the year of publication: 
+Menu[1] : Enter the index of the Author: 
+Menu[1] : Index set to 2
+
+Menu[2] : Enter the book's Name: 
+Menu[2] : 
+Menu[2] : Enter the year of publication: 
+Menu[2] : Enter the index of the Author: 
+Menu[2] : Index set to 3
+
+Menu[3] : Enter the book's Name: 
+Menu[3] : 
+Menu[3] : Enter the year of publication: 
+Menu[3] : Enter the index of the Author: 
+Menu[3] : Index set to 4
+
+Menu[4] : Enter the book's Name: 
+Menu[4] : 
+Menu[4] : Enter the year of publication: 
+Menu[4] : Enter the index of the Author: 
+Menu[4] : Enter the number of the Item: Index set to 1
+
+Menu[1] : Enter the index of the Sequel: 
+Menu[1] : Enter the number of the Item: Index set to 2
+
+Menu[2] : Enter the index of the Sequel: 
+Menu[2] : Enter the number of the Item: Index set to 10
+
+Menu[10] : Enter the book's Name: 
+Menu[10] : 
+Menu[10] : Enter the number of Pages: 
+Menu[10] : Enter the value: 
+Menu[10] : Enter wether or not the item is in print (0/1) 
+Menu[10] : Enter the year of publication: 
+Menu[10] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[10] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[10] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[10] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[10] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[10] : Enter the index of the Author: 
+Menu[10] : Index set to 11
+
+Menu[11] : Enter the book's Name: 
+Menu[11] : Enter the number of Pages: 
+Menu[11] : Enter the value: 
+Menu[11] : Enter the year of publication: 
+Menu[11] : Enter the index of the Author: 
+Menu[11] : Index set to 12
+
+Menu[12] : Enter the book's Name: 
+Menu[12] : 
+Menu[12] : Enter wether or not the item is in print (0/1) 
+Menu[12] : Enter the year of publication: 
+Menu[12] : Enter the index of the Author: 
+Menu[12] : Index set to 13
+
+Menu[13] : Enter the book's Name: 
+Menu[13] : 
+Menu[13] : Enter the value: 
+Menu[13] : Enter wether or not the item is in print (0/1) 
+Menu[13] : Enter the year of publication: 
+Menu[13] : Enter date Born Enter date Died (0 if still alive) Enter the author's name: 
+Menu[13] : Enter the index of the Author: 
+Menu[13] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[13] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[13] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[13] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[13] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[13] : Index set to 14
+
+Menu[14] : 
+=== All Authors===
+Author[0]
+   Author : JRR Tolkien
+     Born : 1892
+     Died : 1973
+Author[1]
+   Author : Bjarne Stroustrup
+     Born : 1950
+     Died : 0
+Author[2]
+   Author : F. Scott Fitzgerald
+     Born : 1896
+     Died : 1940
+Author[3]
+   Author : Jacqueline Susann
+     Born : 1918
+     Died : 1974
+Author[4]
+   Author : Frederick P. Brooks Jr.
+     Born : 1931
+     Died : 0
+
+=== All Items ===
+mediaItem[0]
+MediaItem : The Hobbit
+   Author : JRR Tolkien
+     Year : 1937
+    Pages : 310
+    Value : $0.00
+ In Print : 0
+Element[0]
+  Chapter : An Unexpected Party
+    Start : 1
+      End : 0
+Element[1]
+  Chapter : Roast Mutton
+    Start : 0
+      End : 0
+Element[2]
+  Chapter : Over Hill and Under Hill
+    Start : 0
+      End : 0
+Element[3]
+  Chapter : Riddles in the Dark
+    Start : 0
+      End : 0
+Element[4]
+  Chapter : Inside Information
+    Start : 0
+      End : 0
+
+
+mediaItem[1]
+MediaItem : The Fellowship of the Ring
+   Author : JRR Tolkien
+   Sequel : The Two Towers
+     Year : 1954
+    Pages : 0
+    Value : $0.00
+ In Print : 0
+
+
+mediaItem[2]
+MediaItem : The Two Towers
+   Author : JRR Tolkien
+   Sequel : The Return of the King
+     Year : 1954
+    Pages : 0
+    Value : $0.00
+ In Print : 0
+
+
+mediaItem[3]
+MediaItem : The Return of the King
+   Author : JRR Tolkien
+     Year : 1955
+    Pages : 0
+    Value : $0.00
+ In Print : 0
+
+
+mediaItem[4]
+MediaItem : The Silmarillion
+   Author : JRR Tolkien
+     Year : 1977
+    Pages : 0
+    Value : $0.00
+ In Print : 0
+
+
+mediaItem[10]
+MediaItem : Programming: Principles and Practice Using C++
+   Author : Bjarne Stroustrup
+     Year : 2014
+    Pages : 1305
+    Value : $47.39
+ In Print : 1
+Element[0]
+  Chapter : Hello World!
+    Start : 43
+      End : 58
+Element[1]
+  Chapter : Functions
+    Start : 255
+      End : 302
+Element[2]
+  Chapter : Classes
+    Start : 303
+      End : 342
+Element[3]
+  Chapter : Vectors and Free Store
+    Start : 583
+      End : 626
+Element[4]
+  Chapter : Vectors and Arrays
+    Start : 627
+      End : 666
+
+
+mediaItem[11]
+MediaItem : Valley of the Dolls
+   Author : Jacqueline Susann
+     Year : 1966
+    Pages : 442
+    Value : $8.68
+ In Print : 0
+
+
+mediaItem[12]
+MediaItem : The Great Gatsby
+   Author : F. Scott Fitzgerald
+     Year : 1925
+    Pages : 0
+    Value : $0.00
+ In Print : 0
+
+
+mediaItem[13]
+MediaItem : The Mythical Man-Month
+   Author : Frederick P. Brooks Jr.
+     Year : 1975
+    Pages : 0
+    Value : $28.80
+ In Print : 1
+Element[0]
+  Chapter : The Tar Pit
+    Start : 3
+      End : 12
+Element[1]
+  Chapter : The Mythical Man Month
+    Start : 13
+      End : 28
+Element[2]
+  Chapter : Ten Pounds in a Five-Pound Sack
+    Start : 97
+      End : 106
+Element[3]
+  Chapter : Plan to Throw One Away
+    Start : 115
+      End : 126
+Element[4]
+  Chapter : Hatching a Catastrophe
+    Start : 153
+      End : 162
+
+
+
+Menu[14] : 
+The number of Items in Memory is: 30
+The number of Authors in Memory is: 8
+The number of Elements in Memory is : 450
+The number of Bytes used is : 15728
+
+Menu[14] : Goodbye
+%
+%
+%
+%./mediaItem3Project < ts_5.in
+* - Display data for all Media Items
++/- Increment / decrement the selected Item w/ in the Array
+# - Set the selected media Item
+0 - Clear MediaItem data
+C - Create author
+D - Display Media Item data
+N - Set Media Item name
+T - Set Media Item Author Index
+E - Add Media Item Element
+P - Set Media Item pages
+I - Set Media Item in print status (0/1)
+V - Set Media Item value
+Y - Set Media Item Year Produced
+S - Set Media Item Sequel from Index
+R - Display the Memory used
+M - Print this menu again
+Q - Quit this program
+
+Menu[0] : 
+The number of Items in Memory is: 30
+The number of Authors in Memory is: 8
+The number of Elements in Memory is : 450
+The number of Bytes used is : 15728
+
+Menu[0] : 
+=== All Authors===
+
+=== All Items ===
+
+Menu[0] : Enter date Born Enter date Died (0 if still alive) Enter the author's name: 
+Menu[0] : Enter date Born Enter date Died (0 if still alive) Enter the author's name: 
+Menu[0] : Enter date Born Enter date Died (0 if still alive) Enter the author's name: 
+Menu[0] : Enter date Born Enter date Died (0 if still alive) Enter the author's name: 
+Menu[0] : Enter the number of the Item: Index set to 0
+
+Menu[0] : 
+Menu[0] : Enter the book's Name: 
+Menu[0] : Enter the number of Pages: 
+Menu[0] : Enter the value: 
+Menu[0] : Enter wether or not the item is in print (0/1) 
+Menu[0] : Enter the year of publication: 
+Menu[0] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[0] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[0] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[0] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[0] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[0] : Enter the index of the Author: 
+Menu[0] : Index set to 1
+
+Menu[1] : 
+Menu[1] : Enter the book's Name: 
+Menu[1] : Enter the number of Pages: 
+Menu[1] : Enter the value: 
+Menu[1] : Enter wether or not the item is in print (0/1) 
+Menu[1] : Enter the year of publication: 
+Menu[1] : Enter the index of the Author: 
+Menu[1] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[1] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[1] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[1] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[1] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[1] : Index set to 2
+
+Menu[2] : 
+Menu[2] : Enter the book's Name: 
+Menu[2] : Enter the year of publication: 
+Menu[2] : Enter wether or not the item is in print (0/1) 
+Menu[2] : Enter the value: 
+Menu[2] : Enter the index of the Author: 
+Menu[2] : Enter the number of Pages: 
+Menu[2] : Index set to 3
+
+Menu[3] : 
+Menu[3] : Enter the book's Name: 
+Menu[3] : Enter the index of the Author: 
+Menu[3] : Enter the value: 
+Menu[3] : Enter the year of publication: 
+Menu[3] : Enter the number of Pages: 
+Menu[3] : Enter the index of the Sequel: 
+Menu[3] : Index set to 4
+
+Menu[4] : 
+Menu[4] : Enter the book's Name: 
+Menu[4] : Enter the index of the Author: 
+Menu[4] : Enter the value: 
+Menu[4] : Enter the year of publication: 
+Menu[4] : Enter the number of Pages: 
+Menu[4] : Index set to 5
+
+Menu[5] : 
+Menu[5] : Enter the book's Name: 
+Menu[5] : Enter the index of the Author: 
+Menu[5] : Enter the year of publication: 
+Menu[5] : Enter the value: 
+Menu[5] : Enter the number of Pages: 
+Menu[5] : Enter the index of the Sequel: 
+Menu[5] : Index set to 6
+
+Menu[6] : 
+Menu[6] : Enter the book's Name: 
+Menu[6] : Enter the index of the Author: 
+Menu[6] : Enter the year of publication: 
+Menu[6] : Enter the value: 
+Menu[6] : Enter the number of Pages: 
+Menu[6] : Enter the index of the Sequel: 
+Menu[6] : Index set to 7
+
+Menu[7] : 
+Menu[7] : Enter the book's Name: 
+Menu[7] : Enter the index of the Author: 
+Menu[7] : Enter the year of publication: 
+Menu[7] : Enter the number of Pages: 
+Menu[7] : Enter the value: 
+Menu[7] : Enter the index of the Sequel: 
+Menu[7] : Index set to 8
+
+Menu[8] : 
+Menu[8] : Enter the book's Name: 
+Menu[8] : Enter the index of the Author: 
+Menu[8] : Index set to 9
+
+Menu[9] : 
+Menu[9] : Enter the book's Name: 
+Menu[9] : Enter the year of publication: 
+Menu[9] : Enter the number of Pages: 
+Menu[9] : Enter date Born Enter date Died (0 if still alive) Enter the author's name: 
+Menu[9] : Enter the index of the Author: 
+Menu[9] : Enter wether or not the item is in print (0/1) 
+Menu[9] : 
+=== All Authors===
+Author[0]
+   Author : Bjarne Stroustrup
+     Born : 1950
+     Died : 0
+Author[1]
+   Author : Frederick P. Brooks Jr.
+     Born : 1931
+     Died : 0
+Author[2]
+   Author : TR Reid
+     Born : 0
+     Died : 0
+Author[3]
+   Author : Donald E. Knuth
+     Born : 1938
+     Died : 0
+Author[4]
+   Author : Charles Babbage
+     Born : 1792
+     Died : 1871
+
+=== All Items ===
+mediaItem[0]
+MediaItem : Programming: Principles and Practice Using C++
+   Author : Bjarne Stroustrup
+     Year : 2014
+    Pages : 1305
+    Value : $47.39
+ In Print : 1
+Element[0]
+  Chapter : Hello World!
+    Start : 43
+      End : 58
+Element[1]
+  Chapter : Functions
+    Start : 255
+      End : 302
+Element[2]
+  Chapter : Classes
+    Start : 303
+      End : 342
+Element[3]
+  Chapter : Vectors and Free Store
+    Start : 583
+      End : 626
+Element[4]
+  Chapter : Vectors and Arrays
+    Start : 627
+      End : 666
+
+
+mediaItem[1]
+MediaItem : The Mythical Man-Month
+   Author : Frederick P. Brooks Jr.
+     Year : 1975
+    Pages : 336
+    Value : $28.80
+ In Print : 1
+Element[0]
+  Chapter : The Tar Pit
+    Start : 3
+      End : 12
+Element[1]
+  Chapter : The Mythical Man Month
+    Start : 13
+      End : 28
+Element[2]
+  Chapter : Ten Pounds in a Five-Pound Sack
+    Start : 97
+      End : 106
+Element[3]
+  Chapter : Plan to Throw One Away
+    Start : 115
+      End : 126
+Element[4]
+  Chapter : Hatching a Catastrophe
+    Start : 153
+      End : 162
+
+
+mediaItem[2]
+MediaItem : The Chip
+   Author : TR Reid
+     Year : 2001
+    Pages : 320
+    Value : $13.61
+ In Print : 1
+
+
+mediaItem[3]
+MediaItem : Fundamental Algorithms
+   Author : Donald E. Knuth
+   Sequel : Seminumerical Algorithms
+     Year : 1997
+    Pages : 672
+    Value : $58.14
+ In Print : 0
+
+
+mediaItem[4]
+MediaItem : MMIX - A RISC Computer for the New Millennium
+   Author : Donald E. Knuth
+     Year : 2005
+    Pages : 144
+    Value : $17.91
+ In Print : 0
+
+
+mediaItem[5]
+MediaItem : Seminumerical Algorithms
+   Author : Donald E. Knuth
+   Sequel : Sorting and Searching
+     Year : 1997
+    Pages : 784
+    Value : $65.91
+ In Print : 0
+
+
+mediaItem[6]
+MediaItem : Sorting and Searching
+   Author : Donald E. Knuth
+   Sequel : Combinatorial Algorithms
+     Year : 1998
+    Pages : 800
+    Value : $58.05
+ In Print : 0
+
+
+mediaItem[7]
+MediaItem : Combinatorial Algorithms
+   Author : Donald E. Knuth
+   Sequel : Mathematical Preliminaries Redux
+     Year : 2011
+    Pages : 883
+    Value : $63.99
+ In Print : 0
+
+
+mediaItem[8]
+MediaItem : Mathematical Preliminaries Redux
+   Author : Donald E. Knuth
+     Year : 0
+    Pages : 0
+    Value : $0.00
+ In Print : 0
+
+
+mediaItem[9]
+MediaItem : On the Economy of Machinery and Manufactures
+   Author : Charles Babbage
+     Year : 1832
+    Pages : 346
+    Value : $0.00
+ In Print : 0
+
+
+
+Menu[9] : 
+The number of Items in Memory is: 30
+The number of Authors in Memory is: 8
+The number of Elements in Memory is : 450
+The number of Bytes used is : 15728
+
+Menu[9] : Goodbye
+%
+%
+%
+%exit
+exit
+
+Script done on Fri Feb 20 14:11:03 2015

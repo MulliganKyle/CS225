@@ -1,0 +1,1086 @@
+Script started on Fri Feb  6 14:09:05 2015
+%cat makefile
+# CS225
+# Project 2
+# Media Item & Simple GUI Menu
+#
+
+# Here is a simple Make Macro.
+LINK_TARGET = mediaItem2Project
+
+# Here is a Make Macro that uses the backslash to extend to multiple lines.
+OBJS =  \
+ Hw2.o \
+	HwLib.o \
+	mediaItem.o
+
+# Here is a Make Macro defined by two Macro Expansions.
+# A Macro Expansion may be treated as a textual replacement of the Make Macro.
+# Macro Expansions are introduced with $ and enclosed in (parentheses).
+REBUILDABLES = $(OBJS) $(LINK_TARGET)
+
+# The rule for "all" is used to incrementally build your system.
+# It does this by expressing a dependency on the results of that system,
+# which in turn have their own rules and dependencies.
+all : $(LINK_TARGET)
+	echo All done
+
+# Here is a simple Rule (used for "cleaning" your build environment).
+# It has a Target named "clean" (left of the colon ":" on the first line),
+# no Dependencies (right of the colon),
+# and two Commands (indented by tabs on the lines that follow).
+# The space before the colon is not required but added here for clarity.
+clean : 
+	rm -f $(REBUILDABLES)
+	echo Clean done
+
+# There are two standard Targets your Makefile should probably have:
+# "all" and "clean", because they are often command-line Goals.
+# Also, these are both typically Artificial Targets, because they don't typically
+# correspond to real files named "all" or "clean".  
+
+# There is no required order to the list of rules as they appear in the Makefile.
+# Make will build its own dependency tree and only execute each rule only once
+# its dependencies' rules have been executed successfully.
+
+# Here is a Rule that uses some built-in Make Macros in its command:
+# $@ expands to the rule's target, in this case "test_me.exe".
+# $^ expands to the rule's dependencies, in this case the three files
+# main.o, test1.o, and  test2.o.
+$(LINK_TARGET) : $(OBJS)
+	g++ -g -Wall -o $@ $^
+
+# Here is a Pattern Rule, often used for compile-line.
+# It says how to create a file with a .o suffix, given a file with a .cpp suffix.
+# The rule's command uses some built-in Make Macros:
+# $@ for the pattern-matched target
+# $< for the pattern-matched dependency
+%.o : %.cpp
+	g++ -g -Wall -o $@ -c $<
+
+# These are Dependency Rules, which are rules without any command.
+# Dependency Rules indicate that if any file to the right of the colon changes,
+# the target to the left of the colon should be considered out-of-date.
+# The commands for making an out-of-date target up-to-date may be found elsewhere
+# (in this case, by the Pattern Rule above).
+# Dependency Rules are often used to capture header file dependencies.
+Hw1.cpp : HwLib.hpp mediaItem.hpp
+mediaItem.cpp : mediaItem.hpp
+Hw1Lib.cpp : HwLib.hpp
+%
+%
+%
+%
+%
+%
+%
+%cat mediaItem.hpp
+//////////////////////
+// CS225
+// HW1
+// 2/5/15
+// Kyle Mulligan
+// Declaration of mediaItem Class
+//////////////////////
+
+#include <iostream>
+
+#define DEF_NAME ""
+#define DEF_AUTHOR ""
+#define DEF_NUMBER_OF_PAGES 0
+#define DEF_VALUE 0.0
+#define DEF_IN_PRINT false
+
+
+
+class mediaItem 
+{
+
+   private:
+   //attributes of mediaItem
+   //
+      std::string name;
+      std::string author;
+      int numberOfPages;
+      float value;
+      bool inPrint;
+
+
+
+
+   //class attributes
+      static int numberOfObjects;
+
+   public:
+   //methods of mediaItem
+   //
+
+      //constructors
+      //
+      mediaItem(std::string=DEF_NAME,
+	        std::string=DEF_AUTHOR,
+	        int=DEF_NUMBER_OF_PAGES,
+		float=DEF_VALUE,
+		bool=DEF_IN_PRINT);
+
+      //destructors
+      //
+      ~mediaItem();
+
+      
+      //accessors
+      //
+      std::string getName() const { return name;}
+      std::string getAuthor() const { return author;}
+      int getNumberOfPages() const { return numberOfPages;}
+      int getNumberOfObjects() const { return numberOfObjects;}
+      float getValue() const {return value;}
+      bool getInPrint() const {return inPrint;}
+
+      //mutators
+      //
+      void setName(std::string);
+      void setAuthor(std::string);
+      void setNumberOfPages(int);
+      void setValue(float);
+      void setInPrint(bool);
+      void clearObject();
+
+      //helpers
+      //
+      bool isEmpty();
+      
+
+};
+
+std::ostream& operator<<(std::ostream&, const mediaItem&);
+%
+%
+%
+%
+%
+%cat mediaItem.cpp
+///////////////////////////////////
+// CS225
+// HW1
+// 2/5/15
+// Kyle Mulligan
+//Implementation of mediaItem Class
+///////////////////////////////////
+
+#include <iostream>
+#include <iomanip>
+#include "mediaItem.hpp"
+
+
+//class static attribute
+//
+int mediaItem::numberOfObjects=0;
+
+//constructors
+//
+mediaItem::mediaItem(std::string newName,
+		     std::string newAuthor,
+		     int newNumberOfPages,
+		     float newValue,
+		     bool newInPrint)
+{
+   name=newName;
+   author=newAuthor;
+   numberOfPages=newNumberOfPages;
+   value=newValue;
+   inPrint=newInPrint;
+   numberOfObjects++;
+}
+
+//destructors
+//
+mediaItem::~mediaItem()
+{
+   numberOfObjects--;
+
+}
+
+
+//mutators
+//
+void mediaItem::setName(std::string newName)
+{
+   name=newName;
+}
+
+void mediaItem::setAuthor(std::string newAuthor)
+{
+   author=newAuthor;
+}
+
+void mediaItem::setNumberOfPages(int newNumberOfPages)
+{
+   numberOfPages=newNumberOfPages;
+}
+
+void mediaItem::setValue(float newValue)
+{
+   value=newValue;
+}
+
+void mediaItem::setInPrint(bool newInPrint)
+{
+   inPrint=newInPrint;
+}
+
+void mediaItem::clearObject()
+{
+   name=DEF_NAME;
+   author=DEF_AUTHOR;
+   numberOfPages=DEF_NUMBER_OF_PAGES;
+   value=DEF_VALUE;
+   inPrint=DEF_IN_PRINT;
+}
+
+
+//helpers
+//
+bool mediaItem::isEmpty()
+{
+   if( (name==DEF_NAME) && 
+       (author==DEF_AUTHOR) && 
+       (numberOfPages==DEF_NUMBER_OF_PAGES) &&
+       (value==DEF_VALUE) &&
+       (inPrint==DEF_IN_PRINT) )
+      return true;
+   else
+      return false;
+}
+
+//helper functions not within the class
+//
+std::ostream& operator<<(std::ostream& outStream, const mediaItem& miOut)
+{
+   outStream << "MediaItem : " << miOut.getName() << std::endl;
+   outStream << "   Author : " << miOut.getAuthor() << std::endl;
+   outStream << "    Pages : " << miOut.getNumberOfPages() << std::endl;
+   outStream << "    Value : $" << std::fixed << std::setprecision(2) << miOut.getValue() << std::endl;
+   outStream << " In Print : " << miOut.getInPrint() << std::endl;
+   return outStream;
+}
+%
+%
+%
+%
+%
+%
+%cat HwLib.hpp
+//////////////////////
+// CS225
+// HW1
+// 2/5/15
+// Kyle Mulligan
+// Prototypes for Hw2 
+//////////////////////
+
+
+void printMenu();
+void processMenuIn(char);
+%
+%
+%
+%cat HwLib.cpp
+//////////////////////
+// CS225
+// HW1
+// 2/5/15
+// Kyle Mulligan
+// Functions for Hw2 
+//////////////////////
+#include "mediaItem.hpp"
+#include <iostream>
+
+extern bool done;
+extern int currentItemNumber;
+extern mediaItem *firstItem;
+extern mediaItem *currentItem;
+
+
+void printMenu()
+{
+   std::cout << "* - Displa data for all Media Items" <<std::endl;
+   std::cout << "+/- Increment / decrement the selected Item w/ in the Array" <<std::endl;
+   std::cout << "# - Set the selected media Item" <<std::endl;
+   std::cout << "0 - Clear MediaItem data" <<std::endl;
+   std::cout << "D - Display Media Item data" <<std::endl;
+   std::cout << "N - Set Media Item name" <<std::endl;
+   std::cout << "A - Set Media Item author" <<std::endl;
+   std::cout << "P - Set Media Item pages" <<std::endl;
+   std::cout << "I - Set Media Item in print status (0/1)" <<std::endl;
+   std::cout << "V - Set Media Item value" <<std::endl;
+   std::cout << "M - Print this menu again" <<std::endl;
+   std::cout << "Q - Quit this program" <<std::endl;
+}
+
+void processMenuIn(char menuIn)
+{
+   switch(toupper(menuIn))  //handles all menu options and works for upper or lower case inputs
+   {
+
+      case '*':
+      {
+	 int count;
+
+	 std::cout << std::endl << "=== All Items ===" << std::endl;
+	 for(count=0;count<20;count++)
+	 {
+	    if ( (firstItem[count]).isEmpty() )
+	    {
+	       std::cout << "mediaItem[" << count << "]: is Empty" << std::endl;
+	    }
+	    else
+	    {
+	    std::cout << "mediaItem[" << count << "]" << std::endl;
+	    std::cout << (firstItem[count]);
+	    }
+
+	 }
+	 std::cout << "The number of Items in Memory is: " << currentItem->getNumberOfObjects() << std::endl;
+      }
+      break;
+
+
+      case '+':
+      {
+	 if(currentItemNumber==19)
+	    std::cout << "At the last item already." << std::endl;
+	 else
+	 {
+	    currentItemNumber++;
+	    currentItem++;
+	    std::cout << "Index set to " << currentItemNumber << std::endl;
+	 }
+      }
+      break;
+
+
+      case '-':
+       {
+	 if(currentItemNumber==0)
+	    std::cout << "At the first item already." << std::endl;
+	 else
+	 {
+	    currentItemNumber--;
+	    currentItem--;
+	    std::cout << "Index set to " << currentItemNumber << std::endl;
+	 }
+      }     
+      break;
+
+
+      case '#':
+      {
+	 int number;
+	 std::cout << "Enter the number of the Item: ";
+	 std::cin >> number;
+
+	 if( (number < 0) || (number >19) )
+	    std::cout << "That is out of range." << std::endl;
+	 else
+	 {
+	    currentItemNumber=number;
+	    currentItem=firstItem+number;
+	    std::cout << "Index set to " << currentItemNumber << std::endl;
+	 }
+      }
+      break;
+
+
+      case '0': //clears the media item
+      currentItem->clearObject();
+      break;
+
+
+      case 'D': //prints the media item
+      std::cout<<(*currentItem);
+      break;
+
+
+      case 'N': // enters the name of media item
+      {
+	 std::string name;
+	 std::cout << "Enter the book's Name: ";
+	 std::getline(std::cin,name);
+	 currentItem->setName(name);
+      }
+      break;
+
+      case 'A': // enters the author of media item
+      {
+	 std::string author;
+	 std::cout << "Enter the author's Name: ";
+	 std::getline(std::cin,author);
+	 currentItem->setAuthor(author);
+      }
+      break;
+
+      case 'P': // enters the number of pages for the media item
+      {
+	 int pages;
+	 std::cout << "Enter the number of Pages: ";
+	 std::cin >> pages;
+	 currentItem->setNumberOfPages(pages);
+      }
+      break;
+
+
+      case 'I':
+      {
+	 bool isInPrint;
+	 std::cout << "Enter wether or not the item is in print (0/1) ";
+	 std::cin >> isInPrint;
+	 currentItem->setInPrint(isInPrint);
+      }
+      break;
+
+
+      case 'V':
+      {
+	 float value;
+	 std::cout << "Enter the value: ";
+	 std::cin >> value;
+	 currentItem->setValue(value);
+      }
+      break;
+
+
+      case 'M': //prints the menu again
+      printMenu();
+      break;
+
+      case 'Q': // exits the menu
+      done= true;
+      break;
+   }
+}
+%
+%
+%
+%
+%
+%cat Hw2.cpp
+//////////////////////
+// CS225
+// HW1
+// 2/5/15
+// Kyle Mulligan
+// menu based program which utilizes class mediaItem 
+//////////////////////
+
+#include <iostream>
+#include "HwLib.hpp"
+#include "mediaItem.hpp"
+
+#define MAX_ITEMS 20
+
+//globals
+//
+mediaItem *firstItem;
+mediaItem *currentItem;
+bool done=false;
+int currentItemNumber;
+
+int main()
+{
+   std::string userInput;
+   mediaItem mediaItems[MAX_ITEMS];
+   
+   firstItem=mediaItems;
+   currentItem=firstItem;
+
+   printMenu();
+   while(!done) // loops until the user is done using the menu
+   {
+      std::cout << std::endl << "Menu[" << currentItemNumber << "] : ";
+      std::cin >> userInput;
+      std::cin.ignore();
+      processMenuIn(userInput[0]);
+   }
+   std::cout << "Goodbye" << std::endl;
+}
+%
+%
+%
+%
+%
+%make
+g++ -g -Wall -o Hw2.o -c Hw2.cpp
+g++ -g -Wall -o HwLib.o -c HwLib.cpp
+g++ -g -Wall -o mediaItem.o -c mediaItem.cpp
+g++ -g -Wall -o mediaItem2Project Hw2.o HwLib.o mediaItem.o
+echo All done
+All done
+%
+%
+%
+%
+%./mediaItem2Project 
+* - Displa data for all Media Items
++/- Increment / decrement the selected Item w/ in the Array
+# - Set the selected media Item
+0 - Clear MediaItem data
+D - Display Media Item data
+N - Set Media Item name
+A - Set Media Item author
+P - Set Media Item pages
+I - Set Media Item in print status (0/1)
+V - Set Media Item value
+M - Print this menu again
+Q - Quit this program
+
+Menu[0] : +
+Index set to 1
+
+Menu[1] : _
+
+Menu[1] : -
+Index set to 0
+
+Menu[0] : N
+Enter the book's Name: The Giving Tree
+
+Menu[0] : *
+
+=== All Items ===
+mediaItem[0]
+MediaItem : The Giving Tree
+   Author : 
+    Pages : 0
+    Value : $0.00
+ In Print : 0
+mediaItem[1]: is Empty
+mediaItem[2]: is Empty
+mediaItem[3]: is Empty
+mediaItem[4]: is Empty
+mediaItem[5]: is Empty
+mediaItem[6]: is Empty
+mediaItem[7]: is Empty
+mediaItem[8]: is Empty
+mediaItem[9]: is Empty
+mediaItem[10]: is Empty
+mediaItem[11]: is Empty
+mediaItem[12]: is Empty
+mediaItem[13]: is Empty
+mediaItem[14]: is Empty
+mediaItem[15]: is Empty
+mediaItem[16]: is Empty
+mediaItem[17]: is Empty
+mediaItem[18]: is Empty
+mediaItem[19]: is Empty
+The number of Items in Memory is: 20
+
+Menu[0] : q
+Goodbye
+%
+%
+%
+%
+%./mediaItem2Project < ts_1.in
+* - Displa data for all Media Items
++/- Increment / decrement the selected Item w/ in the Array
+# - Set the selected media Item
+0 - Clear MediaItem data
+D - Display Media Item data
+N - Set Media Item name
+A - Set Media Item author
+P - Set Media Item pages
+I - Set Media Item in print status (0/1)
+V - Set Media Item value
+M - Print this menu again
+Q - Quit this program
+
+Menu[0] : Enter the book's Name: 
+Menu[0] : Enter the author's Name: 
+Menu[0] : Enter the number of Pages: 
+Menu[0] : Index set to 1
+
+Menu[1] : Enter the book's Name: 
+Menu[1] : Enter the author's Name: 
+Menu[1] : Enter the number of Pages: 
+Menu[1] : Enter the value: 
+Menu[1] : Enter wether or not the item is in print (0/1) 
+Menu[1] : Index set to 2
+
+Menu[2] : Enter the book's Name: 
+Menu[2] : Enter the author's Name: 
+Menu[2] : Enter the number of Pages: 
+Menu[2] : Enter the value: 
+Menu[2] : Index set to 3
+
+Menu[3] : Enter the book's Name: 
+Menu[3] : Enter the author's Name: 
+Menu[3] : Enter the value: 
+Menu[3] : Index set to 4
+
+Menu[4] : Enter the book's Name: 
+Menu[4] : Enter the author's Name: 
+Menu[4] : Enter wether or not the item is in print (0/1) 
+Menu[4] : Index set to 5
+
+Menu[5] : Index set to 6
+
+Menu[6] : 
+=== All Items ===
+mediaItem[0]
+MediaItem : The Hobbit
+   Author : JRR Tolkien
+    Pages : 310
+    Value : $0.00
+ In Print : 0
+mediaItem[1]
+MediaItem : Programming: Principles and Practice Using C++
+   Author : Bjarne Stroustrup
+    Pages : 1305
+    Value : $47.39
+ In Print : 1
+mediaItem[2]
+MediaItem : Valley of the Dolls
+   Author : Jacqueline Susann
+    Pages : 442
+    Value : $8.68
+ In Print : 0
+mediaItem[3]
+MediaItem : The Alchemist
+   Author : Paulo Coelho
+    Pages : 0
+    Value : $8.92
+ In Print : 0
+mediaItem[4]
+MediaItem : The Great Gatsby
+   Author : F. Scott Fitzgerald
+    Pages : 0
+    Value : $0.00
+ In Print : 0
+mediaItem[5]: is Empty
+mediaItem[6]: is Empty
+mediaItem[7]: is Empty
+mediaItem[8]: is Empty
+mediaItem[9]: is Empty
+mediaItem[10]: is Empty
+mediaItem[11]: is Empty
+mediaItem[12]: is Empty
+mediaItem[13]: is Empty
+mediaItem[14]: is Empty
+mediaItem[15]: is Empty
+mediaItem[16]: is Empty
+mediaItem[17]: is Empty
+mediaItem[18]: is Empty
+mediaItem[19]: is Empty
+The number of Items in Memory is: 20
+
+Menu[6] : Goodbye
+%
+%
+%
+%
+%
+%./mediaItem2Project < ts_2.in
+* - Displa data for all Media Items
++/- Increment / decrement the selected Item w/ in the Array
+# - Set the selected media Item
+0 - Clear MediaItem data
+D - Display Media Item data
+N - Set Media Item name
+A - Set Media Item author
+P - Set Media Item pages
+I - Set Media Item in print status (0/1)
+V - Set Media Item value
+M - Print this menu again
+Q - Quit this program
+
+Menu[0] : Enter the book's Name: 
+Menu[0] : Enter the author's Name: 
+Menu[0] : Enter the number of Pages: 
+Menu[0] : Index set to 1
+
+Menu[1] : Enter the book's Name: 
+Menu[1] : Enter the author's Name: 
+Menu[1] : Enter the number of Pages: 
+Menu[1] : Enter the value: 
+Menu[1] : Enter wether or not the item is in print (0/1) 
+Menu[1] : Index set to 2
+
+Menu[2] : Enter the book's Name: 
+Menu[2] : Enter the author's Name: 
+Menu[2] : Enter the number of Pages: 
+Menu[2] : Enter the value: 
+Menu[2] : Index set to 3
+
+Menu[3] : Index set to 4
+
+Menu[4] : 
+=== All Items ===
+mediaItem[0]
+MediaItem : The Hobbit
+   Author : JRR Tolkien
+    Pages : 310
+    Value : $0.00
+ In Print : 0
+mediaItem[1]
+MediaItem : Programming: Principles and Practice Using C++
+   Author : Bjarne Stroustrup
+    Pages : 1305
+    Value : $47.39
+ In Print : 1
+mediaItem[2]
+MediaItem : Valley of the Dolls
+   Author : Jacqueline Susann
+    Pages : 442
+    Value : $8.68
+ In Print : 0
+mediaItem[3]: is Empty
+mediaItem[4]: is Empty
+mediaItem[5]: is Empty
+mediaItem[6]: is Empty
+mediaItem[7]: is Empty
+mediaItem[8]: is Empty
+mediaItem[9]: is Empty
+mediaItem[10]: is Empty
+mediaItem[11]: is Empty
+mediaItem[12]: is Empty
+mediaItem[13]: is Empty
+mediaItem[14]: is Empty
+mediaItem[15]: is Empty
+mediaItem[16]: is Empty
+mediaItem[17]: is Empty
+mediaItem[18]: is Empty
+mediaItem[19]: is Empty
+The number of Items in Memory is: 20
+
+Menu[4] : Index set to 5
+
+Menu[5] : Index set to 6
+
+Menu[6] : Index set to 7
+
+Menu[7] : Index set to 8
+
+Menu[8] : Index set to 7
+
+Menu[7] : Enter the book's Name: 
+Menu[7] : Enter the author's Name: 
+Menu[7] : Enter the value: 
+Menu[7] : Index set to 8
+
+Menu[8] : Enter the book's Name: 
+Menu[8] : Enter the author's Name: 
+Menu[8] : Enter wether or not the item is in print (0/1) 
+Menu[8] : Index set to 9
+
+Menu[9] : Enter the number of the Item: Index set to 19
+
+Menu[19] : Enter the book's Name: 
+Menu[19] : Enter the author's Name: 
+Menu[19] : Enter the value: 
+Menu[19] : Enter wether or not the item is in print (0/1) 
+Menu[19] : At the last item already.
+
+Menu[19] : 
+=== All Items ===
+mediaItem[0]
+MediaItem : The Hobbit
+   Author : JRR Tolkien
+    Pages : 310
+    Value : $0.00
+ In Print : 0
+mediaItem[1]
+MediaItem : Programming: Principles and Practice Using C++
+   Author : Bjarne Stroustrup
+    Pages : 1305
+    Value : $47.39
+ In Print : 1
+mediaItem[2]
+MediaItem : Valley of the Dolls
+   Author : Jacqueline Susann
+    Pages : 442
+    Value : $8.68
+ In Print : 0
+mediaItem[3]: is Empty
+mediaItem[4]: is Empty
+mediaItem[5]: is Empty
+mediaItem[6]: is Empty
+mediaItem[7]
+MediaItem : The Alchemist
+   Author : Paulo Coelho
+    Pages : 0
+    Value : $8.92
+ In Print : 0
+mediaItem[8]
+MediaItem : The Great Gatsby
+   Author : F. Scott Fitzgerald
+    Pages : 0
+    Value : $0.00
+ In Print : 0
+mediaItem[9]: is Empty
+mediaItem[10]: is Empty
+mediaItem[11]: is Empty
+mediaItem[12]: is Empty
+mediaItem[13]: is Empty
+mediaItem[14]: is Empty
+mediaItem[15]: is Empty
+mediaItem[16]: is Empty
+mediaItem[17]: is Empty
+mediaItem[18]: is Empty
+mediaItem[19]
+MediaItem : The Mythical Man-Month
+   Author : Frederick P. Brooks Jr.
+    Pages : 0
+    Value : $28.80
+ In Print : 1
+The number of Items in Memory is: 20
+
+Menu[19] : Enter the number of the Item: Index set to 0
+
+Menu[0] : Enter the value: 
+Menu[0] : Index set to 1
+
+Menu[1] : 
+Menu[1] : Index set to 2
+
+Menu[2] : 
+Menu[2] : 
+=== All Items ===
+mediaItem[0]
+MediaItem : The Hobbit
+   Author : JRR Tolkien
+    Pages : 310
+    Value : $300.00
+ In Print : 0
+mediaItem[1]: is Empty
+mediaItem[2]: is Empty
+mediaItem[3]: is Empty
+mediaItem[4]: is Empty
+mediaItem[5]: is Empty
+mediaItem[6]: is Empty
+mediaItem[7]
+MediaItem : The Alchemist
+   Author : Paulo Coelho
+    Pages : 0
+    Value : $8.92
+ In Print : 0
+mediaItem[8]
+MediaItem : The Great Gatsby
+   Author : F. Scott Fitzgerald
+    Pages : 0
+    Value : $0.00
+ In Print : 0
+mediaItem[9]: is Empty
+mediaItem[10]: is Empty
+mediaItem[11]: is Empty
+mediaItem[12]: is Empty
+mediaItem[13]: is Empty
+mediaItem[14]: is Empty
+mediaItem[15]: is Empty
+mediaItem[16]: is Empty
+mediaItem[17]: is Empty
+mediaItem[18]: is Empty
+mediaItem[19]
+MediaItem : The Mythical Man-Month
+   Author : Frederick P. Brooks Jr.
+    Pages : 0
+    Value : $28.80
+ In Print : 1
+The number of Items in Memory is: 20
+
+Menu[2] : Goodbye
+%
+%
+%
+%
+%
+%./mediaItem2Project < ts_3.in
+%
+%
+%./mediaItem2Project  < ts_3.in
+* - Displa data for all Media Items
++/- Increment / decrement the selected Item w/ in the Array
+# - Set the selected media Item
+0 - Clear MediaItem data
+D - Display Media Item data
+N - Set Media Item name
+A - Set Media Item author
+P - Set Media Item pages
+I - Set Media Item in print status (0/1)
+V - Set Media Item value
+M - Print this menu again
+Q - Quit this program
+
+Menu[0] : Enter the book's Name: 
+Menu[0] : Enter the value: 
+Menu[0] : Enter wether or not the item is in print (0/1) 
+Menu[0] : Index set to 1
+
+Menu[1] : Enter the book's Name: 
+Menu[1] : Enter the value: 
+Menu[1] : Enter wether or not the item is in print (0/1) 
+Menu[1] : Index set to 2
+
+Menu[2] : Enter the book's Name: 
+Menu[2] : Enter the value: 
+Menu[2] : Enter wether or not the item is in print (0/1) 
+Menu[2] : Index set to 3
+
+Menu[3] : Enter the author's Name: 
+Menu[3] : Enter the book's Name: 
+Menu[3] : Index set to 4
+
+Menu[4] : Enter the author's Name: 
+Menu[4] : Enter the book's Name: 
+Menu[4] : Index set to 5
+
+Menu[5] : Index set to 6
+
+Menu[6] : Enter the book's Name: 
+Menu[6] : Enter the author's Name: 
+Menu[6] : Index set to 7
+
+Menu[7] : Enter the book's Name: 
+Menu[7] : Enter the author's Name: 
+Menu[7] : 
+=== All Items ===
+mediaItem[0]
+MediaItem : Action Comics #1
+   Author : 
+    Pages : 0
+    Value : $4690000.00
+ In Print : 0
+mediaItem[1]
+MediaItem : Fantastic Four #1
+   Author : 
+    Pages : 0
+    Value : $202000.00
+ In Print : 0
+mediaItem[2]
+MediaItem : Detective Comics #4
+   Author : 
+    Pages : 0
+    Value : $48100.00
+ In Print : 0
+mediaItem[3]
+MediaItem : Animal Man
+   Author : Grant Morrison
+    Pages : 0
+    Value : $0.00
+ In Print : 0
+mediaItem[4]
+MediaItem : Warrior #2
+   Author : Alan Moore
+    Pages : 0
+    Value : $0.00
+ In Print : 0
+mediaItem[5]: is Empty
+mediaItem[6]
+MediaItem : Plan 9 from Outer Space
+   Author : Edward D. Wood, Jr.
+    Pages : 0
+    Value : $0.00
+ In Print : 0
+mediaItem[7]
+MediaItem : Jamaica Inn
+   Author : Alfred Hitchcock
+    Pages : 0
+    Value : $0.00
+ In Print : 0
+mediaItem[8]: is Empty
+mediaItem[9]: is Empty
+mediaItem[10]: is Empty
+mediaItem[11]: is Empty
+mediaItem[12]: is Empty
+mediaItem[13]: is Empty
+mediaItem[14]: is Empty
+mediaItem[15]: is Empty
+mediaItem[16]: is Empty
+mediaItem[17]: is Empty
+mediaItem[18]: is Empty
+mediaItem[19]: is Empty
+The number of Items in Memory is: 20
+
+Menu[7] : Enter the number of the Item: Index set to 0
+
+Menu[0] : Enter the author's Name: 
+Menu[0] : Enter the number of the Item: Index set to 6
+
+Menu[6] : Enter the value: 
+Menu[6] : Index set to 7
+
+Menu[7] : Enter the value: 
+Menu[7] : Index set to 8
+
+Menu[8] : Enter the value: 
+Menu[8] : Enter the number of the Item: Index set to 2
+
+Menu[2] : 
+Menu[2] : 
+=== All Items ===
+mediaItem[0]
+MediaItem : Action Comics #1
+   Author : Jack Liebowitz
+    Pages : 0
+    Value : $4690000.00
+ In Print : 0
+mediaItem[1]
+MediaItem : Fantastic Four #1
+   Author : 
+    Pages : 0
+    Value : $202000.00
+ In Print : 0
+mediaItem[2]: is Empty
+mediaItem[3]
+MediaItem : Animal Man
+   Author : Grant Morrison
+    Pages : 0
+    Value : $0.00
+ In Print : 0
+mediaItem[4]
+MediaItem : Warrior #2
+   Author : Alan Moore
+    Pages : 0
+    Value : $0.00
+ In Print : 0
+mediaItem[5]: is Empty
+mediaItem[6]
+MediaItem : Plan 9 from Outer Space
+   Author : Edward D. Wood, Jr.
+    Pages : 0
+    Value : $1.01
+ In Print : 0
+mediaItem[7]
+MediaItem : Jamaica Inn
+   Author : Alfred Hitchcock
+    Pages : 0
+    Value : $1337.00
+ In Print : 0
+mediaItem[8]
+MediaItem : 
+   Author : 
+    Pages : 0
+    Value : $333.00
+ In Print : 0
+mediaItem[9]: is Empty
+mediaItem[10]: is Empty
+mediaItem[11]: is Empty
+mediaItem[12]: is Empty
+mediaItem[13]: is Empty
+mediaItem[14]: is Empty
+mediaItem[15]: is Empty
+mediaItem[16]: is Empty
+mediaItem[17]: is Empty
+mediaItem[18]: is Empty
+mediaItem[19]: is Empty
+The number of Items in Memory is: 20
+
+Menu[2] : Goodbye
+%
+%
+%
+%
+%exit
+exit
+
+Script done on Fri Feb  6 14:12:39 2015
