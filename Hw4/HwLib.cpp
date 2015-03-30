@@ -286,12 +286,14 @@ void processMenuIn(char menuIn)
       case 'L': //Display Music Items by Genre
       {
 	 int iterator;
-	 for(iterator=1; iterator<7; iterator++)
+
+	 std::cout<<std::endl<< std::endl << "=====Music By Genre=====" <<std::endl<<std::endl;
+	 for(iterator=0; iterator<7; iterator++)
 	 {
 	    int count;
 	    for(count=20; count<40; count++)
 	    {
-	       if( ((Music*)mixedArray[count])->getGenre()==iterator)
+	       if( (!(mixedArray[count])->isEmpty()) && ((Music*)mixedArray[count])->getGenre()==iterator)
 		  (mixedArray[count])->toCout();
 	    }
 	 }

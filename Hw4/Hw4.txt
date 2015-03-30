@@ -1,2 +1,2816 @@
+Script started on Fri Mar  6 15:12:29 2015
+%cat makefile
+# CS225
+# Project 3
+# Media Item & Simple GUI Menu
+#
+
+# Here is a simple Make Macro.
+LINK_TARGET = mediaItem4Project
+
+# Here is a Make Macro that uses the backslash to extend to multiple lines.
+OBJS =  \
+ Hw4.o \
+	HwLib.o \
+	MediaItem.o \
+	Element.o \
+	Author.o \
+	Book.o \
+	Music.o \
+	Video.o 
+
+# Here is a Make Macro defined by two Macro Expansions.
+# A Macro Expansion may be treated as a textual replacement of the Make Macro.
+# Macro Expansions are introduced with $ and enclosed in (parentheses).
+REBUILDABLES = $(OBJS) $(LINK_TARGET)
+
+# The rule for "all" is used to incrementally build your system.
+# It does this by expressing a dependency on the results of that system,
+# which in turn have their own rules and dependencies.
+all : $(LINK_TARGET)
+	echo All done
+
+# Here is a simple Rule (used for "cleaning" your build environment).
+# It has a Target named "clean" (left of the colon ":" on the first line),
+# no Dependencies (right of the colon),
+# and two Commands (indented by tabs on the lines that follow).
+# The space before the colon is not required but added here for clarity.
+clean : 
+	rm -f $(REBUILDABLES)
+	echo Clean done
+
+# There are two standard Targets your Makefile should probably have:
+# "all" and "clean", because they are often command-line Goals.
+# Also, these are both typically Artificial Targets, because they don't typically
+# correspond to real files named "all" or "clean".  
+
+# There is no required order to the list of rules as they appear in the Makefile.
+# Make will build its own dependency tree and only execute each rule only once
+# its dependencies' rules have been executed successfully.
+
+# Here is a Rule that uses some built-in Make Macros in its command:
+# $@ expands to the rule's target, in this case "test_me.exe".
+# $^ expands to the rule's dependencies, in this case the three files
+# main.o, test1.o, and  test2.o.
+$(LINK_TARGET) : $(OBJS)
+	g++ -g -Wall -o $@ $^
+
+# Here is a Pattern Rule, often used for compile-line.
+# It says how to create a file with a .o suffix, given a file with a .cpp suffix.
+# The rule's command uses some built-in Make Macros:
+# $@ for the pattern-matched target
+# $< for the pattern-matched dependency
+%.o : %.cpp
+	g++ -g -Wall -o $@ -c $<
+
+# These are Dependency Rules, which are rules without any command.
+# Dependency Rules indicate that if any file to the right of the colon changes,
+# the target to the left of the colon should be considered out-of-date.
+# The commands for making an out-of-date target up-to-date may be found elsewhere
+# (in this case, by the Pattern Rule above).
+# Dependency Rules are often used to capture header file dependencies.
+Hw4.cpp : HwLib.hpp MediaItem.hpp Element.hpp Author.hpp Book.hpp Music.hpp Video.hpp
+MediaItem.cpp : MediaItem.hpp
+Element.cpp : Element.hpp
+Author.cpp : Author.hpp
+HwLib.cpp : HwLib.hpp
+Book.cpp : Book.hpp
+Music.cpp : Music.hpp
+Video.cpp : Video.hpp
+%
+%
+%
+%
+%cat Author.hpp
+//////////////////////
+// CS225
+// HW4
+// 3/6/15
+// Kyle Mulligan
+// Declaration of Author Class
+//////////////////////
+
+#include <iostream>
 
 
+#ifndef AUTHOR_H
+#define AUTHOR_H
+
+
+
+#define DEF_BORN 0
+#define DEF_DIED 0
+#define DEF_NAME ""
+
+
+class Author
+{
+   private:
+   //attributes of Author class
+   //
+      int born;
+      int died;
+      std::string name;
+
+      //class attributes
+      //
+      static int numberOfAuthors;
+
+   public:
+   //methods of Author class
+   //
+
+      //constructors
+      //
+      Author(int=DEF_BORN,
+	     int=DEF_DIED,
+	     std::string=DEF_NAME);
+
+      //destructors
+      //
+      ~Author();
+
+      //accessors
+      //
+      int getBorn() const {return born;}
+      int getDied() const {return died;}
+      std::string getName() const {return name;}
+      int getNumberOfAuthors() const {return numberOfAuthors;}
+
+      //mutators
+      //
+      void setBorn(int);
+      void setDied(int);
+      void setName(std::string);
+
+      //helpers
+      //
+      bool isAuthorEmpty();
+
+
+
+
+
+};
+
+std::ostream& operator<<(std::ostream&, const Author&);
+
+
+#endif
+%
+%
+%cat Author.cpp
+//////////////////////
+// CS225
+// HW4
+// 3/6/15
+// Kyle Mulligan
+// Implementation of Author Class
+//////////////////////
+
+
+#include "Author.hpp"
+#include <iostream>
+#include <iomanip>
+
+//class wide attributes
+//
+int Author::numberOfAuthors=0;
+
+//constructors
+//
+Author::Author(int newBorn,
+	       int newDied,
+	       std::string newName)
+{
+   born=newBorn;
+   died=newDied;
+   name=newName;
+   numberOfAuthors++;
+}
+
+
+//destructors
+//
+Author::~Author()
+{
+   numberOfAuthors--;
+}
+
+//mutators
+//
+void Author::setBorn(int newBorn)
+{
+   born=newBorn;
+}
+
+void Author::setDied(int newDied)
+{
+   died=newDied;
+}
+
+void Author::setName(std::string newName)
+{
+   name=newName;
+}
+
+
+//helpers
+//
+bool Author::isAuthorEmpty()
+{
+   if( born==DEF_BORN &&
+       died==DEF_DIED &&
+       name==DEF_NAME)
+      return true;
+   else
+      return false;
+}
+
+
+//helper functions not within the class
+//
+std::ostream& operator<<(std::ostream& outStream, const Author& authOut)
+{
+   outStream << "   Author : " << authOut.getName() << std::endl;
+   outStream << "     Born : " << authOut.getBorn() << std::endl;
+   outStream << "     Died : " << authOut.getDied() << std::endl;
+   return outStream;
+}
+%
+%
+%cat Book.hpp
+//////////////////////
+// CS225
+// HW4
+// 3/6/15
+// Kyle Mulligan
+// Declaration of Book Class
+//////////////////////
+
+
+
+
+
+#ifndef BOOK_H
+#define BOOK_H
+
+#include <iostream>
+#include "HwLib.hpp"
+#include "MediaItem.hpp"
+#include "Author.hpp"
+#include "Element.hpp"
+#include "Music.hpp"
+#include "Video.hpp"
+
+#define DEF_ISBN ""
+#define DEF_PAGES 0
+#define DEF_IN_PRINT false
+#define DEF_SEQUEL NULL
+
+
+
+
+class Book : public MediaItem
+{
+   
+   private:
+   //attributes of Book
+   //
+      std::string ISBN;
+      int pages;
+      bool inPrint;
+      MediaItem *sequel;
+
+   
+   //class attributes
+      static int numberOfBooks;
+
+   public:
+   //methods of mediaItem
+   //
+
+      //constructors
+      //
+      Book(std::string=DEF_NAME,
+	   float=DEF_VALUE,
+	   Author* =DEF_AUTHOR,
+	   int=DEF_YEAR,
+	   std::string=DEF_ISBN,
+	   int=DEF_PAGES,
+	   bool=DEF_IN_PRINT,
+	   MediaItem* =DEF_SEQUEL);
+
+
+      //destructors
+      //
+      ~Book();
+
+      
+      //accessors
+      //
+      std::string getISBN() const {return ISBN;}
+      int getPages() const {return pages;}
+      bool getInPrint() const {return inPrint;}
+      MediaItem* getSequel() const {return sequel;}
+      int getNumberOfBooks() const {return numberOfBooks;}
+
+
+      //mutators
+      //
+      void setISBN(std::string);
+      void setPages(int);
+      void setInPrint(bool);
+      void setSequel(MediaItem*);
+
+
+      //helpers
+      //
+      bool isEmpty();
+      void toCout() const;
+
+
+
+
+
+};
+
+std::ostream& operator<<(std::ostream&, const Book&);
+
+
+
+
+#endif
+%
+%
+%cat Book.cpp
+///////////////////////////////////
+// CS225
+// HW4
+// 3/6/15
+// Kyle Mulligan
+// Implementation of Book Class
+///////////////////////////////////
+
+#include <iostream>
+#include <iomanip>
+#include "Book.hpp"
+
+//class wide attributes
+//
+int Book::numberOfBooks=0;
+
+//constructors
+Book::Book(std::string newName,
+	   float newValue,
+	   Author* newAuthor,
+	   int newYear,
+	   std::string newISBN,
+	   int newPages,
+	   bool newInPrint,
+	   MediaItem* newSequel) : MediaItem(newName, newValue, newAuthor, newYear)
+{
+   ISBN=newISBN;
+   pages=newPages;
+   inPrint=newInPrint;
+   sequel=newSequel;
+   numberOfBooks++;
+}
+
+//destructor
+Book::~Book()
+{
+   numberOfBooks--;
+}
+
+//mutators
+void Book::setISBN(std::string newISBN)
+{
+   ISBN=newISBN;
+}
+
+void Book::setPages(int newPages)
+{
+   pages=newPages;
+}
+
+void Book::setInPrint(bool newInPrint)
+{
+   inPrint=newInPrint;
+}
+
+void Book::setSequel(MediaItem *newSequel)
+{
+   sequel=newSequel;
+}
+
+
+//helpers
+bool Book::isEmpty()
+{
+   if( MediaItem::isEmpty() &&
+       (pages==DEF_PAGES) &&
+       (inPrint==DEF_IN_PRINT) &&
+       (sequel==DEF_SEQUEL) &&
+       (ISBN==DEF_ISBN) )
+      return true;
+   else
+      return false;
+}
+
+
+void Book::toCout() const
+{
+   std::cout<<(*this);
+}
+
+
+//helpers outside the class
+std::ostream& operator<<(std::ostream& outStream, const Book& bOut)
+{
+
+   outStream<<((MediaItem &)bOut);
+
+   outStream<< "    Pages : " << bOut.getPages() << std::endl;
+
+   if (bOut.getInPrint())
+   {
+      outStream<< " In Print : True"<<std::endl;
+   }
+   else
+   {
+      outStream<< " In Print : False"<<std::endl;
+   }
+   
+   outStream<< "     ISBN : " << bOut.getISBN() << std::endl;
+
+   if (bOut.getSequel()!=NULL)
+   {
+      outStream<< "   Sequel : " << (bOut.getSequel())->getName()<<std::endl;
+   }
+
+   outStream<< std::endl<< std::endl;
+
+   return outStream;
+}
+%
+%
+%
+%cat Element.hpp
+//////////////////////
+// CS225
+// HW4
+// 3/6/15
+// Kyle Mulligan
+// Declaration of Element Class
+//////////////////////
+
+#include <iostream>
+
+
+#ifndef ELEMENT_H
+#define ELEMENT_H
+
+
+
+#define DEF_START 0
+#define DEF_END 0
+#define DEF_NAME ""
+
+
+class Element
+{
+   private:
+   //attributes of Element
+   //
+      friend std::ostream& operator<<(std::ostream&, const Element&);
+      int start;
+      int end;
+      std::string name;
+
+
+   //class attributes
+   //
+      static int numberOfElements;
+
+   public:
+   //methods of Element
+   //
+
+      //constructors
+      //
+      Element(int=DEF_START,
+	      int=DEF_END,
+	      std::string=DEF_NAME);
+
+
+      //destructors
+      //
+      ~Element();
+
+
+      //accessors
+      //
+      int getStart() const { return start;}
+      int getEnd() const {return end;}
+      std::string getName() const { return name;}
+      int getNumberOfElements() const { return numberOfElements;}
+
+
+      //mutators
+      //
+      void setStart(int);
+      void setEnd(int);
+      void setName(std::string);
+
+      //helpers
+      //
+      bool isElementEmpty() const ;
+
+};
+
+std::ostream& operator<<(std::ostream&, const Element&);
+#endif
+%
+%
+%
+%cat Element.cpp
+//////////////////////
+// CS225
+// HW4
+// 3/6/15
+// Kyle Mulligan
+// Implementation of Element Class
+//////////////////////
+
+
+#include "Element.hpp"
+#include <iostream>
+#include <iomanip>
+
+
+//class wide attributes
+//
+int Element::numberOfElements=0;
+
+
+//constructors
+//
+Element::Element(int newStart,
+	         int newEnd,
+		 std::string newName)
+{
+   start=newStart;
+   end=newEnd;
+   name=newName;
+   numberOfElements++;
+}
+
+//destructors
+//
+Element::~Element()
+{
+   numberOfElements--;
+}
+
+
+//mutators
+//
+void Element::setStart(int newStart)
+{
+   start=newStart;
+}
+
+void Element::setEnd(int newEnd)
+{
+   end=newEnd;
+}
+
+void Element::setName(std::string newName)
+{
+   name=newName;
+}
+
+//helpers
+//
+
+bool Element::isElementEmpty() const
+{
+   if( start==DEF_START &&
+       end==DEF_END &&
+       name==DEF_NAME)
+      return true;
+   else
+      return false;
+}
+
+
+//helper functions not within the class
+//
+std::ostream& operator<<(std::ostream& outStream, const Element& elOut)
+{
+   outStream << "  Chapter : " << elOut.getName() << std::endl;
+   outStream << "    Start : " << elOut.getStart() << std::endl;
+   outStream << "      End : " << elOut.getEnd() << std::endl;
+   return outStream;
+}
+
+%
+%
+%
+%ls
+Author.cpp  Book.cpp  Element.cpp  Hw4.cpp  HwLib.cpp  MediaItem.cpp  Music.cpp  Video.cpp  makefile  ts_6.out  ts_8.in
+Author.hpp  Book.hpp  Element.hpp  Hw4.txt  HwLib.hpp  MediaItem.hpp  Music.hpp  Video.hpp  ts_6.in   ts_7.in
+%
+%
+%cat MediaItem.hpp
+//////////////////////
+// CS225
+// HW4
+// 3/6/15
+// Kyle Mulligan
+// Declaration of mediaItem Class
+//////////////////////
+
+#include <iostream>
+#include "HwLib.hpp"
+#include "Element.hpp"
+#include "Author.hpp"
+
+#ifndef MEDIAITEM_H
+#define MEDIAITEM_H
+
+
+#define DEF_NAME ""
+#define DEF_VALUE 0.0
+#define DEF_AUTHOR NULL
+#define DEF_YEAR 0
+
+
+
+class MediaItem 
+{
+
+   private:
+   //attributes of mediaItem
+   //
+      std::string name;
+      int yearOfPublication;
+      float value;
+      Author *author;
+      Element chapters[MAX_ELEMENTS];
+
+
+
+   //class attributes
+      static int numberOfObjects;
+
+   public:
+   //methods of mediaItem
+   //
+
+      //constructors
+      //
+      MediaItem(std::string=DEF_NAME,
+		float=DEF_VALUE,
+		Author* =DEF_AUTHOR,
+		int=DEF_YEAR);
+
+      //destructors
+      //
+      ~MediaItem();
+
+      
+      //accessors
+      //
+      std::string getName() const { return name;}
+      int getYearOfPublication() const {return yearOfPublication;}
+      int getNumberOfObjects() const { return numberOfObjects;}
+      float getValue() const {return value;}
+      Author* getAuthor() const {return author;}
+      const Element* indexElements(int index) const {return &chapters[index];}
+
+
+
+      //mutators
+      //
+      void setName(std::string);
+      void setAuthor(Author*);
+      void setYearOfPublication(int);
+      void setValue(float);
+      void clearObject();
+      void addNewElement(int, int, std::string);
+
+      //helpers
+      //
+      virtual bool isEmpty();
+      virtual void toCout() const;
+      
+
+};
+
+std::ostream& operator<<(std::ostream&, const MediaItem&);
+
+
+#endif
+%cat MediaItem.cpp
+///////////////////////////////////
+// CS225
+// HW4
+// 3/6/15
+// Kyle Mulligan
+// Implementation of mediaItem Class
+///////////////////////////////////
+
+#include <iostream>
+#include <iomanip>
+#include "MediaItem.hpp"
+
+
+//class static attribute
+//
+int MediaItem::numberOfObjects=0;
+
+//constructors
+//
+MediaItem::MediaItem(std::string newName,
+		     float newValue,
+		     Author* newAuthor,
+		     int newYear)
+{
+   name=newName;
+   value=newValue;
+   author=newAuthor;
+   yearOfPublication=newYear;
+   numberOfObjects++;
+}
+
+//destructors
+//
+MediaItem::~MediaItem()
+{
+   numberOfObjects--;
+
+}
+
+
+//mutators
+//
+void MediaItem::setName(std::string newName)
+{
+   name=newName;
+}
+
+void MediaItem::setAuthor(Author *newAuthor)
+{
+   author=newAuthor;
+}
+
+void MediaItem::setYearOfPublication(int newYearOfPublication)
+{
+   yearOfPublication=newYearOfPublication;
+}
+
+void MediaItem::setValue(float newValue)
+{
+   value=newValue;
+}
+
+
+void MediaItem::clearObject()
+{
+   name=DEF_NAME;
+   value=DEF_VALUE;
+   author=DEF_AUTHOR;
+   yearOfPublication=DEF_YEAR;
+}
+
+void MediaItem::addNewElement(int newStart, int newEnd, std::string newName)
+{
+   Element *toBeAdded=NULL;
+   int count;
+   
+   for(count=0; (count<MAX_ELEMENTS) && (toBeAdded==NULL);count++)
+   {
+      if( (chapters[count]).isElementEmpty() )
+	 toBeAdded=&(chapters[count]);
+   }
+
+   if(toBeAdded==NULL)
+      std::cout << "Array is full" << std::endl;
+   else
+   {
+      toBeAdded->setStart(newStart);
+      toBeAdded->setEnd(newEnd);
+      toBeAdded->setName(newName);
+   }
+}
+
+
+
+//helpers
+//
+bool MediaItem::isEmpty()
+{
+   if( (name==DEF_NAME) && 
+       (value==DEF_VALUE) &&
+       (author==DEF_AUTHOR) &&
+       (yearOfPublication==DEF_YEAR) )
+      return true;
+   else
+      return false;
+}
+
+void MediaItem::toCout() const
+{
+   std::cout<<(*this);
+}
+
+
+//helper functions not within the class
+//
+std::ostream& operator<<(std::ostream& outStream, const MediaItem& miOut)
+{
+   int count;
+   const Element *elementIndex;
+
+   outStream << "MediaItem : " << miOut.getName() << std::endl;
+   if( miOut.getAuthor()!=NULL)
+   {
+      outStream << "   Author : " << (miOut.getAuthor())->getName() << std::endl;
+   }
+   outStream << "     Year : " << miOut.getYearOfPublication() << std::endl;
+   outStream << "    Value : $" << std::fixed << std::setprecision(2) << miOut.getValue() << std::endl;
+
+   for(count=0; count<MAX_ELEMENTS; count++)
+   {
+      elementIndex=(miOut.indexElements(count));
+      if( !(elementIndex->isElementEmpty()) )
+      {
+	 outStream << "Element[" << count << "]" << std::endl;
+	 outStream << *elementIndex;
+      }
+   }
+
+
+   return outStream;
+}
+%
+%
+%
+%cat Music.hpp
+//////////////////////
+// CS225
+// HW4
+// 3/6/15
+// Kyle Mulligan
+// Declaration of Music Class
+//////////////////////
+
+#ifndef MUSIC_H
+#define MUSIC_H
+
+#include <iostream>
+#include "HwLib.hpp"
+#include "MediaItem.hpp"
+#include "Author.hpp"
+#include "Element.hpp"
+#include "Book.hpp"
+#include "Video.hpp"
+
+#define DEF_PRODUCER ""
+#define DEF_MINUTES 0
+
+
+
+class Music : public MediaItem
+{
+   private:
+   //attributes of Music
+   //
+      enum Genre_e { UNDEF=0, REGGAE, COUNTRY, ROCK, TECHNO, HIPHOP, OTHER};
+
+      std::string producer;
+      float minutes;
+      Genre_e genre;
+
+
+   //class attributes
+      static int numberOfMusics;
+      static std::string const genreString[];
+
+   public:
+   //methods of mediaItem
+   //
+
+      //constructors
+      //
+      Music(std::string=DEF_NAME,
+	    float=DEF_VALUE,
+	    Author* =DEF_AUTHOR,
+	    int=DEF_YEAR,
+	    std::string=DEF_PRODUCER,
+	    float=DEF_MINUTES);
+
+      //destructors
+      //
+      ~Music();
+
+      
+      //accessors
+      //
+      std::string getProducer() const {return producer;}
+      float getMinutes() const {return minutes;}
+      int getNumberOfMusics() const {return numberOfMusics;}
+      
+      Genre_e getGenre() const {return genre;}
+      std::string getGenreString(Genre_e genre) const {return genreString[genre];}
+
+
+      //mutators
+      //
+      void setProducer(std::string);
+      void setMinutes(float);
+      void setGenre(std::string);
+
+      //helpers
+      //
+      bool isEmpty();
+      void toCout() const;
+
+
+
+
+};
+
+
+
+
+std::ostream& operator<<(std::ostream&, const Music&);
+
+#endif
+%
+%
+%
+%cat Music.cpp
+///////////////////////////////////
+// CS225
+// HW4
+// 3/6/15
+// Kyle Mulligan
+// Implementation of Music Class
+///////////////////////////////////
+
+
+#include <iostream>
+#include <iomanip>
+#include "Music.hpp"
+
+//class wide attributes
+int Music::numberOfMusics=0;
+std::string const Music::genreString[] = {"Undef", "Reggae", "Country", "Rock", "Techno", "Hiphop", "Other"}; 
+
+
+//constructor
+Music::Music(std::string newName,
+	     float newValue,
+	     Author* newAuthor,
+	     int newYear,
+	     std::string newProducer,
+	     float newMinutes) : MediaItem(newName, newValue, newAuthor, newYear)
+{
+   producer=newProducer;
+   minutes=newMinutes;
+   numberOfMusics++;
+}
+
+//destructor
+Music::~Music()
+{
+   numberOfMusics--;
+}
+
+//mutators
+void Music::setProducer(std::string newProducer)
+{
+   producer=newProducer;
+}
+
+void Music::setMinutes(float newMinutes)
+{
+   minutes=newMinutes;
+}
+
+void Music::setGenre(std::string newString)
+{
+   unsigned int count;
+   for (count=0; (count<3) && (count< newString.length()) ; count++)
+   {
+      newString[count]=toupper(newString[count]);
+   }
+   if(newString.compare(0,3,"REG")==0)
+      genre=REGGAE;
+   else if (newString.compare(0,3, "COU")==0)
+      genre=COUNTRY;
+   else if (newString.compare(0,3, "ROC")==0)
+      genre=ROCK;
+   else if (newString.compare(0,3, "TEC")==0)
+      genre=TECHNO;
+   else if (newString.compare(0,3, "HIP")==0)
+      genre=HIPHOP;
+   else
+      genre=OTHER;
+}
+
+//helpers
+bool Music::isEmpty()
+{
+   if( MediaItem::isEmpty() &&
+       (producer==DEF_PRODUCER)&&
+       (minutes==DEF_MINUTES) )
+      return true;
+   else
+      return false;
+}
+
+
+
+void Music::toCout() const
+{
+   std::cout<<(*this);
+}
+
+//helper functions outside of class
+std::ostream& operator<<(std::ostream& outStream, const Music& muOut)
+{
+
+   outStream<<((MediaItem &)muOut);
+
+   outStream<< " Producer : " << muOut.getProducer() <<std::endl;
+   outStream<< "  Minutes : " << muOut.getMinutes() <<std::endl;
+
+   if( ( (muOut).getGenreString(muOut.getGenre()) ).compare("Undef")!=0 )
+      outStream<< "    Genre : " << muOut.getGenreString(muOut.getGenre()) << std::endl;
+
+
+   outStream<< std::endl<< std::endl;
+
+   return outStream;
+}
+%
+%
+%
+%cat Video.hpp
+//////////////////////
+// CS225
+// HW4
+// 3/6/15
+// Kyle Mulligan
+// Declaration of Video Class
+//////////////////////
+
+#ifndef VIDEO_H
+#define VIDEO_H
+
+#include <iostream>
+#include "HwLib.hpp"
+#include "MediaItem.hpp"
+#include "Author.hpp"
+#include "Element.hpp"
+#include "Book.hpp"
+#include "Music.hpp"
+
+#define DEF_DIRECTOR ""
+#define DEF_MINUTES 0
+#define DEF_SEQUEL NULL
+
+class Video : public MediaItem
+{
+   private:
+   //attributes of video
+   //
+   std::string director;
+   float minutes;
+   MediaItem *sequel;
+
+
+   //class attributes
+      static int numberOfVideos;
+
+   public:
+   //methods of mediaItem
+   //
+
+      //constructors
+      //
+      Video(std::string=DEF_NAME,
+	    float=DEF_VALUE,
+	    Author* =DEF_AUTHOR,
+	    int=DEF_YEAR,
+	    std::string=DEF_DIRECTOR,
+	    float=DEF_MINUTES,
+	    MediaItem* =DEF_SEQUEL);
+
+
+      //destructors
+      //
+      ~Video();
+
+      
+      //accessors
+      //
+      std::string getDirector() const {return director;}
+      float getMinutes() const {return minutes;}
+      MediaItem* getSequel() const {return sequel;}
+      int getNumberOfVideos() const {return numberOfVideos;}
+
+
+      //mutators
+      //
+      void setDirector(std::string);
+      void setMinutes(float);
+      void setSequel(MediaItem*);
+
+
+      //helpers
+      //
+      bool isEmpty();
+      void toCout() const;
+
+
+
+
+
+
+
+
+};
+
+
+std::ostream& operator<<(std::ostream&, const Video&);
+
+#endif
+%
+%
+%
+%cat Video.cpp
+///////////////////////////////////
+// CS225
+// HW4
+// 3/6/15
+// Kyle Mulligan
+// Implementation of Video Class
+///////////////////////////////////
+
+
+#include <iostream>
+#include <iomanip>
+#include "Video.hpp"
+
+//class wide attributes
+int Video::numberOfVideos=0;
+
+
+//constructors
+Video::Video(std::string newName,
+	     float newValue,
+	     Author* newAuthor,
+	     int newYear,
+	     std::string newDirector,
+	     float newMinutes,
+	     MediaItem* newSequel) : MediaItem(newName, newValue, newAuthor, newYear)
+{
+   director=newDirector;
+   minutes=newMinutes;
+   sequel=newSequel;
+   numberOfVideos++;
+}
+
+//destructor
+Video::~Video()
+{
+   numberOfVideos--;
+}
+
+//mutators
+void Video::setDirector(std::string newDirector)
+{
+   director=newDirector;
+}
+
+void Video::setMinutes(float newMinutes)
+{
+   minutes=newMinutes;
+}
+
+void Video::setSequel(MediaItem *newSequel)
+{
+   sequel=newSequel;
+}
+
+
+//helpers
+bool Video::isEmpty()
+{
+   if( MediaItem::isEmpty() &&
+       (director==DEF_DIRECTOR) &&
+       (minutes==DEF_MINUTES) &&
+       (sequel==DEF_SEQUEL) )
+      return true;
+   else
+      return false;
+}
+
+void Video::toCout() const
+{
+   std::cout<<(*this);
+}
+
+//helper functions outside of class
+std::ostream& operator<<(std::ostream& outStream, const Video& vOut)
+{
+
+   outStream<<((MediaItem &)vOut);
+
+   outStream<< " Director : " << vOut.getDirector() <<std::endl;
+   outStream<< "  Minutes : " << vOut.getMinutes() << std::endl;
+
+   if (vOut.getSequel()!=NULL)
+   {
+      outStream<< "   Sequel : " << (vOut.getSequel())->getName()<<std::endl;
+   }
+
+   outStream<< std::endl<< std::endl;
+
+   return outStream;
+}
+%
+%
+%
+%cat HwLib.hpp
+//////////////////////
+// CS225
+// HW4
+// 3/6/15
+// Kyle Mulligan
+// Prototypes for Hw3 
+//////////////////////
+
+
+#ifndef HWLIB_H
+#define HWLIB_H
+
+#define ARR_MAX 80
+#define PER_GROUP 20
+#define MAX_ITEMS 30
+#define MAX_AUTHORS 8
+#define MAX_ELEMENTS 15
+
+void printMenu();
+void processMenuIn(char);
+int initMixedArray();
+
+#endif
+%
+%
+%cat HwLib.cpp
+//////////////////////
+// CS225
+// HW4
+// 3/6/15
+// Kyle Mulligan
+// Functions for Hw4 
+//////////////////////
+#include "MediaItem.hpp"
+#include "HwLib.hpp"
+#include "Element.hpp"
+#include "Author.hpp"
+#include "Book.hpp"
+#include "Music.hpp"
+#include "Video.hpp"
+#include <iostream>
+#include <typeinfo>
+
+
+
+extern bool done;
+extern MediaItem *currentItem;
+extern Author *firstAuthor;
+extern MediaItem *mixedArray[ARR_MAX];
+
+void printMenu()
+{
+   std::cout << "0-19 : Books" <<std::endl<<"20-39 : Music" <<std::endl << "40-59 : Videos" <<std::endl << "60-79 : Media Items" << std::endl;
+   std::cout << "* - Display data for all Media Items" <<std::endl;
+   std::cout << "+/- Increment / decrement the selected Item w/ in the Array" <<std::endl;
+   std::cout << "# - Set the selected media Item" <<std::endl;
+   std::cout << "0 - Clear MediaItem data" <<std::endl;
+   std::cout << "B - set Media Item duration/time" << std::endl;
+   std::cout << "C - Create author" <<std::endl;
+   std::cout << "D - Display Media Item data" <<std::endl;
+   std::cout << "E - Add Media Item Element" <<std::endl;
+   std::cout << "F - Set Music/Video Producer/Director respectively" <<std::endl;
+   std::cout << "I - Set Media Item in print status (0/1)" <<std::endl;
+   std::cout << "J - Set Book ISBN" << std::endl;
+   std::cout << "K - set Music Genre" << std::endl;
+   std::cout << "L - Display Music Items by Genre" << std::endl;
+   std::cout << "M - Print this menu again" <<std::endl;
+   std::cout << "N - Set Media Item name" <<std::endl;
+   std::cout << "Q - Quit this program" <<std::endl;
+   std::cout << "P - Set Media Item pages" <<std::endl;
+   std::cout << "R - Display the Memory used" << std::endl;
+   std::cout << "S - Set Media Item Sequel from Index" << std::endl;
+   std::cout << "T - Set Media Item Author Index" <<std::endl;
+   std::cout << "V - Set Media Item value" <<std::endl;
+   std::cout << "Y - Set Media Item Year Produced" << std::endl;
+}
+
+void processMenuIn(char menuIn)
+{
+   static int currentItemNumber=0;
+   switch(toupper(menuIn))  //handles all menu options and works for upper or lower case inputs
+   {
+
+      case '*': //prints everything
+      {
+	 int count;
+
+	 std::cout << std::endl << "=== All Authors==="<< std::endl; // prints all authors
+	 for( count=0; count< MAX_AUTHORS; count++)
+	 {
+	    if( !(firstAuthor[count].isAuthorEmpty() ) )
+	    {
+	       std::cout<< "Author[" << count << "]" << std::endl;
+	       std::cout<< (firstAuthor[count]);
+	    }
+	 }
+
+
+	 std::cout << std::endl << "=== All Items ===" << std::endl; // prints all items and their elements
+	 for(count=0;count<ARR_MAX;count++)
+	 {
+	    if ( !(mixedArray[count])->isEmpty() )
+	    {
+	       std::cout << "mediaItem[" << count << "]" << std::endl;
+	       (mixedArray[count])->toCout();
+	    }
+
+	 }
+      }
+      break;
+
+
+      case '+':
+      {
+	 if(currentItemNumber==(ARR_MAX-1))
+	    std::cout << "At the last item already." << std::endl;
+	 else
+	 {
+	    currentItemNumber++;
+	    currentItem=mixedArray[currentItemNumber];
+	    std::cout << "Index set to " << currentItemNumber << std::endl;
+	 }
+      }
+      break;
+
+
+      case '-':
+       {
+	 if(currentItemNumber==0)
+	    std::cout << "At the first item already." << std::endl;
+	 else
+	 {
+	    currentItemNumber--;
+	    currentItem=mixedArray[currentItemNumber];
+	    std::cout << "Index set to " << currentItemNumber << std::endl;
+	 }
+      }     
+      break;
+
+
+      case '#':
+      {
+	 int number;
+	 std::cout << "Enter the number of the Item: ";
+	 std::cin >> number;
+
+	 if( (number < 0) || (number >(ARR_MAX-1)) )
+	    std::cout << "That is out of range." << std::endl;
+	 else
+	 {
+	    currentItemNumber=number;
+	    currentItem=mixedArray[currentItemNumber];
+	    std::cout << "Index set to " << currentItemNumber << std::endl;
+	 }
+      }
+      break;
+
+
+      case '0': //clears the media item
+      currentItem->clearObject();
+      break;
+
+      case 'B': //set mediaItem duration/time
+      {
+	 if( typeid(*currentItem)==typeid(Music) )
+	 {
+	    float time;
+	    std::cout << "Enter the duration of the Item: ";
+	    std::cin >> time;
+
+	    if(time>0)
+	    {
+	       ((Music*)currentItem)->setMinutes(time);
+	    }
+	    else
+	    std::cout << "invalid duration."<<std::endl;
+	 }
+	 else if( typeid(*currentItem)==typeid(Video) )
+	 {
+	    float time;
+	    std::cout << "Enter the duration of the Item: ";
+	    std::cin >> time;
+
+	    if(time>0)
+	    {
+	       ((Video*)currentItem)->setMinutes(time);
+	    }
+	    else
+	    std::cout << "invalid duration."<<std::endl;
+	 }
+	 else
+	 std::cout << "This mediaItem doesn't have a duration."<<std::endl;
+
+
+      }
+      break;
+
+
+      case 'C':// creates new author
+      {
+      int dateBorn, dateDied;
+      std::string author;
+      int authorIndex;
+
+	 for(authorIndex=0; (authorIndex<MAX_AUTHORS); authorIndex++)
+	 {
+	    if( (firstAuthor+authorIndex)->isAuthorEmpty() )
+	    {
+	       std::cout << "Enter date Born ";
+	       std::cin >> dateBorn;
+
+	       std::cout << "Enter date Died (0 if still alive) ";
+	       std::cin >> dateDied;
+	       std::cin.ignore();
+
+	       std::cout<< "Enter the author's name: ";
+	       std::getline(std::cin,author);
+
+	       if( dateDied!=0 && dateDied<dateBorn)
+		  std::cout << "invalid birth and death dates " <<std::endl;
+	       else
+	       {
+		  (firstAuthor+authorIndex)->setBorn(dateBorn);
+		  (firstAuthor+authorIndex)->setDied(dateDied);
+		  (firstAuthor+authorIndex)->setName(author);
+	       }
+
+	       break;
+	    }
+	 }
+      }
+      break;
+
+
+      case 'D': //prints the media item
+      currentItem->toCout();
+      break;
+
+      case 'E': // creates a new element
+      {
+	 int startElement, endElement;
+	 std::string nameElement;
+
+	 std::cout << "Enter the start of the Element: ";
+	 std::cin >> startElement;
+
+	 std::cout << "Enter the end of the Element: ";
+	 std::cin >> endElement;
+	 std::cin.ignore();
+
+	 std::cout << "Enter the name of the Element: ";
+	 std::getline(std::cin, nameElement);
+
+      currentItem->addNewElement(startElement, endElement, nameElement);
+
+      }
+      break;
+
+
+      case 'F': //sets music/video producer/director respectively
+      {
+	 if( typeid(*currentItem)==typeid(Music) )
+	 {
+	    std::string producerName;
+	    std::cout<< "Enter the music's producer: ";
+	    std::getline(std::cin,producerName);
+	    ((Music*)currentItem)->setProducer(producerName);
+	 }
+	 else if (typeid(*currentItem)==typeid(Video))
+	 {
+	    std::string directorName;
+	    std::cout << "Enter the video's director: ";
+	    std::getline(std::cin,directorName);
+	    ((Video*)currentItem)->setDirector(directorName);
+	 }
+	 else
+	    std::cout << "this item doesn't have a producer or director"<<std::endl;
+
+
+      }
+      break;
+
+      case 'J': //set book ISBN
+      {
+	 if(typeid(*currentItem)==typeid(Book))
+	 {
+	    std::string bookISBN;
+	    std::cout << "Enter the book's ISBN: ";
+	    std::getline(std::cin,bookISBN);
+	    ((Book*)currentItem)->setISBN(bookISBN);
+	 }
+	 else
+	    std::cout<< "This Item doesn't have an ISBN."<<std::endl;
+      }
+      break;
+
+      case 'K': //set Music Genre
+      {
+	 if(typeid(*currentItem)==typeid(Music))
+	 {
+	    std::string theGenre;
+	    std::cout<< "Enter the Music's Genre: ";
+	    std::getline(std::cin,theGenre);
+	    ((Music*)currentItem)->setGenre(theGenre);
+	 }
+	 else
+	    std::cout<< "This Item is not Music."<<std::endl;
+
+      }
+      break;
+
+      case 'L': //Display Music Items by Genre
+      {
+	 int iterator;
+
+	 std::cout<<std::endl<< std::endl << "=====Music By Genre=====" <<std::endl<<std::endl;
+	 for(iterator=0; iterator<7; iterator++)
+	 {
+	    int count;
+	    for(count=20; count<40; count++)
+	    {
+	       if( (!(mixedArray[count])->isEmpty()) && ((Music*)mixedArray[count])->getGenre()==iterator)
+		  (mixedArray[count])->toCout();
+	    }
+	 }
+
+      }
+      break;
+
+
+      case 'N': // enters the name of media item
+      {
+	 std::string name;
+	 std::cout << "Enter the book's Name: ";
+	 std::getline(std::cin,name);
+	 currentItem->setName(name);
+      }
+      break;
+
+      case 'T': // enters the author index of media item
+      {
+	 int index;
+	 std::cout << "Enter the index of the Author: ";
+	 std::cin >> index;
+	 currentItem->setAuthor(firstAuthor+index);
+      }
+      break;
+
+
+      case 'P': // enters the number of pages for the media item
+      {
+	 if(typeid(*currentItem)==typeid(Book))
+	 {
+	    int pages;
+	    std::cout << "Enter the number of Pages: ";
+	    std::cin >> pages;
+	    ((Book*)currentItem)->setPages(pages);
+	 }
+	 else
+	    std::cout << "This item doesn't have pages. " <<std::endl;
+      }
+      break;
+
+
+      case 'I': // sets whether the item is in print
+      {
+	 if(typeid(*currentItem)==typeid(Book))
+	 {
+	    bool isInPrint;
+	    std::cout << "Enter wether or not the item is in print (0/1) ";
+	    std::cin >> isInPrint;
+	    ((Book*)currentItem)->setInPrint(isInPrint);
+	 }
+	 else
+	    std::cout << "This item is not a book. "<<std::endl;
+      }
+      break;
+
+
+      case 'V': // sets the value of the item
+      {
+	 float value;
+	 std::cout << "Enter the value: ";
+	 std::cin >> value;
+	 currentItem->setValue(value);
+      }
+      break;
+
+
+      case 'Y': // sets the year of publication
+      {
+	 int year;
+	 std::cout << "Enter the year of publication: ";
+	 std::cin >> year;
+
+	 if( year<0 || year>2016)
+	    std::cout << "Not a valid year" << std::endl;
+	 else
+	    currentItem->setYearOfPublication(year);
+
+      }
+      break;
+
+      case 'S': // sets the sequel of the item
+      {
+	 if (typeid(*currentItem)==typeid(Video))
+	 {
+	    int index;
+	    std::cout << "Enter the index of the Sequel: ";
+	    std::cin >> index;
+
+	    if(index>=MAX_ITEMS || index < 0)
+	       std::cout << "Index out of bounds" << std::endl;
+	    else
+	       ((Video*)currentItem)->setSequel(mixedArray[index]);
+	 }
+	 else if (typeid(*currentItem)==typeid(Book))
+	 {
+	    int index;
+	    std::cout << "Enter the index of the Sequel: ";
+	    std::cin >> index;
+
+	    if(index>=MAX_ITEMS || index < 0)
+	       std::cout << "Index out of bounds" << std::endl;
+	    else
+	       ((Book*)currentItem)->setSequel(mixedArray[index]);
+	 }
+	 else
+	    std::cout<< "this item is not a book or video. ";
+      }
+      break;
+
+      case 'R': //displays the memory usage
+      {
+
+	 std::cout<<std::endl;
+	 std::cout<< "Authors in memory    = " << (firstAuthor->getNumberOfAuthors()) << " @ " << sizeof(Author) << " Bytes EA. " << std::endl;
+	 std::cout<< "               bytes = " << ((firstAuthor->getNumberOfAuthors())* sizeof(Author)) << std::endl;
+
+	 std::cout<< "Books in memory      = " << (((Book*)mixedArray[0])->getNumberOfBooks()) << " @ " << sizeof(Book) << " Bytes EA. " << std::endl;
+	 std::cout<< "               bytes = " << (( ((Book*)mixedArray[0])->getNumberOfBooks())* sizeof(Book)) << std::endl;
+
+	 std::cout<< "Music in memory      = " << (((Music*)mixedArray[20])->getNumberOfMusics()) << " @ " << sizeof(Music) << " Bytes EA. " << std::endl;
+	 std::cout<< "               bytes = " << ((((Music*)mixedArray[20])->getNumberOfMusics())* sizeof(Music)) << std::endl;
+
+	 std::cout<< "Videos in memory     = " << (((Video*)mixedArray[40])->getNumberOfVideos()) << " @ " << sizeof(Video) << " Bytes EA. " << std::endl;
+	 std::cout<< "               bytes = " << ((((Video*)mixedArray[40])->getNumberOfVideos())* sizeof(Video)) << std::endl;
+
+	 std::cout<< "MediaItems in memory = " << ((mixedArray[60])->getNumberOfObjects()) << " @ " << sizeof(MediaItem) << " Bytes EA. " << std::endl;
+	 std::cout<< "               bytes = " << (((mixedArray[60])->getNumberOfObjects())* sizeof(MediaItem)) << std::endl;
+
+	 std::cout << "        Total bytes = " << ( ((firstAuthor->getNumberOfAuthors())* sizeof(Author)) + (( ((Book*)mixedArray[0])->getNumberOfBooks())* sizeof(Book)) + ((((Music*)mixedArray[20])->getNumberOfMusics())* sizeof(Music)) + ((((Video*)mixedArray[40])->getNumberOfVideos())* sizeof(Video)) + (( ((mixedArray[60])->getNumberOfObjects()) - ((((Video*)mixedArray[40])->getNumberOfVideos()) + (((Music*)mixedArray[20])->getNumberOfMusics()) + ( ((Book*)mixedArray[0])->getNumberOfBooks())) )* sizeof(MediaItem) ) )<< std::endl;
+
+      }
+      break;
+
+
+      case 'M': //prints the menu again
+      printMenu();
+      break;
+
+      case 'Q': // exits the menu
+      done= true;
+      break;
+
+
+      default:
+	 std::cout << std::endl << "NOT A VALID INPUT" << std::endl;
+   }
+   std::cout<<std::endl<<"Menu["<<currentItemNumber<<"] : ";
+}
+
+
+
+
+int initMixedArray()
+{
+   int count;
+
+
+   for(count=0; count<ARR_MAX; count++)
+   {
+      int type= (count/PER_GROUP);
+
+      switch (type)
+      {
+	 case 0:
+	    mixedArray[count] = new Book();
+	 break;
+
+	 case 1:
+	    mixedArray[count] = new Music();
+	 break;
+
+	 case 2:
+	    mixedArray[count] = new Video();
+	 break;
+
+	 case 3:
+	    mixedArray[count] = new MediaItem();
+	 break;
+
+	 default:
+	    std::cout <<"ERROR: in array initialize" << std::endl;
+	    return -1;
+      }
+   }
+   return 0;
+}
+%
+%
+%
+%
+%cat Hw4.cpp
+//////////////////////
+// CS225
+// HW4
+// 3/6/15
+// Kyle Mulligan
+// menu based program which utilizes class mediaItem 
+//////////////////////
+
+#include <iostream>
+#include "HwLib.hpp"
+#include "MediaItem.hpp"
+#include "Author.hpp"
+#include "Element.hpp"
+
+
+//globals
+//
+MediaItem *currentItem;
+Author *firstAuthor;
+bool done=false;
+MediaItem *mixedArray[ARR_MAX];
+
+int main()
+{
+   std::string userInput;
+   initMixedArray();
+   Author authors[MAX_AUTHORS];
+
+   currentItem=mixedArray[0];
+   firstAuthor=authors;
+
+   
+   printMenu();
+   std::cout<<std::endl<<"Menu[0] : ";
+   while(!done) // loops until the user is done using the menu
+   {
+      std::cin >> userInput;
+      if(userInput[0]=='/')
+	 std::cin.ignore(256,'\n');
+      else
+      {
+	 std::cin.ignore();
+	 processMenuIn(userInput[0]);
+      }
+   }
+   std::cout << "Goodbye" << std::endl;
+}
+%
+%
+%
+%make
+g++ -g -Wall -o Hw4.o -c Hw4.cpp
+g++ -g -Wall -o HwLib.o -c HwLib.cpp
+g++ -g -Wall -o MediaItem.o -c MediaItem.cpp
+g++ -g -Wall -o Element.o -c Element.cpp
+g++ -g -Wall -o Author.o -c Author.cpp
+g++ -g -Wall -o Book.o -c Book.cpp
+g++ -g -Wall -o Music.o -c Music.cpp
+g++ -g -Wall -o Video.o -c Video.cpp
+g++ -g -Wall -o mediaItem4Project Hw4.o HwLib.o MediaItem.o Element.o Author.o Book.o Music.o Video.o
+echo All done
+All done
+%
+%
+%./mediaItem4Project < ts_6.in
+0-19 : Books
+20-39 : Music
+40-59 : Videos
+60-79 : Media Items
+* - Display data for all Media Items
++/- Increment / decrement the selected Item w/ in the Array
+# - Set the selected media Item
+0 - Clear MediaItem data
+B - set Media Item duration/time
+C - Create author
+D - Display Media Item data
+E - Add Media Item Element
+F - Set Music/Video Producer/Director respectively
+I - Set Media Item in print status (0/1)
+J - Set Book ISBN
+K - set Music Genre
+L - Display Music Items by Genre
+M - Print this menu again
+N - Set Media Item name
+Q - Quit this program
+P - Set Media Item pages
+R - Display the Memory used
+S - Set Media Item Sequel from Index
+T - Set Media Item Author Index
+V - Set Media Item value
+Y - Set Media Item Year Produced
+
+Menu[0] : 
+Authors in memory    = 8 @ 16 Bytes EA. 
+               bytes = 128
+Books in memory      = 20 @ 296 Bytes EA. 
+               bytes = 5920
+Music in memory      = 20 @ 288 Bytes EA. 
+               bytes = 5760
+Videos in memory     = 20 @ 296 Bytes EA. 
+               bytes = 5920
+MediaItems in memory = 80 @ 272 Bytes EA. 
+               bytes = 21760
+        Total bytes = 23168
+
+Menu[0] : 
+=== All Authors===
+
+=== All Items ===
+
+Menu[0] : Enter date Born Enter date Died (0 if still alive) Enter the author's name: 
+Menu[0] : Enter the number of the Item: Index set to 40
+
+Menu[40] : Enter the book's Name: 
+Menu[40] : Enter the year of publication: 
+Menu[40] : Enter the index of the Author: 
+Menu[40] : Enter the video's director: 
+Menu[40] : Enter the index of the Sequel: Index out of bounds
+
+Menu[40] : Index set to 41
+
+Menu[41] : Enter the book's Name: 
+Menu[41] : Enter the year of publication: 
+Menu[41] : Enter the video's director: 
+Menu[41] : Enter the index of the Sequel: Index out of bounds
+
+Menu[41] : Index set to 42
+
+Menu[42] : Enter the book's Name: 
+Menu[42] : Enter the year of publication: 
+Menu[42] : Enter the video's director: 
+Menu[42] : Enter the index of the Author: 
+Menu[42] : Index set to 43
+
+Menu[43] : Enter the book's Name: 
+Menu[43] : Enter the year of publication: 
+Menu[43] : Enter the video's director: 
+Menu[43] : Enter the index of the Author: 
+Menu[43] : Enter the index of the Sequel: Index out of bounds
+
+Menu[43] : Index set to 44
+
+Menu[44] : Enter the book's Name: 
+Menu[44] : Enter the year of publication: 
+Menu[44] : Enter the video's director: 
+Menu[44] : Enter the index of the Sequel: Index out of bounds
+
+Menu[44] : Index set to 45
+
+Menu[45] : Enter the book's Name: 
+Menu[45] : Enter the year of publication: 
+Menu[45] : Enter the video's director: 
+Menu[45] : Enter the index of the Author: 
+Menu[45] : Enter the index of the Sequel: Index out of bounds
+
+Menu[45] : Index set to 46
+
+Menu[46] : Enter the number of the Item: Index set to 20
+
+Menu[20] : Enter the book's Name: 
+Menu[20] : Enter the year of publication: 
+Menu[20] : Enter the music's producer: 
+Menu[20] : Enter the value: 
+Menu[20] : Index set to 21
+
+Menu[21] : Enter the number of the Item: Index set to 0
+
+Menu[0] : Enter the book's Name: 
+Menu[0] : Enter the value: 
+Menu[0] : Enter the year of publication: 
+Menu[0] : Enter the number of Pages: 
+Menu[0] : Index set to 1
+
+Menu[1] : 
+Authors in memory    = 8 @ 16 Bytes EA. 
+               bytes = 128
+Books in memory      = 20 @ 296 Bytes EA. 
+               bytes = 5920
+Music in memory      = 20 @ 288 Bytes EA. 
+               bytes = 5760
+Videos in memory     = 20 @ 296 Bytes EA. 
+               bytes = 5920
+MediaItems in memory = 80 @ 272 Bytes EA. 
+               bytes = 21760
+        Total bytes = 23168
+
+Menu[1] : 
+=== All Authors===
+Author[0]
+   Author : George Walton Lucas, Jr.
+     Born : 1944
+     Died : 0
+
+=== All Items ===
+mediaItem[0]
+MediaItem : Heir to the Jedi: Star Wars
+     Year : 2015
+    Value : $20.52
+    Pages : 304
+ In Print : False
+     ISBN : 
+
+
+mediaItem[20]
+MediaItem : The Music of John Williams: The Definitive Collection
+     Year : 2012
+    Value : $50.98
+ Producer : Prague Philharmonic Orchestra
+  Minutes : 0.00
+
+
+mediaItem[40]
+MediaItem : Star Wars: A New Hope
+   Author : George Walton Lucas, Jr.
+     Year : 1977
+    Value : $0.00
+ Director : George Lucas
+  Minutes : 0.00
+
+
+mediaItem[41]
+MediaItem : The Empire Strikes Back
+     Year : 1980
+    Value : $0.00
+ Director : Irvin Kershner
+  Minutes : 0.00
+
+
+mediaItem[42]
+MediaItem : Return of the Jedi
+   Author : George Walton Lucas, Jr.
+     Year : 1983
+    Value : $0.00
+ Director : Richard Marquand
+  Minutes : 0.00
+
+
+mediaItem[43]
+MediaItem : The Phantom Menace
+   Author : George Walton Lucas, Jr.
+     Year : 1999
+    Value : $0.00
+ Director : George Lucas
+  Minutes : 0.00
+
+
+mediaItem[44]
+MediaItem : Attack of the Clones
+     Year : 2002
+    Value : $0.00
+ Director : George Lucas
+  Minutes : 0.00
+
+
+mediaItem[45]
+MediaItem : Revenge of the Sith
+   Author : George Walton Lucas, Jr.
+     Year : 2005
+    Value : $0.00
+ Director : George Lucas
+  Minutes : 0.00
+
+
+
+Menu[1] : 
+Menu[1] : Goodbye
+%
+%
+%
+%./mediaItem4Project < ts_7.in
+0-19 : Books
+20-39 : Music
+40-59 : Videos
+60-79 : Media Items
+* - Display data for all Media Items
++/- Increment / decrement the selected Item w/ in the Array
+# - Set the selected media Item
+0 - Clear MediaItem data
+B - set Media Item duration/time
+C - Create author
+D - Display Media Item data
+E - Add Media Item Element
+F - Set Music/Video Producer/Director respectively
+I - Set Media Item in print status (0/1)
+J - Set Book ISBN
+K - set Music Genre
+L - Display Music Items by Genre
+M - Print this menu again
+N - Set Media Item name
+Q - Quit this program
+P - Set Media Item pages
+R - Display the Memory used
+S - Set Media Item Sequel from Index
+T - Set Media Item Author Index
+V - Set Media Item value
+Y - Set Media Item Year Produced
+
+Menu[0] : 
+Authors in memory    = 8 @ 16 Bytes EA. 
+               bytes = 128
+Books in memory      = 20 @ 296 Bytes EA. 
+               bytes = 5920
+Music in memory      = 20 @ 288 Bytes EA. 
+               bytes = 5760
+Videos in memory     = 20 @ 296 Bytes EA. 
+               bytes = 5920
+MediaItems in memory = 80 @ 272 Bytes EA. 
+               bytes = 21760
+        Total bytes = 23168
+
+Menu[0] : 
+=== All Authors===
+
+=== All Items ===
+
+Menu[0] : Enter date Born Enter date Died (0 if still alive) Enter the author's name: 
+Menu[0] : Enter date Born Enter date Died (0 if still alive) Enter the author's name: 
+Menu[0] : Enter date Born Enter date Died (0 if still alive) Enter the author's name: 
+Menu[0] : Enter date Born Enter date Died (0 if still alive) Enter the author's name: 
+Menu[0] : Enter the number of the Item: Index set to 0
+
+Menu[0] : Enter the book's Name: 
+Menu[0] : Enter the number of Pages: 
+Menu[0] : Enter the value: 
+Menu[0] : Enter wether or not the item is in print (0/1) 
+Menu[0] : Enter the year of publication: 
+Menu[0] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[0] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[0] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[0] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[0] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[0] : Enter the index of the Author: 
+Menu[0] : Index set to 1
+
+Menu[1] : Enter the book's Name: 
+Menu[1] : Enter the number of Pages: 
+Menu[1] : Enter the value: 
+Menu[1] : Enter wether or not the item is in print (0/1) 
+Menu[1] : Enter the year of publication: 
+Menu[1] : Enter the index of the Author: 
+Menu[1] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[1] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[1] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[1] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[1] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[1] : Enter the book's ISBN: 
+Menu[1] : Index set to 2
+
+Menu[2] : Enter the book's Name: 
+Menu[2] : Enter the year of publication: 
+Menu[2] : Enter wether or not the item is in print (0/1) 
+Menu[2] : Enter the value: 
+Menu[2] : Enter the index of the Author: 
+Menu[2] : Enter the number of Pages: 
+Menu[2] : Enter the book's ISBN: 
+Menu[2] : Index set to 3
+
+Menu[3] : Enter the book's Name: 
+Menu[3] : Enter the index of the Author: 
+Menu[3] : Enter the value: 
+Menu[3] : Enter the year of publication: 
+Menu[3] : Enter the number of Pages: 
+Menu[3] : Enter the index of the Sequel: 
+Menu[3] : Enter the book's ISBN: 
+Menu[3] : Index set to 4
+
+Menu[4] : Enter the book's Name: 
+Menu[4] : Enter the book's ISBN: 
+Menu[4] : Enter the value: 
+Menu[4] : Enter the year of publication: 
+Menu[4] : Enter the number of Pages: 
+Menu[4] : Index set to 5
+
+Menu[5] : Enter the book's Name: 
+Menu[5] : Enter the index of the Author: 
+Menu[5] : Enter the year of publication: 
+Menu[5] : Enter the book's ISBN: 
+Menu[5] : Enter the value: 
+Menu[5] : Enter the number of Pages: 
+Menu[5] : Enter the index of the Sequel: 
+Menu[5] : Index set to 6
+
+Menu[6] : Enter the book's Name: 
+Menu[6] : Enter the index of the Author: 
+Menu[6] : Enter the year of publication: 
+Menu[6] : Enter the value: 
+Menu[6] : Enter the book's ISBN: 
+Menu[6] : Enter the number of Pages: 
+Menu[6] : Enter the index of the Sequel: 
+Menu[6] : Index set to 7
+
+Menu[7] : Enter the book's Name: 
+Menu[7] : Enter the index of the Author: 
+Menu[7] : Enter the year of publication: 
+Menu[7] : Enter the number of Pages: 
+Menu[7] : Enter the book's ISBN: 
+Menu[7] : Enter the value: 
+Menu[7] : Enter the index of the Sequel: 
+Menu[7] : Index set to 8
+
+Menu[8] : Enter the book's Name: 
+Menu[8] : Enter the index of the Author: 
+Menu[8] : Index set to 9
+
+Menu[9] : Enter the book's Name: 
+Menu[9] : Enter the year of publication: 
+Menu[9] : Enter the number of Pages: 
+Menu[9] : Enter date Born Enter date Died (0 if still alive) Enter the author's name: 
+Menu[9] : Enter the book's ISBN: 
+Menu[9] : Enter the index of the Author: 
+Menu[9] : Enter wether or not the item is in print (0/1) 
+Menu[9] : Enter the number of the Item: Index set to 40
+
+Menu[40] : Enter the book's Name: 
+Menu[40] : Enter the year of publication: 
+Menu[40] : Enter the duration of the Item: 
+Menu[40] : Enter the value: 
+Menu[40] : Enter the number of the Item: Index set to 22
+
+Menu[22] : Enter the book's Name: 
+Menu[22] : Enter the year of publication: 
+Menu[22] : Enter the music's producer: 
+Menu[22] : Enter the value: 
+Menu[22] : Enter the duration of the Item: 
+Menu[22] : Enter the number of the Item: Index set to 61
+
+Menu[61] : Enter the book's Name: 
+Menu[61] : Enter the value: 
+Menu[61] : Enter the year of publication: 
+Menu[61] : 
+=== All Authors===
+Author[0]
+   Author : Bjarne Stroustrup
+     Born : 1950
+     Died : 0
+Author[1]
+   Author : Frederick P. Brooks Jr.
+     Born : 1931
+     Died : 0
+Author[2]
+   Author : TR Reid
+     Born : 0
+     Died : 0
+Author[3]
+   Author : Donald E. Knuth
+     Born : 1938
+     Died : 0
+Author[4]
+   Author : Charles Babbage
+     Born : 1792
+     Died : 1871
+
+=== All Items ===
+mediaItem[0]
+MediaItem : Programming: Principles and Practice Using C++
+   Author : Bjarne Stroustrup
+     Year : 2014
+    Value : $47.39
+Element[0]
+  Chapter : Hello World!
+    Start : 43
+      End : 58
+Element[1]
+  Chapter : Functions
+    Start : 255
+      End : 302
+Element[2]
+  Chapter : Classes
+    Start : 303
+      End : 342
+Element[3]
+  Chapter : Vectors and Free Store
+    Start : 583
+      End : 626
+Element[4]
+  Chapter : Vectors and Arrays
+    Start : 627
+      End : 666
+    Pages : 1305
+ In Print : True
+     ISBN : 
+
+
+mediaItem[1]
+MediaItem : The Mythical Man-Month
+   Author : Frederick P. Brooks Jr.
+     Year : 1975
+    Value : $28.80
+Element[0]
+  Chapter : The Tar Pit
+    Start : 3
+      End : 12
+Element[1]
+  Chapter : The Mythical Man Month
+    Start : 13
+      End : 28
+Element[2]
+  Chapter : Ten Pounds in a Five-Pound Sack
+    Start : 97
+      End : 106
+Element[3]
+  Chapter : Plan to Throw One Away
+    Start : 115
+      End : 126
+Element[4]
+  Chapter : Hatching a Catastrophe
+    Start : 153
+      End : 162
+    Pages : 336
+ In Print : True
+     ISBN : 978-0201006506
+
+
+mediaItem[2]
+MediaItem : The Chip
+   Author : TR Reid
+     Year : 2001
+    Value : $13.61
+    Pages : 320
+ In Print : True
+     ISBN : 978-0375758287
+
+
+mediaItem[3]
+MediaItem : Fundamental Algorithms
+   Author : Donald E. Knuth
+     Year : 1997
+    Value : $58.14
+    Pages : 672
+ In Print : False
+     ISBN : 978-0201896831
+   Sequel : Seminumerical Algorithms
+
+
+mediaItem[4]
+MediaItem : The MMIX Supplement
+     Year : 2015
+    Value : $24.44
+    Pages : 224
+ In Print : False
+     ISBN : 978-0133992311
+
+
+mediaItem[5]
+MediaItem : Seminumerical Algorithms
+   Author : Donald E. Knuth
+     Year : 1997
+    Value : $65.91
+    Pages : 784
+ In Print : False
+     ISBN : 978-0201896848
+   Sequel : Sorting and Searching
+
+
+mediaItem[6]
+MediaItem : Sorting and Searching
+   Author : Donald E. Knuth
+     Year : 1998
+    Value : $58.05
+    Pages : 800
+ In Print : False
+     ISBN : 978-0201896855
+   Sequel : Combinatorial Algorithms
+
+
+mediaItem[7]
+MediaItem : Combinatorial Algorithms
+   Author : Donald E. Knuth
+     Year : 2011
+    Value : $63.99
+    Pages : 883
+ In Print : False
+     ISBN : 978-0201038040
+   Sequel : Mathematical Preliminaries Redux
+
+
+mediaItem[8]
+MediaItem : Mathematical Preliminaries Redux
+   Author : Donald E. Knuth
+     Year : 0
+    Value : $0.00
+    Pages : 0
+ In Print : False
+     ISBN : 
+
+
+mediaItem[9]
+MediaItem : On the Economy of Machinery and Manufactures
+   Author : Charles Babbage
+     Year : 1832
+    Value : $0.00
+    Pages : 346
+ In Print : False
+     ISBN : 1108009107
+
+
+mediaItem[22]
+MediaItem : Computer Games
+     Year : 2014
+    Value : $13.98
+ Producer : George Clinton
+  Minutes : 40.39
+
+
+mediaItem[40]
+MediaItem : The Creation of the Computer
+     Year : 2005
+    Value : $35.00
+ Director : 
+  Minutes : 50.00
+
+
+mediaItem[61]
+MediaItem : Computer Ethics : Integrating Across the Curriculum
+     Year : 2009
+    Value : $28.27
+
+Menu[61] : 
+Authors in memory    = 8 @ 16 Bytes EA. 
+               bytes = 128
+Books in memory      = 20 @ 296 Bytes EA. 
+               bytes = 5920
+Music in memory      = 20 @ 288 Bytes EA. 
+               bytes = 5760
+Videos in memory     = 20 @ 296 Bytes EA. 
+               bytes = 5920
+MediaItems in memory = 80 @ 272 Bytes EA. 
+               bytes = 21760
+        Total bytes = 23168
+
+Menu[61] : 
+Menu[61] : Goodbye
+%
+%
+%
+%
+%./mediaItem4Project < ts_8.in
+0-19 : Books
+20-39 : Music
+40-59 : Videos
+60-79 : Media Items
+* - Display data for all Media Items
++/- Increment / decrement the selected Item w/ in the Array
+# - Set the selected media Item
+0 - Clear MediaItem data
+B - set Media Item duration/time
+C - Create author
+D - Display Media Item data
+E - Add Media Item Element
+F - Set Music/Video Producer/Director respectively
+I - Set Media Item in print status (0/1)
+J - Set Book ISBN
+K - set Music Genre
+L - Display Music Items by Genre
+M - Print this menu again
+N - Set Media Item name
+Q - Quit this program
+P - Set Media Item pages
+R - Display the Memory used
+S - Set Media Item Sequel from Index
+T - Set Media Item Author Index
+V - Set Media Item value
+Y - Set Media Item Year Produced
+
+Menu[0] : 
+Authors in memory    = 8 @ 16 Bytes EA. 
+               bytes = 128
+Books in memory      = 20 @ 296 Bytes EA. 
+               bytes = 5920
+Music in memory      = 20 @ 288 Bytes EA. 
+               bytes = 5760
+Videos in memory     = 20 @ 296 Bytes EA. 
+               bytes = 5920
+MediaItems in memory = 80 @ 272 Bytes EA. 
+               bytes = 21760
+        Total bytes = 23168
+
+Menu[0] : 
+=== All Authors===
+
+=== All Items ===
+
+Menu[0] : Enter the number of the Item: Index set to 20
+
+Menu[20] : Enter the book's Name: 
+Menu[20] : Enter date Born Enter date Died (0 if still alive) Enter the author's name: 
+Menu[20] : Enter the index of the Author: 
+Menu[20] : Enter the value: 
+Menu[20] : Enter the Music's Genre: 
+Menu[20] : Index set to 21
+
+Menu[21] : Enter the book's Name: 
+Menu[21] : Enter date Born Enter date Died (0 if still alive) Enter the author's name: 
+Menu[21] : Enter the index of the Author: 
+Menu[21] : Enter the value: 
+Menu[21] : Enter the Music's Genre: 
+Menu[21] : Enter the year of publication: 
+Menu[21] : Index set to 22
+
+Menu[22] : Enter the book's Name: 
+Menu[22] : Enter date Born Enter date Died (0 if still alive) Enter the author's name: 
+Menu[22] : Enter the year of publication: 
+Menu[22] : Enter the index of the Author: 
+Menu[22] : Enter the Music's Genre: 
+Menu[22] : Enter the value: 
+Menu[22] : Index set to 23
+
+Menu[23] : Enter the book's Name: 
+Menu[23] : Enter date Born Enter date Died (0 if still alive) Enter the author's name: 
+Menu[23] : Enter the year of publication: 
+Menu[23] : Enter the index of the Author: 
+Menu[23] : Enter the Music's Genre: 
+Menu[23] : Enter the value: 
+Menu[23] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[23] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[23] : Enter the start of the Element: Enter the end of the Element: Enter the name of the Element: 
+Menu[23] : Index set to 24
+
+Menu[24] : Enter the book's Name: 
+Menu[24] : Enter the Music's Genre: 
+Menu[24] : Enter the value: 
+Menu[24] : Index set to 25
+
+Menu[25] : Enter the book's Name: 
+Menu[25] : Enter date Born Enter date Died (0 if still alive) Enter the author's name: 
+Menu[25] : Enter the index of the Author: 
+Menu[25] : Enter the Music's Genre: 
+Menu[25] : Enter the value: 
+Menu[25] : Enter the year of publication: 
+Menu[25] : Index set to 26
+
+Menu[26] : Enter the book's Name: 
+Menu[26] : Enter date Born Enter date Died (0 if still alive) Enter the author's name: 
+Menu[26] : Enter the index of the Author: 
+Menu[26] : Enter the value: 
+Menu[26] : Enter the year of publication: 
+Menu[26] : Enter the Music's Genre: 
+Menu[26] : Index set to 27
+
+Menu[27] : Enter the book's Name: 
+Menu[27] : Enter the year of publication: 
+Menu[27] : Enter the value: 
+Menu[27] : Enter the Music's Genre: 
+Menu[27] : Index set to 28
+
+Menu[28] : Enter the book's Name: 
+Menu[28] : Enter date Born Enter date Died (0 if still alive) Enter the author's name: 
+Menu[28] : Enter the index of the Author: 
+Menu[28] : Enter the year of publication: 
+Menu[28] : Enter the number of the Item: Index set to 40
+
+Menu[40] : Enter the book's Name: 
+Menu[40] : Enter the year of publication: 
+Menu[40] : Enter the video's director: 
+Menu[40] : Enter the value: 
+Menu[40] : Enter the number of the Item: Index set to 39
+
+Menu[39] : Enter the book's Name: 
+Menu[39] : Enter the Music's Genre: 
+Menu[39] : Enter the year of publication: 
+Menu[39] : Enter the value: 
+Menu[39] : Enter date Born Enter date Died (0 if still alive) Enter the author's name: 
+Menu[39] : Enter the index of the Author: 
+Menu[39] : Enter the number of the Item: Index set to 61
+
+Menu[61] : Enter the book's Name: 
+Menu[61] : Enter the year of publication: 
+Menu[61] : Enter the value: 
+Menu[61] : 
+
+=====Music By Genre=====
+
+MediaItem : Shadows in the Night
+   Author : Bob Dylan
+     Year : 2015
+    Value : $0.00
+ Producer : 
+  Minutes : 0.00
+
+
+MediaItem : Natty Dread
+   Author : Bob Marley
+     Year : 2001
+    Value : $12.98
+Element[0]
+  Chapter : Rebel Music
+    Start : 0
+      End : 0
+Element[1]
+  Chapter : No Woman No Cry
+    Start : 0
+      End : 0
+Element[2]
+  Chapter : Revolution
+    Start : 0
+      End : 0
+ Producer : 
+  Minutes : 0.00
+    Genre : Reggae
+
+
+MediaItem : Stardust
+   Author : Willie Nelson
+     Year : 0
+    Value : $9.99
+ Producer : 
+  Minutes : 0.00
+    Genre : Country
+
+
+MediaItem : Still the Same Ole Me
+   Author : George Jones
+     Year : 1969
+    Value : $0.99
+ Producer : 
+  Minutes : 0.00
+    Genre : Country
+
+
+MediaItem : Back in Black
+   Author : AC/DC
+     Year : 1994
+    Value : $7.99
+ Producer : 
+  Minutes : 0.00
+    Genre : Rock
+
+
+MediaItem : Rockabilly Riot!
+   Author : Brian Setzer
+     Year : 2014
+    Value : $11.99
+ Producer : 
+  Minutes : 0.00
+    Genre : Rock
+
+
+MediaItem : Aphex Twins
+     Year : 0
+    Value : $4.44
+ Producer : 
+  Minutes : 0.00
+    Genre : Techno
+
+
+MediaItem : Nobodys Smiling
+   Author : Lonnie Lynn
+     Year : 2014
+    Value : $9.87
+ Producer : 
+  Minutes : 0.00
+    Genre : Hiphop
+
+
+MediaItem : Big Daddy Multitude
+   Author : Mustard Plug
+     Year : 1993
+    Value : $8.99
+ Producer : 
+  Minutes : 0.00
+    Genre : Other
+
+
+MediaItem : 16 Most Requested Polkas
+     Year : 2008
+    Value : $4.99
+ Producer : 
+  Minutes : 0.00
+    Genre : Other
+
+
+
+Menu[61] : 
+Authors in memory    = 8 @ 16 Bytes EA. 
+               bytes = 128
+Books in memory      = 20 @ 296 Bytes EA. 
+               bytes = 5920
+Music in memory      = 20 @ 288 Bytes EA. 
+               bytes = 5760
+Videos in memory     = 20 @ 296 Bytes EA. 
+               bytes = 5920
+MediaItems in memory = 80 @ 272 Bytes EA. 
+               bytes = 21760
+        Total bytes = 23168
+
+Menu[61] : 
+=== All Authors===
+Author[0]
+   Author : Willie Nelson
+     Born : 1933
+     Died : 0
+Author[1]
+   Author : AC/DC
+     Born : 0
+     Died : 0
+Author[2]
+   Author : Mustard Plug
+     Born : 0
+     Died : 0
+Author[3]
+   Author : Bob Marley
+     Born : 1945
+     Died : 1981
+Author[4]
+   Author : Lonnie Lynn
+     Born : 1972
+     Died : 0
+Author[5]
+   Author : Brian Setzer
+     Born : 1959
+     Died : 0
+Author[6]
+   Author : Bob Dylan
+     Born : 1941
+     Died : 0
+Author[7]
+   Author : George Jones
+     Born : 1931
+     Died : 2013
+
+=== All Items ===
+mediaItem[20]
+MediaItem : Stardust
+   Author : Willie Nelson
+     Year : 0
+    Value : $9.99
+ Producer : 
+  Minutes : 0.00
+    Genre : Country
+
+
+mediaItem[21]
+MediaItem : Back in Black
+   Author : AC/DC
+     Year : 1994
+    Value : $7.99
+ Producer : 
+  Minutes : 0.00
+    Genre : Rock
+
+
+mediaItem[22]
+MediaItem : Big Daddy Multitude
+   Author : Mustard Plug
+     Year : 1993
+    Value : $8.99
+ Producer : 
+  Minutes : 0.00
+    Genre : Other
+
+
+mediaItem[23]
+MediaItem : Natty Dread
+   Author : Bob Marley
+     Year : 2001
+    Value : $12.98
+Element[0]
+  Chapter : Rebel Music
+    Start : 0
+      End : 0
+Element[1]
+  Chapter : No Woman No Cry
+    Start : 0
+      End : 0
+Element[2]
+  Chapter : Revolution
+    Start : 0
+      End : 0
+ Producer : 
+  Minutes : 0.00
+    Genre : Reggae
+
+
+mediaItem[24]
+MediaItem : Aphex Twins
+     Year : 0
+    Value : $4.44
+ Producer : 
+  Minutes : 0.00
+    Genre : Techno
+
+
+mediaItem[25]
+MediaItem : Nobodys Smiling
+   Author : Lonnie Lynn
+     Year : 2014
+    Value : $9.87
+ Producer : 
+  Minutes : 0.00
+    Genre : Hiphop
+
+
+mediaItem[26]
+MediaItem : Rockabilly Riot!
+   Author : Brian Setzer
+     Year : 2014
+    Value : $11.99
+ Producer : 
+  Minutes : 0.00
+    Genre : Rock
+
+
+mediaItem[27]
+MediaItem : 16 Most Requested Polkas
+     Year : 2008
+    Value : $4.99
+ Producer : 
+  Minutes : 0.00
+    Genre : Other
+
+
+mediaItem[28]
+MediaItem : Shadows in the Night
+   Author : Bob Dylan
+     Year : 2015
+    Value : $0.00
+ Producer : 
+  Minutes : 0.00
+
+
+mediaItem[39]
+MediaItem : Still the Same Ole Me
+   Author : George Jones
+     Year : 1969
+    Value : $0.99
+ Producer : 
+  Minutes : 0.00
+    Genre : Country
+
+
+mediaItem[40]
+MediaItem : The Harder They Come
+     Year : 1972
+    Value : $7.58
+ Director : Perry Henzell
+  Minutes : 0.00
+
+
+mediaItem[61]
+MediaItem : Final Fantasy XIV: A Realm Reborn
+     Year : 2013
+    Value : $19.99
+
+Menu[61] : 
+Menu[61] : Goodbye
+%
+%
+%
+%exit
+exit
+
+Script done on Fri Mar  6 15:16:56 2015
